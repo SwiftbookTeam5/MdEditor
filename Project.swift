@@ -9,7 +9,7 @@ let project = Project(
 			platform: .iOS,
 			product: .app,
 			bundleId: "SwiftbookTeam5.MdEditor",
-			infoPlist: "Resources/Info.plist",
+			infoPlist: "Sources/Info.plist",
 			sources: ["Sources/**"],
 			resources: ["Resources/**"]
 		)
