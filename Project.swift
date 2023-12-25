@@ -12,7 +12,7 @@ public var scripts: [TargetScript] {
 									exit 1
 								fi
 								"""
-	let swiftLintScript = TargetScript.post(script: swiftLintScriptString, name: "SwiftLint")
+	let swiftLintScript = TargetScript.post(script: swiftLintScriptString, name: "SwiftLint", basedOnDependencyAnalysis: false)
 	
 	scripts.append(swiftLintScript)
 	return scripts
