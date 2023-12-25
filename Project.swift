@@ -1,5 +1,23 @@
 import ProjectDescription
 
+public var scripts: [TargetScript] {
+	var scripts = [TargetScript]()
+	
+	let swiftLintScriptString = """
+								export PATH="$PATH:/opt/homebrew/bin"
+								if which swiftlint > /dev/null; then
+									swiftlint
+								else
+									echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+									exit 1
+								fi
+								"""
+	let swiftLintScript = TargetScript.post(script: swiftLintScriptString, name: "SwiftLint")
+	
+	scripts.append(swiftLintScript)
+	return scripts
+}
+
 let project = Project(
 	name: "MdEditor",
 	organizationName: "SwiftbookTeam5",
@@ -11,7 +29,8 @@ let project = Project(
 			bundleId: "SwiftbookTeam5.MdEditor",
 			infoPlist: "Sources/Info.plist",
 			sources: ["Sources/**"],
-			resources: ["Resources/**"]
+			resources: ["Resources/**"],
+			scripts: scripts
 		)
 	]
 )
