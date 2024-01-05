@@ -47,8 +47,6 @@ public struct DoubleLinkedList<T> {
 	public var isEmpty: Bool {
 		head == nil && tail == nil
 	}
-	
-	public init() {}
 
 	/// Инициализатор списка.
 	/// - Parameter value: Значение, которое будет добавлено в список.
@@ -112,12 +110,13 @@ public struct DoubleLinkedList<T> {
 	///
 	/// Сложность O(1).
 	/// - Returns: Извлеченное из списка значение.
+	@discardableResult
 	public mutating func pop() -> T? {
 		guard let currentHead = head else { return nil }
 		head = currentHead.next
 		head?.previous = nil
 
-		if isEmpty { tail = nil }
+		if head == nil { tail = nil }
 		count -= 1
 		
 		return currentHead.value
@@ -127,11 +126,13 @@ public struct DoubleLinkedList<T> {
 	///
 	/// Сложность O(1).
 	/// - Returns: Извлеченное из списка значение.
+	@discardableResult
 	public mutating func removeLast() -> T? {
 		guard let currentTail = tail else { return nil }
 		tail = currentTail.previous
 		tail?.next = nil
-		if isEmpty { head = nil }
+
+		if tail == nil { head = nil }
 		count -= 1
 
 		return currentTail.value
@@ -140,6 +141,7 @@ public struct DoubleLinkedList<T> {
 	/// Извлечение значения из середины списка.
 	/// - Parameter index: Индекс, после которого надо извлеч значение.
 	/// - Returns: Извлеченное из списка значение.
+	@discardableResult
 	public mutating func remove(after index: Int) -> T? {
 		guard let currentNode = node(at: index), let nextNode = currentNode.next else { return nil }
 
