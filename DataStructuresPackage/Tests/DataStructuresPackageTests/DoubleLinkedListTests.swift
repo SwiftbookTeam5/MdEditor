@@ -16,7 +16,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		XCTAssertEqual(
 			sut.count,
 			1,
-			"Не верное количество элементов в списке при инициализации"
+			"Неверное количество элементов в списке при инициализации"
 		)
 	}
 
@@ -26,7 +26,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		XCTAssertEqual(
 			sut.count,
 			0,
-			"Не верное количество элементов в списке при инициализации со значением"
+			"Неверное количество элементов в списке при инициализации со значением"
 		)
 	}
 
@@ -37,7 +37,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		XCTAssertEqual(
 			sut.value(at: 0),
 			value,
-			"Не верное значение элемента в списке при инициализации"
+			"Неверное значение элемента в списке при инициализации"
 		)
 	}
 
@@ -53,7 +53,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		XCTAssertEqual(
 			sut.count,
 			1,
-			"Не верное количество элементов в списке при добавлении в начало списка"
+			"Неверное количество элементов в списке при добавлении в начало списка"
 		)
 	}
 
@@ -70,7 +70,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		XCTAssertEqual(
 			sut.value(at: 0),
 			value,
-			"Не верное значение элемента в списке при добавлении в начало списка"
+			"Неверное значение элемента в списке при добавлении в начало списка"
 		)
 	}
 
@@ -86,7 +86,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		XCTAssertEqual(
 			sut.count,
 			1,
-			"Не верное количество элементов в списке при добавлении в конец списка"
+			"Неверное количество элементов в списке при добавлении в конец списка"
 		)
 	}
 
@@ -103,7 +103,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		XCTAssertEqual(
 			sut.value(at: 0),
 			value,
-			"Не верное значение элемента в списке при добавлении в конец списка"
+			"Неверное значение элемента в списке при добавлении в конец списка"
 		)
 	}
 
@@ -120,7 +120,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		XCTAssertEqual(
 			sut.count,
 			numbers.count + 1,
-			"Не верное количество элементов в списке при вставке в список"
+			"Неверное количество элементов в списке при вставке в список"
 		)
 	}
 
@@ -138,7 +138,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		XCTAssertEqual(
 			sut.value(at: numbers.count),
 			value,
-			"Не верное значение элемента при вставке в список"
+			"Неверное значение элемента при вставке в список"
 		)
 	}
 
@@ -150,7 +150,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		XCTAssertEqual(
 			sut.count,
 			0,
-			"Не верное количество элементов после вставки в список по существующему индексу"
+			"Неверное количество элементов после вставки в список по существующему индексу"
 		)
 	}
 
@@ -167,7 +167,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		XCTAssertEqual(
 			sut.count,
 			numbers.count,
-			"Не верное количество элементов после вставки в список по существующему индексу"
+			"Неверное количество элементов после вставки в список по существующему индексу"
 		)
 	}
 
@@ -184,7 +184,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		XCTAssertEqual(
 			sut.count,
 			numbers.count - 1,
-			"Не верное количество элементов после извлечения из начала списка"
+			"Неверное количество элементов после извлечения из начала списка"
 		)
 	}
 
@@ -200,7 +200,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		// assert
 		XCTAssertTrue(
 			numbers.first == value,
-			"Не верное значение извлеченного элемента из начала списка"
+			"Неверное значение извлеченного элемента из начала списка"
 		)
 	}
 
@@ -244,7 +244,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		XCTAssertEqual(
 			sut.count,
 			numbers.count - 1,
-			"Не верное количество элементов после извлечения из конца списка"
+			"Неверное количество элементов после извлечения из конца списка"
 		)
 	}
 
@@ -260,7 +260,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		// assert
 		XCTAssertTrue(
 			numbers.last == value,
-			"Не верное значение извлеченного элемента из конца списка"
+			"Неверное значение извлеченного элемента из конца списка"
 		)
 	}
 
@@ -271,7 +271,7 @@ final class DoubleLinkedListTests: XCTestCase {
 
 		XCTAssertNil(
 			value,
-			"Не верное значение извлеченного элемента с конца пустого списка"
+			"Неверное значение извлеченного элемента с конца пустого списка"
 		)
 	}
 
@@ -304,7 +304,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		XCTAssertEqual(
 			sut.count,
 			numbers.count - 1,
-			"Не верное количество элементов в списке при удалении по индексу"
+			"Неверное количество элементов в списке при удалении по индексу"
 		)
 	}
 
@@ -321,7 +321,7 @@ final class DoubleLinkedListTests: XCTestCase {
 		// assert
 		XCTAssertTrue(
 			numbers[index] == value,
-			"Не верное значение удаляемого элемента из списка"
+			"Неверное значение удаляемого элемента из списка"
 		)
 	}
 
@@ -444,6 +444,8 @@ final class DoubleLinkedListTests: XCTestCase {
 		)
 	}
 }
+
+// MARK: - Private methods
 
 private extension DoubleLinkedListTests {
 
