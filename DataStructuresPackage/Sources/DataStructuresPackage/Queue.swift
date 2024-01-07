@@ -29,6 +29,7 @@ public struct Queue<T> {
 
 	/// Удаляет и возвращает первый элемент очереди.
 	/// - Returns: первый элемент очереди.
+	@discardableResult
 	public mutating func dequeue() -> T? {
 		elements.pop()
 	}
