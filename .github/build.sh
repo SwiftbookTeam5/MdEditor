@@ -1,6 +1,7 @@
 curl -Ls https://install.tuist.io | bash
 tuist install 3.18.0
 tuist fetch
+cd MdEditor
 tuist generate
 xcodebuild clean -quiet
 xcodebuild build-for-testing\
