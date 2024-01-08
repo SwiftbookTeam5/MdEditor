@@ -12,3 +12,5 @@ jobs:
         run: exec ./.github/build.sh
       - name: Test DataStructuresPackage
         run: exec ./.github/testDataStructures.sh
+      - name: Test TaskManagerPackage
+        run: exec ./.github/testTaskManager.sh

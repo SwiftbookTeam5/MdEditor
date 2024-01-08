@@ -12,7 +12,6 @@ public final class OrderedTaskManager: ITaskManager {
 
 	private let taskManager: ITaskManager
 
-
 	/// Создание отсортированного по приоритету заданий списка.
 	/// - Parameter taskManager: Менеджер списка заданий, который будет предоставлять задания.
 	public init(taskManager: ITaskManager) {
