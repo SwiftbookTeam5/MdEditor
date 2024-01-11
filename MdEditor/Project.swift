@@ -18,19 +18,29 @@ public var scripts: [TargetScript] {
 	return scripts
 }
 
+let target = Target(
+	name: "MdEditor",
+	platform: .iOS,
+	product: .app,
+	productName: "MdEditor",
+	bundleId: "SwiftbookTeam5.MdEditor",
+	deploymentTarget: .iOS(targetVersion: "15.0", devices: .iphone),
+	infoPlist: "Sources/Info.plist",
+	sources: ["Sources/**"],
+	resources: ["Resources/**"],
+	scripts: scripts,
+	dependencies: [
+		.package(product: "TaskManagerPackage")
+	]
+)
+
 let project = Project(
 	name: "MdEditor",
 	organizationName: "SwiftbookTeam5",
-	targets: [
-		Target(
-			name: "MdEditor",
-			platform: .iOS,
-			product: .app,
-			bundleId: "SwiftbookTeam5.MdEditor",
-			infoPlist: "Sources/Info.plist",
-			sources: ["Sources/**"],
-			resources: ["Resources/**"],
-			scripts: scripts
-		)
-	]
+	packages: [
+		.package(
+			path: "../TaskManagerPackage"
+		),
+	],
+	targets: [target]
 )
