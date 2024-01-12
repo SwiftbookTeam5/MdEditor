@@ -95,7 +95,6 @@ private extension TodoListViewController {
 		view.backgroundColor = .white
 		title = "TodoList"
 		navigationController?.navigationBar.prefersLargeTitles = true
-		
 		self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
 
 		navigationItem.rightBarButtonItem = UIBarButtonItem(

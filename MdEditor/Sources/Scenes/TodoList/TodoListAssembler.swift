@@ -15,7 +15,6 @@ final class TodoListAssembler {
 	private let taskManager: ITaskManager
 
 	// MARK: - Initialization
-	
 	/// Инициализатор сборщика модуля списка заданий.
 	/// - Parameters:
 	///   - taskManager: Менеджер заданий.
