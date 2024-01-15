@@ -93,7 +93,7 @@ private extension TodoListViewController {
 
 	private func setupUI() {
 		view.backgroundColor = Theme.backgroundColor
-		title = "TodoList"
+		title = L10n.TodoList.title
 		navigationController?.navigationBar.prefersLargeTitles = true
 		self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
 
