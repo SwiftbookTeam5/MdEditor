@@ -69,7 +69,7 @@ private extension LoginViewController {
 		textField.textColor = Theme.mainColor
 		textField.layer.borderWidth = Sizes.borderWidth
 		textField.layer.cornerRadius = Sizes.cornerRadius
-		textField.layer.borderColor = Theme.borderColor.cgColor
+		textField.layer.borderColor = Theme.borderPlaceholderColor.cgColor
 		textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: Sizes.Padding.half, height: textField.frame.height))
 		textField.leftViewMode = .always
 		textField.translatesAutoresizingMaskIntoConstraints = false
@@ -101,11 +101,11 @@ private extension LoginViewController {
 		// Кастомная конфигурация наших полей
 		textFieldLogin.attributedPlaceholder = NSAttributedString(
 			string: "Login",
-			attributes: [NSAttributedString.Key.foregroundColor: Theme.borderColor]
+			attributes: [NSAttributedString.Key.foregroundColor: Theme.borderPlaceholderColor]
 		)
 		textFieldPass.attributedPlaceholder = NSAttributedString(
 			string: "Password",
-			attributes: [NSAttributedString.Key.foregroundColor: Theme.borderColor]
+			attributes: [NSAttributedString.Key.foregroundColor: Theme.borderPlaceholderColor]
 		)
 		textFieldPass.isSecureTextEntry = true
 
