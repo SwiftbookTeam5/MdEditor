@@ -115,6 +115,10 @@ private extension TodoListViewController {
 
 		cell.tintColor = Theme.accentColor
 		cell.selectionStyle = .none
+		contentConfiguration.secondaryTextProperties.font = UIFont.preferredFont(forTextStyle: .caption2)
+		contentConfiguration.secondaryTextProperties.adjustsFontForContentSizeCategory = true
+		contentConfiguration.textProperties.font = UIFont.preferredFont(forTextStyle: .body)
+		contentConfiguration.secondaryTextProperties.adjustsFontForContentSizeCategory = true
 
 		switch task {
 		case .importantTask(let task):
