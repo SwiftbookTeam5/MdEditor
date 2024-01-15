@@ -1,5 +1,5 @@
 //
-//  UiColorHexTests.swift
+//  UIColorHexTests.swift
 //  MdEditor
 //
 //  Created by Руслан Мингалиев on 14.01.2024.
@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import TodoList
+@testable import MdEditor
 
 // swiftlint:disable force_cast
 
