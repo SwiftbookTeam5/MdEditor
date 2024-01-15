@@ -9,6 +9,7 @@
 import UIKit
 
 extension UIColor {
+
 	convenience init(red: UInt8, green: UInt8, blue: UInt8, alpha: UInt8 = 255) {
 		self.init(
 			red: CGFloat(red) / 255.0,
@@ -17,6 +18,7 @@ extension UIColor {
 			alpha: CGFloat(alpha) / 255.0
 		)
 	}
+
 	convenience init(hex: Int) {
 		if hex > 0xffffff {
 			self.init(
@@ -33,6 +35,7 @@ extension UIColor {
 			)
 		}
 	}
+
 	convenience init(hex: String) {
 		var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
 		hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")

@@ -9,6 +9,7 @@
 import UIKit
 
 extension UIColor {
+
 	static func color(light: UIColor, dark: UIColor, highContrastLight: UIColor, highContrastDark: UIColor) -> UIColor {
 		if #available(iOS 13, *) {
 			return .init { traitCollection in
@@ -30,6 +31,7 @@ extension UIColor {
 			return light
 		}
 	}
+
 	static func color(light: UIColor, dark: UIColor) -> UIColor {
 		if #available(iOS 13, *) {
 			return .init { traitCollection in
