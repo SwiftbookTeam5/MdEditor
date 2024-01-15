@@ -74,6 +74,8 @@ private extension LoginViewController {
 		textField.leftViewMode = .always
 
 		textField.translatesAutoresizingMaskIntoConstraints = false
+		textField.font = UIFont.preferredFont(forTextStyle: .body)
+		textField.adjustsFontForContentSizeCategory = true
 
 		return textField
 	}
@@ -85,8 +87,9 @@ private extension LoginViewController {
 		button.configuration?.cornerStyle = .medium
 		button.configuration?.baseBackgroundColor = Theme.accentColor
 		button.configuration?.title = "Login"
+		button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
+		button.titleLabel?.adjustsFontForContentSizeCategory = true
 		button.addTarget(self, action: #selector(login), for: .touchUpInside)
-
 		button.translatesAutoresizingMaskIntoConstraints = false
 
 		return button
@@ -96,6 +99,9 @@ private extension LoginViewController {
 		view.backgroundColor = Theme.backgroundColor
 		title = "Authorization"
 		navigationController?.navigationBar.prefersLargeTitles = true
+		navigationController?.navigationBar.titleTextAttributes = [
+			NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)
+		]
 
 		// Кастомная конфигурация наших полей
 		textFieldLogin.attributedPlaceholder = NSAttributedString(
