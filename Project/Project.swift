@@ -10,6 +10,16 @@ enum ProjectSettings {
 	public static var developmentTeam: String { "" }
 	public static var targetVersion: String { "15.0" }
 	public static var bundleId: String { "\(organizationName).\(projectName)" }
+
+	enum UnitTests {
+		public static var name: String { "\(ProjectSettings.projectName)Tests" }
+		public static var bundleId: String { "\(ProjectSettings.bundleId)Tests" }
+	}
+
+	enum UITests {
+		public static var name: String { "\(ProjectSettings.projectName)UITests" }
+		public static var bundleId: String { "\(ProjectSettings.bundleId)UITests" }
+	}
 }
 
 private var scripts: [TargetScript] {
@@ -25,9 +35,9 @@ private var scripts: [TargetScript] {
 		fi
 		"""
 
-	let swiftLintScript = TargetScript.post(
+	let swiftLintScript = TargetScript.pre(
 		script: swiftLintScriptString,
-		name: "SwiftLint",
+		name: "Run SwiftLint",
 		basedOnDependencyAnalysis: false
 	)
 	
@@ -39,11 +49,11 @@ let target = Target(
 	name: ProjectSettings.projectName,
 	platform: .iOS,
 	product: .app,
-	productName: "MdEditor",
+	productName: ProjectSettings.projectName,
 	bundleId: ProjectSettings.bundleId,
 	deploymentTarget: .iOS(targetVersion: ProjectSettings.targetVersion, devices: .iphone),
 	infoPlist: "Sources/Info.plist",
-	sources: ["Sources/**"],
+	sources: ["Sources/**", "Shared**"],
 	resources: ["Resources/**"],
 	scripts: scripts,
 	dependencies: [
@@ -52,22 +62,36 @@ let target = Target(
 	]
 )
 
-let targetTest = Target(
-	name: "\(ProjectSettings.projectName)Tests",
+let targetUnitTest = Target(
+	name: ProjectSettings.UnitTests.name,
 	platform: .iOS,
 	product: .unitTests,
-	bundleId: "\(ProjectSettings.bundleId)Tests",
+	bundleId: ProjectSettings.UnitTests.bundleId,
 	deploymentTarget: .iOS(targetVersion: ProjectSettings.targetVersion, devices: .iphone),
 	infoPlist: .none,
-	sources: ["Tests/**"],
+	sources: ["Tests/MdEditorTests/Sources/**", "Shared**"],
 	dependencies: [
-		.target(name: "\(ProjectSettings.projectName)")
+		.target(name: ProjectSettings.projectName)
+	],
+	settings: .settings(base: ["GENERATE_INFOPLIST_FILE": "YES"])
+)
+
+let targetUITest = Target(
+	name: ProjectSettings.UITests.name,
+	platform: .iOS,
+	product: .uiTests,
+	bundleId: ProjectSettings.UITests.bundleId,
+	deploymentTarget: .iOS(targetVersion: ProjectSettings.targetVersion, devices: .iphone),
+	infoPlist: .none,
+	sources: ["Tests/MdEditorUITests/Sources**", "Shared**"],
+	dependencies: [
+		.target(name: ProjectSettings.projectName)
 	],
 	settings: .settings(base: ["GENERATE_INFOPLIST_FILE": "YES"])
 )
 
 let project = Project(
-	name: "MdEditor",
+	name: ProjectSettings.projectName,
 	organizationName: ProjectSettings.organizationName,
 	packages: [
 		.local(path: .relativeToManifest("../Packages/TaskManagerPackage")),
@@ -82,5 +106,33 @@ let project = Project(
 		],
 		defaultSettings: .recommended()
 	),
-	targets: [target, targetTest]
+	targets: [target, targetUnitTest, targetUITest],
+	schemes: [
+		Scheme(
+			name: ProjectSettings.projectName,
+			shared: true,
+			buildAction: .buildAction(targets: ["\(ProjectSettings.projectName)"]),
+			testAction: .targets(
+				[
+					"\(ProjectSettings.UnitTests.name)",
+					"\(ProjectSettings.UITests.name)"
+				]
+			),
+			runAction: .runAction(executable: "\(ProjectSettings.projectName)")
+		),
+		Scheme(
+			name: ProjectSettings.UnitTests.name,
+			shared: true,
+			buildAction: .buildAction(targets: ["\(ProjectSettings.UnitTests.name)"]),
+			testAction: .targets(["\(ProjectSettings.UnitTests.name)"]),
+			runAction: .runAction(executable: "\(ProjectSettings.UnitTests.name)")
+		),
+		Scheme(
+			name: ProjectSettings.UITests.name,
+			shared: true,
+			buildAction: .buildAction(targets: ["\(ProjectSettings.UITests.name)"]),
+			testAction: .targets(["\(ProjectSettings.UITests.name)"]),
+			runAction: .runAction(executable: "\(ProjectSettings.UITests.name)")
+		)
+	]
 )
