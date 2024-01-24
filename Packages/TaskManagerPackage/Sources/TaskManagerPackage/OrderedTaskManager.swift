@@ -42,14 +42,6 @@ public final class OrderedTaskManager: ITaskManager {
 		sorted(tasks: taskManager.uncompletedTasks())
 	}
 
-	/// Добавление нового задания.
-	///
-	/// Сложность: В среднем O(1) при многих вызовах append(_:) в массиве.
-	/// - Parameter task: задание.
-	public func addTask(task: Task) {
-		taskManager.addTask(task: task)
-	}
-
 	/// Добавление перечня заданий.
 	///
 	/// Сложность: В среднем O(m), где m размер добавляемого списка заданий, при многих вызовах append(_:) в массиве.

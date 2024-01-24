@@ -27,31 +27,6 @@ final class TaskManagerTests: XCTestCase {
 		)
 	}
 
-	func test_addTask_withTask_shouldBeSuccess() {
-
-		// arrange
-		let title = "05 Task"
-		let newTask = Task(title: title)
-		let sut = makeSUT()
-
-		// act
-		sut.addTask(task: newTask)
-		let allTasks = sut.allTasks()
-		
-		// assert
-		XCTAssertEqual(
-			allTasks.count,
-			1,
-			"Неверное количество заданий при добавлении задания"
-		)
-
-		XCTAssertEqual(
-			allTasks.last?.title,
-			title,
-			"Неверное название задания при добавлении одного задания"
-		)
-	}
-
 	func test_addTasks_withTasks_shouldHaveCorrectCount() {
 
 		// arrange
@@ -67,25 +42,6 @@ final class TaskManagerTests: XCTestCase {
 			allTasks.count,
 			tasks.count,
 			"Неверное количество заданий при добавлении"
-		)
-	}
-	
-	func test_removeTask_withOneTask_shouldHaveCorrectCount() {
-
-		// arrange
-		let newTask = Task(title: "01 Task")
-		let sut = makeSUT()
-		sut.addTask(task: newTask)
-
-		// act
-		sut.removeTask(task: newTask)
-		let allTasks = sut.allTasks()
-
-		// assert
-		XCTAssertEqual(
-			allTasks.count,
-			0,
-			"Неверное количество заданий при удалении "
 		)
 	}
 

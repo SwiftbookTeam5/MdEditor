@@ -21,7 +21,6 @@
 - `func allTasks() -> [Task]` -- получение списка всех заданий;
 - `func completedTasks() -> [Task]` -- получение списка выполненных заданий;
 - `func uncompletedTasks() -> [Task]` -- получение списка невыполненных заданий;
-- `func addTask(task: Task)` -- добавление задания в список;
 - `func removeTask(task: Task)` -- удаление задания из списка.
 
 `TaskManager` оперирует заданиями -- `Task`, который имеет статус готово (completed) и название (title).
@@ -60,7 +59,6 @@ package TaskManagerModule {
 		allTasks() -> [Task]
 		completedTasks() -> [Task]
 		uncompletedTasks() -> [Task]
-		addTask(task: Task)
 		addTasks(tasks: [Task])
 		removeTask(task: Task)
 	}

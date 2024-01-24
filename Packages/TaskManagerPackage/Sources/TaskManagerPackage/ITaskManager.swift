@@ -19,10 +19,6 @@ public protocol ITaskManager {
 	/// - Returns: Массив заданий.
 	func uncompletedTasks() -> [Task]
 
-	/// Добавление нового задания.
-	/// - Parameter task: Задание.
-	func addTask(task: Task)
-
 	/// Добавление перечня заданий.
 	/// - Parameter tasks: Массив заданий.
 	func addTasks(tasks: [Task])

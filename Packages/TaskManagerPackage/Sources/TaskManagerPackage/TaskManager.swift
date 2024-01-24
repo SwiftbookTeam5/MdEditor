@@ -34,12 +34,6 @@ public final class TaskManager {
 	}
 
 	/// Добавление нового задания.
-	///
-	/// Сложность: В среднем O(1) при многих вызовах append(_:) в массиве.
-	/// - Parameter task: Задание.
-	public func addTask(task: Task) {
-		taskList.append(task)
-	}
 
 	/// Добавление перечня заданий.
 	///
