@@ -2,7 +2,7 @@
 //  ICoordinator.swift
 //  MdEditor
 //
-//  Created by Татьяна Аникина on 11.01.2024.
+//  Created by Татьяна Исаева on 11.01.2024.
 //  Copyright © 2024 SwiftbookTeam5. All rights reserved.
 //
 
