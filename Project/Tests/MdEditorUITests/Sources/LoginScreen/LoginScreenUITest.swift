@@ -6,27 +6,56 @@
 //  Copyright © 2024 SwiftbookTeam5. All rights reserved.
 //
 
+
 import XCTest
 
-class LoginScreenUITest: XCTestCase {
+final class LoginSceneUITest: XCTestCase {
 
-	override func tearDown() {
-		let screenshot = XCUIScreen.main.screenshot()
-		let fullscreenchotAttachment = XCTAttachment(screenshot: screenshot)
-		fullscreenchotAttachment.name = "Fail test"
-		fullscreenchotAttachment.lifetime = .deleteOnSuccess
-		add(fullscreenchotAttachment)
+	// swiftlint:disable implicitly_unwrapped_optional
+	private var app: XCUIApplication!
+	private var loginScreenObject: LoginScreenObject!
+	// swiftlint:enable implicitly_unwrapped_optional
+
+	// MARK: - Lifecycle
+
+	override func setUp() {
+		app = XCUIApplication()
+		loginScreenObject = LoginScreenObject(app: app)
+		super.setUp()
 	}
 
-	func test_login_withValidCred_mustBeSuccess() {
-		let app = XCUIApplication()
-		let loginScreen = LoginScreenObject(app: app)
+	// MARK: - Public Methods
+
+	func test_login_withValidCredentials_mustBeSuccess() {
+
 		app.launch()
 
-		loginScreen
+		loginScreenObject
 			.isLoginScreen()
-			.set(password: "pa$$32!")
 			.set(login: "Admin")
+			.set(password: "pa$$32!")
 			.login()
+
+		XCTAssertFalse(
+			app.tables[AccessibilityIdentifier.TodoList.tableView.description].exists,
+			"Ошибка, после ввода корректного логина и пароля не произошел переход на следующий экран"
+		)
+	}
+
+	func test_login_withInvalidCredentials_mustBeFailure() {
+
+		app.launch()
+
+		loginScreenObject
+			.isLoginScreen()
+			.set(login: "dmin")
+			.set(password: "pass")
+			.login()
+			.isLoginScreen()
+
+		XCTAssertFalse(
+			app.tables[AccessibilityIdentifier.TodoList.tableView.description].exists,
+			"Ошибка, после ввода некорректного логина и пароля произошел переход на другой экран"
+		)
 	}
 }

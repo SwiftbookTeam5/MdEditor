@@ -28,12 +28,15 @@ enum AccessibilityIdentifier {
 	}
 
 	enum TodoList {
+		case tableView
 		case cell(section: Int, index: Int)
 
 		var description: String {
 			switch self {
 			case .cell(let section, let index):
 				return "cell.\(section).\(index)"
+			case .tableView:
+				return "tableView"
 			}
 		}
 	}
