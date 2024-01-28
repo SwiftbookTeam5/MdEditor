@@ -11,7 +11,7 @@ import XCTest
 final class TodoListScreenObject: BaseScreenObject {
 	
 	// MARK: - Private properties
-	
+	private lazy var loginButton = app.buttons[AccessibilityIdentifier.Login.buttonLogin.description]
 	private lazy var table = app.tables[AccessibilityIdentifier.TodoList.tableView.description]
 	
 	// MARK: - ScreenObject methods
@@ -20,6 +20,8 @@ final class TodoListScreenObject: BaseScreenObject {
 	/// - Returns: сам объект self
 	@discardableResult
 	func isTodoList() -> Self {
+		assert(loginButton, [.exists])
+		loginButton.tap()
 		assert(table, [.exists])
 		
 		return self
