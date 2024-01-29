@@ -9,32 +9,32 @@
 import XCTest
 
 final class TodoListScreenObject: BaseScreenObject {
-	
+
 	// MARK: - Private properties
-	
+
 	private lazy var table = app.tables[AccessibilityIdentifier.TodoList.tableView.description]
-	
+
 	// MARK: - ScreenObject methods
-	
+
 	/// Проверяет является ли текущий экран TodoList
 	/// - Returns: сам объект self
 	@discardableResult
 	func isTodoList() -> Self {
 		assert(table, [.exists])
-		
+
 		return self
 	}
-	
+
 	/// Возвращает количество секций в таблице
 	/// - Returns: количество секций
 	@discardableResult
 	func numberOfSections() -> Int {
 		assert(table, [.exists])
 		let sections = table.otherElements.staticTexts
-		
+
 		return sections.count
 	}
-	
+
 	/// Возвращает название секции
 	/// - Parameter section: идекс секции
 	/// - Returns: название секции
@@ -42,10 +42,10 @@ final class TodoListScreenObject: BaseScreenObject {
 	func getTitleForHeaderIn(section: Int) -> String {
 		let header = table.otherElements.element(boundBy: section)
 		assert(header, [.exists])
-		
+
 		return header.staticTexts.firstMatch.label
 	}
-	
+
 	/// Возвращает название  задания
 	/// - Parameters:
 	///   - section: индекс секции
@@ -55,13 +55,13 @@ final class TodoListScreenObject: BaseScreenObject {
 	func getTitleForTaskIn(section: Int, row: Int) -> String {
 		let header = table.otherElements.element(boundBy: section)
 		let cell = app.cells[AccessibilityIdentifier.TodoList.cell(section: section, index: row).description]
-		
+
 		assert(header, [.exists])
 		assert(cell, [.exists])
-		
+
 		return cell.staticTexts.firstMatch.label
 	}
-	
+
 	/// Меняет статус задания
 	/// - Parameters:
 	///   - section: индекс секции
@@ -71,12 +71,12 @@ final class TodoListScreenObject: BaseScreenObject {
 	func changeTaskStatusIn(section: Int, row: Int) -> Self {
 		let header = table.otherElements.element(boundBy: section)
 		let cell = app.cells[AccessibilityIdentifier.TodoList.cell(section: section, index: row).description]
-		
+
 		assert(header, [.exists])
 		assert(cell, [.exists])
-		
+
 		cell.tap()
-		
+
 		return self
 	}
 }

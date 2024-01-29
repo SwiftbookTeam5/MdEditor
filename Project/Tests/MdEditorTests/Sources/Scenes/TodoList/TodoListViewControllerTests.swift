@@ -14,12 +14,14 @@ final class TodoListViewControllerTests: XCTestCase {
 
 	// MARK: - Properties
 
+	// swiftlint:disable implicitly_unwrapped_optional
 	private var interactor: TodoListInteractorSpy!
 	private var window: UIWindow!
 	private var sut: TodoListViewController!
+	// swiftlint:enable implicitly_unwrapped_optional
 
 	// MARK: - Lifecyce
-	
+
 	override func setUp() {
 		super.setUp()
 
@@ -30,7 +32,7 @@ final class TodoListViewControllerTests: XCTestCase {
 		window.addSubview(sut.view)
 		RunLoop.current.run(until: Date())
 	}
-	
+
 	override func tearDown() {
 		sut = nil
 		window = nil
@@ -38,7 +40,7 @@ final class TodoListViewControllerTests: XCTestCase {
 
 		super.tearDown()
 	}
-	
+
 	// MARK: - Methods
 
 	func test_viewsIsReady_shouldBeSuccess() {

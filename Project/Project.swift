@@ -84,6 +84,7 @@ let targetUITest = Target(
 	deploymentTarget: .iOS(targetVersion: ProjectSettings.targetVersion, devices: .iphone),
 	infoPlist: .none,
 	sources: ["Tests/MdEditorUITests/Sources**", "Shared**"],
+	resources: ["Resources/**"],
 	dependencies: [
 		.target(name: ProjectSettings.projectName)
 	],

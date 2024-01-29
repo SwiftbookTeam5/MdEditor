@@ -10,25 +10,25 @@ import Foundation
 enum Predicate {
 	case contains(String)
 	case doesNotContain(String)
-	
+
 	case exists
 	case doesNotExist
-	
+
 	case `is`(String) // swiftlint:disable:this identifier_name
 	case isNot(String)
-	
+
 	case isLike(String)
 	case isNotLike(String)
-	
+
 	case isHittable
 	case isNotHittable
-	
+
 	case isEnabled
 	case isNotEnabled
-	
+
 	case isSelected
 	case isNotSelected
-	
+
 	var format: String {
 		switch self {
 		case .contains(let value):
