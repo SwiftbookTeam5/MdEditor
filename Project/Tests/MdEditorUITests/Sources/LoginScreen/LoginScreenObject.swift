@@ -19,10 +19,12 @@ final class LoginScreenObject: BaseScreenObject {
 
 	// MARK: - ScreenObject Methods
 
+	/// Проверяет является ли текущий экран авторизацией
+	/// - Returns: сам объект self
 	@discardableResult
 	func isLoginScreen() -> Self {
 		let navigationBarTitle = navigationBar.staticTexts[L10n.Auth.title]
-		
+
 		assert(navigationBarTitle, [.exists])
 		assert(textFieldPass, [.exists])
 		assert(textFieldLogin, [.exists])
@@ -57,15 +59,18 @@ final class LoginScreenObject: BaseScreenObject {
 	@discardableResult
 	func closeAlert() -> Self {
 		let okAction = alert.buttons[L10n.AlertAuth.okActionTitle]
-		
+
 		assert(alert, [.exists])
 		assert(okAction, [.exists])
-		
+
 		okAction.tap()
 
 		return self
 	}
 
+	/// Устанавливает пароль
+	/// - Parameter password: пароль
+	/// - Returns: сам объект self
 	@discardableResult
 	func set(password: String) -> Self {
 		assert(textFieldPass, [.exists])
@@ -75,6 +80,9 @@ final class LoginScreenObject: BaseScreenObject {
 		return self
 	}
 
+	/// Устанавливает логин
+	/// - Parameter login: логин
+	/// - Returns: сам объект self
 	@discardableResult
 	func set(login: String) -> Self {
 		assert(textFieldLogin, [.exists])
@@ -84,6 +92,8 @@ final class LoginScreenObject: BaseScreenObject {
 		return self
 	}
 
+	/// Выполняет авторизацию
+	/// - Returns: сам объект self
 	@discardableResult
 	func login() -> Self {
 		assert(loginButton, [.exists])
@@ -92,4 +102,3 @@ final class LoginScreenObject: BaseScreenObject {
 		return self
 	}
 }
-

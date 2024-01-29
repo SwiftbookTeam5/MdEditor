@@ -6,10 +6,11 @@
 //  Copyright © 2024 SwiftbookTeam5. All rights reserved.
 //
 
-
 import XCTest
 
 final class LoginSceneUITest: XCTestCase {
+
+	// MARK: - Private properties
 
 	// swiftlint:disable implicitly_unwrapped_optional
 	private var app: XCUIApplication!
@@ -22,6 +23,14 @@ final class LoginSceneUITest: XCTestCase {
 		app = XCUIApplication()
 		loginScreenObject = LoginScreenObject(app: app)
 		super.setUp()
+	}
+
+	override func tearDown() {
+		let screenshot = XCUIScreen.main.screenshot()
+		let fullScreenshotAttachment = XCTAttachment(screenshot: screenshot)
+		fullScreenshotAttachment.name = "Fail LoginSceneUITest"
+		fullScreenshotAttachment.lifetime = .deleteOnSuccess
+		add(fullScreenshotAttachment)
 	}
 
 	// MARK: - Public Methods
