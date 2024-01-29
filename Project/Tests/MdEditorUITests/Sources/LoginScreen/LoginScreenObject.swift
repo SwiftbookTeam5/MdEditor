@@ -14,14 +14,16 @@ final class LoginScreenObject: BaseScreenObject {
 	private lazy var textFieldLogin = app.textFields[AccessibilityIdentifier.Login.textFieldLogin.description]
 	private lazy var textFieldPass = app.secureTextFields[AccessibilityIdentifier.Login.textFieldPass.description]
 	private lazy var loginButton = app.buttons[AccessibilityIdentifier.Login.buttonLogin.description]
-	private lazy var table = app.tables[AccessibilityIdentifier.TodoList.tableView.description]
-	private lazy var alert = app.alerts[AccessibilityIdentifier.Alert.alert.description]
-	private lazy var closeButton = app.buttons[AccessibilityIdentifier.Alert.buttonCloseAlert.description]
+	private lazy var navigationBar = app.navigationBars.firstMatch
+	private lazy var alert = app.alerts[L10n.AlertAuth.title]
 
 	// MARK: - ScreenObject Methods
 
 	@discardableResult
 	func isLoginScreen() -> Self {
+		let navigationBarTitle = navigationBar.staticTexts[L10n.Auth.title]
+		
+		assert(navigationBarTitle, [.exists])
 		assert(textFieldPass, [.exists])
 		assert(textFieldLogin, [.exists])
 		assert(loginButton, [.exists])
@@ -35,9 +37,8 @@ final class LoginScreenObject: BaseScreenObject {
 	/// - Returns: сам объект self
 	@discardableResult
 	func isTodoListScreen() -> Self {
-		assert(loginButton, [.exists])
-		loginButton.tap()
-		assert(table, [.exists])
+		let navigationBarTitle = navigationBar.staticTexts[L10n.TodoList.title]
+		assert(navigationBarTitle, [.exists])
 
 		return self
 	}
@@ -46,8 +47,6 @@ final class LoginScreenObject: BaseScreenObject {
 	/// - Returns: сам объект self
 	@discardableResult
 	func isAlert() -> Self {
-		assert(loginButton, [.exists])
-		loginButton.tap()
 		assert(alert, [.exists])
 
 		return self
@@ -57,10 +56,12 @@ final class LoginScreenObject: BaseScreenObject {
 	/// - Returns: сам объект self
 	@discardableResult
 	func closeAlert() -> Self {
-		assert(loginButton, [.exists])
-		loginButton.tap()
+		let okAction = alert.buttons[L10n.AlertAuth.okActionTitle]
+		
 		assert(alert, [.exists])
-		assert(closeButton, [.exists])
+		assert(okAction, [.exists])
+		
+		okAction.tap()
 
 		return self
 	}
