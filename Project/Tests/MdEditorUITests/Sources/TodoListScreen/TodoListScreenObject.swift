@@ -12,6 +12,7 @@ final class TodoListScreenObject: BaseScreenObject {
 
 	// MARK: - Private properties
 
+	private lazy var loginButton = app.buttons[AccessibilityIdentifier.Login.buttonLogin.description]
 	private lazy var table = app.tables[AccessibilityIdentifier.TodoList.tableView.description]
 
 	// MARK: - ScreenObject methods
@@ -20,6 +21,8 @@ final class TodoListScreenObject: BaseScreenObject {
 	/// - Returns: сам объект self
 	@discardableResult
 	func isTodoList() -> Self {
+		assert(loginButton, [.exists])
+		loginButton.tap()
 		assert(table, [.exists])
 
 		return self
@@ -39,11 +42,23 @@ final class TodoListScreenObject: BaseScreenObject {
 	/// - Parameter section: идекс секции
 	/// - Returns: название секции
 	@discardableResult
-	func getTitleForHeaderIn(section: Int) -> String {
-		let header = table.otherElements.element(boundBy: section)
-		assert(header, [.exists])
+	func getTitleForHeaderIn(section: Int) -> Self{
 
-		return header.staticTexts.firstMatch.label
+		switch section {
+		case 0:
+			let header = table.otherElements.element(boundBy: 0)
+			assert(header, [.exists])
+			assert(header.staticTexts.firstMatch, [.contains("Uncompleted")])
+		case 1:
+			let header = table.otherElements.element(boundBy: 1)
+			assert(header, [.exists])
+			assert(header.staticTexts.firstMatch, [.contains("Completed")])
+		default:
+			let header = table.otherElements.element(boundBy: 3)
+			assert(header, [.exists])
+		}
+
+		return self
 	}
 
 	/// Возвращает название  задания
