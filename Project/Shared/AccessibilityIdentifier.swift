@@ -40,4 +40,18 @@ enum AccessibilityIdentifier {
 			}
 		}
 	}
+
+	enum Alert {
+		case alert
+		case buttonCloseAlert
+
+		var description: String {
+			switch self {
+			case .alert:
+				return "alert"
+			case .buttonCloseAlert:
+				return "buttonCloseAlert"
+			}
+		}
+	}
 }

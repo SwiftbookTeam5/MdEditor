@@ -35,11 +35,7 @@ final class LoginSceneUITest: XCTestCase {
 			.set(login: "Admin")
 			.set(password: "pa$$32!")
 			.login()
-
-		XCTAssertFalse(
-			app.tables[AccessibilityIdentifier.TodoList.tableView.description].exists,
-			"Ошибка, после ввода корректного логина и пароля не произошел переход на следующий экран"
-		)
+			.isTodoListScreen()
 	}
 
 	func test_login_withInvalidCredentials_mustBeFailure() {
@@ -49,13 +45,10 @@ final class LoginSceneUITest: XCTestCase {
 		loginScreenObject
 			.isLoginScreen()
 			.set(login: "dmin")
-			.set(password: "pass")
+			.set(password: "a$$")
 			.login()
+			.isAlert()
+			.closeAlert()
 			.isLoginScreen()
-
-		XCTAssertFalse(
-			app.tables[AccessibilityIdentifier.TodoList.tableView.description].exists,
-			"Ошибка, после ввода некорректного логина и пароля произошел переход на другой экран"
-		)
 	}
 }
