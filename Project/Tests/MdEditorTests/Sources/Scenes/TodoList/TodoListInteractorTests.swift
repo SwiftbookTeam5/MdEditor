@@ -26,14 +26,6 @@ final class TodoListInteractorTests: XCTestCase {
 
 		XCTAssertTrue(presenter.isCalledPresent, "Не вызван presenter.present(:)")
 	}
-
-	func test_createTask_shouldBeSuccess() {
-		let sut = makeSut()
-
-		sut.createTask()
-
-		XCTAssertTrue(presenter.isCalledCreateTask, "Не вызван presenter.createTask()")
-	}
 }
 
 // MARK: - Private methods

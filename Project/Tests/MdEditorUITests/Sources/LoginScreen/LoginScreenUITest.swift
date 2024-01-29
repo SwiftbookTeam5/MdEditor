@@ -33,7 +33,7 @@ final class LoginSceneUITest: XCTestCase {
 		add(fullScreenshotAttachment)
 	}
 
-	// MARK: - Public Methods
+	// MARK: - Internal methods
 
 	func test_login_withValidCredentials_mustBeSuccess() {
 

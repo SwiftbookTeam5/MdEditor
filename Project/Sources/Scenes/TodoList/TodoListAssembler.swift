@@ -25,12 +25,11 @@ final class TodoListAssembler {
 	// MARK: - Public methods
 
 	/// Сборка модуля списка заданий.
-	/// - Parameter createTaskClosure: замыкание оповещающие о инициации создания заданий.
 	/// - Returns: TodoListViewController с проставленными зависимостями VIP цикла.
-	func assembly(createTaskClosure: EmptyClosure?) -> TodoListViewController {
+	func assembly() -> TodoListViewController {
 		let viewController = TodoListViewController()
 		let sectionForTaskManagerAdapter = SectionForTaskManagerAdapter(taskManager: taskManager)
-		let presenter = TodoListPresenter(viewController: viewController, createTaskClosure: createTaskClosure)
+		let presenter = TodoListPresenter(viewController: viewController)
 		let interactor = TodoListInteractor(presenter: presenter, sectionManager: sectionForTaskManagerAdapter)
 		viewController.interactor = interactor
 
