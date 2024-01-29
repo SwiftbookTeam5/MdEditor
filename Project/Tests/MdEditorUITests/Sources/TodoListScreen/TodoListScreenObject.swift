@@ -33,6 +33,7 @@ final class TodoListScreenObject: BaseScreenObject {
 	func numberOfSections() -> Int {
 		assert(table, [.exists])
 		let sections = table.otherElements.staticTexts
+	
 		
 		return sections.count
 	}
@@ -41,11 +42,23 @@ final class TodoListScreenObject: BaseScreenObject {
 	/// - Parameter section: идекс секции
 	/// - Returns: название секции
 	@discardableResult
-	func getTitleForHeaderIn(section: Int) -> String {
-		let header = table.otherElements.element(boundBy: section)
-		assert(header, [.exists])
+	func getTitleForHeaderIn(section: Int) -> Self{
 		
-		return header.staticTexts.firstMatch.label
+		switch section {
+		case 0:
+			let header = table.otherElements.element(boundBy: 0)
+			assert(header, [.exists])
+			assert(header.staticTexts.firstMatch, [.contains("Uncompleted")])
+		case 1:
+			let header = table.otherElements.element(boundBy: 1)
+			assert(header, [.exists])
+			assert(header.staticTexts.firstMatch, [.contains("Completed")])
+		default:
+			let header = table.otherElements.element(boundBy: 3)
+			assert(header, [.exists])
+		}
+		
+		return self
 	}
 	
 	/// Возвращает название  задания

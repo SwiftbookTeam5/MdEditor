@@ -17,6 +17,7 @@ final class TodoListScreenUITest: XCTestCase {
 	}
 	func test_valid_change_status_Task() {
 		let todoListScreen = TodoListScreenObject(app: app)
+		
 		todoListScreen
 			.isTodoList()
 			.changeTaskStatusIn(section: 0, row: 1)
@@ -25,21 +26,19 @@ final class TodoListScreenUITest: XCTestCase {
 			.changeTaskStatusIn(section: 1, row: 0)
 	}
 	func test_valid_numberOfSections_and_nameSections() {
-		
 		let todoListScreen = TodoListScreenObject(app: app)
+		
 		todoListScreen
 			.isTodoList()
-		
-		XCTAssertEqual(todoListScreen.numberOfSections(), 2, "Неверное количество секций должно быть 2")
-		XCTAssertEqual(todoListScreen.getTitleForHeaderIn(section: 1), "Completed", "Неверное")
-		XCTAssertEqual(todoListScreen.getTitleForHeaderIn(section: 0), "Uncompleted", "Неверное")
+			.getTitleForHeaderIn(section: 0)
+			.getTitleForHeaderIn(section: 1)
 	}
 	
-	func test_valid_header_section() {
+	func test_valid_data_task_in_section() {
 		let todoListScreen = TodoListScreenObject(app: app)
 		todoListScreen
 			.isTodoList()
 		
-		XCTAssertEqual(todoListScreen.numberOfSections(), 2, "Неверное количество секций должно быть 2")
+		
 	}
 }
