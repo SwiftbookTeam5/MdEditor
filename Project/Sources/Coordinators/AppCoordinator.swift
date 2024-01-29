@@ -49,7 +49,5 @@ final class AppCoordinator: BaseCoordinator {
 		let coordinator = TodoListCoordinator(navigationController: navigationController, taskManager: taskManager)
 		addDependency(coordinator)
 		coordinator.start()
-
-		navigationController.isNavigationBarHidden = true
 	}
 }
