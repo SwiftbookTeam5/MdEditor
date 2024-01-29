@@ -23,8 +23,23 @@ final class TodoListScreenUITest: XCTestCase {
 			.changeTaskStatusIn(section: 0, row: 1)
 			.changeTaskStatusIn(section: 0, row: 1)
 			.changeTaskStatusIn(section: 1, row: 0)
-			.getTitleForHeaderIn(section: 0)
-		
 	}
-
+	func test_valid_numberOfSections_and_nameSections() {
+		
+		let todoListScreen = TodoListScreenObject(app: app)
+		todoListScreen
+			.isTodoList()
+		
+		XCTAssertEqual(todoListScreen.numberOfSections(), 2, "Неверное количество секций должно быть 2")
+		XCTAssertEqual(todoListScreen.getTitleForHeaderIn(section: 1), "Completed", "Неверное")
+		XCTAssertEqual(todoListScreen.getTitleForHeaderIn(section: 0), "Uncompleted", "Неверное")
+	}
+	
+	func test_valid_header_section() {
+		let todoListScreen = TodoListScreenObject(app: app)
+		todoListScreen
+			.isTodoList()
+		
+		XCTAssertEqual(todoListScreen.numberOfSections(), 2, "Неверное количество секций должно быть 2")
+	}
 }
