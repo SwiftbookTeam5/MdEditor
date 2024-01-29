@@ -6,6 +6,8 @@
   Copyright © 2024 SwiftbookTeam5. All rights reserved.
 */
 
+// MARK: - Auth
+
 "Auth.title" = "Authorization";
 "Auth.authorization" = "Login";
 "Auth.password" = "Password";
@@ -14,8 +16,20 @@
 "AlertAuth.title" = "Error";
 "AlertAuth.okActionTitle" = "Ok";
 
+// MARK: - TodoList screen
+
 "TodoList.title" = "TodoList";
 "TodoList.deadline" = "Deadline";
+
+// MARK: - Task
+
+"Task.completed" = "Completed";
+"Task.uncompleted" = "Uncompleted";
+"Task.all" = "All";
+"Task.important" = "Important";
+"Task.regular" = "Regular";
+
+// MARK: - Error
 
 "Error.wrongPassword" = "Wrong password";
 "Error.wrongLogin" = "Wrong login";

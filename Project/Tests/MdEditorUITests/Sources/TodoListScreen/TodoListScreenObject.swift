@@ -12,8 +12,8 @@ final class TodoListScreenObject: BaseScreenObject {
 
 	// MARK: - Private properties
 
-	private lazy var table = app.tables[AccessibilityIdentifier.TodoList.tableView.description]
 	private lazy var navigationBar = app.navigationBars.firstMatch
+	private lazy var table = app.tables[AccessibilityIdentifier.TodoList.tableView.description]
 	private lazy var alert = app.alerts[L10n.AlertAuth.title]
 
 	// MARK: - ScreenObject methods
@@ -42,17 +42,17 @@ final class TodoListScreenObject: BaseScreenObject {
 	/// - Parameter section: идекс секции
 	/// - Returns: название секции
 	@discardableResult
-	func getTitleForHeaderIn(section: Int) -> Self{
+	func getTitleForHeaderIn(section: Int) -> Self {
 
 		switch section {
 		case 0:
 			let header = table.otherElements.element(boundBy: 0)
 			assert(header, [.exists])
-			assert(header.staticTexts.firstMatch, [.contains("Uncompleted")])
+			assert(header.staticTexts.firstMatch, [.contains(L10n.Task.uncompleted)])
 		case 1:
 			let header = table.otherElements.element(boundBy: 1)
 			assert(header, [.exists])
-			assert(header.staticTexts.firstMatch, [.contains("Completed")])
+			assert(header.staticTexts.firstMatch, [.contains(L10n.Task.completed)])
 		default:
 			let header = table.otherElements.element(boundBy: 3)
 			assert(header, [.exists])

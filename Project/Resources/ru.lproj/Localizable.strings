@@ -6,6 +6,8 @@
   Copyright © 2024 SwiftbookTeam5. All rights reserved.
 */
 
+// MARK: - Auth
+
 "Auth.title" = "Авторизация";
 "Auth.authorization" = "Войти";
 "Auth.password" = "Пароль";
@@ -14,8 +16,20 @@
 "AlertAuth.title" = "Ошибка";
 "AlertAuth.okActionTitle" = "Ок";
 
+// MARK: - TodoList screen
+
 "TodoList.title" = "TodoList";
 "TodoList.deadline" = "Срок";
+
+// MARK: - Task
+
+"Task.completed" = "Completed";
+"Task.uncompleted" = "Uncompleted";
+"Task.all" = "All";
+"Task.important" = "Important";
+"Task.regular" = "Regular";
+
+// MARK: - Error
 
 "Error.wrongPassword" = "Неверный пароль.";
 "Error.wrongLogin" = "Неверный логин.";

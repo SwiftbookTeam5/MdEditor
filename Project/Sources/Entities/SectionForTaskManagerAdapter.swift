@@ -37,20 +37,21 @@ enum Section {
 	var title: String {
 		switch self {
 		case .completed:
-			return "Completed"
+			return L10n.Task.completed
 		case .uncompleted:
-			return "Uncompleted"
+			return L10n.Task.uncompleted
 		case .allTasks:
-			return "All"
+			return L10n.Task.all
 		case .important:
-			return "Important"
+			return L10n.Task.important
 		case .regular:
-			return "Regular"
+			return L10n.Task.regular
 		}
 	}
 }
 
 final class SectionForTaskManagerAdapter: ISectionForTaskManagerAdapter {
+
 	// MARK: - Dependencies
 
 	private let taskManager: ITaskManager
