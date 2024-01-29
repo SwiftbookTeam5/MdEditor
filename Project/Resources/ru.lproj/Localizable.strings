@@ -11,6 +11,9 @@
 "Auth.password" = "Пароль";
 "Auth.login" = "Логин";
 
+"AlertAuth.title" = "Ошибка";
+"AlertAuth.okActionTitle" = "Ок";
+
 "TodoList.title" = "TodoList";
 "TodoList.deadline" = "Срок";
 
