@@ -2,7 +2,7 @@
 //  TodoListCoordinator.swift
 //  MdEditor
 //
-//  Created by Татьяна Аникина on 12.01.2024.
+//  Created by Татьяна Исаева on 12.01.2024.
 //  Copyright © 2024 SwiftbookTeam5. All rights reserved.
 //
 
@@ -14,13 +14,15 @@ final class TodoListCoordinator: ICoordinator {
 	// MARK: - Dependencies
 
 	private let navigationController: UINavigationController
-	private let taskManager: TaskManager
+	private let taskManager: ITaskManager
+	private let repository: ITaskRepository
 
 	// MARK: - Initialization
 
-	init(navigationController: UINavigationController, taskManager: TaskManager) {
+	init(navigationController: UINavigationController, taskManager: ITaskManager, repository: ITaskRepository) {
 		self.navigationController = navigationController
 		self.taskManager = taskManager
+		self.repository = repository
 	}
 
 	// MARK: - Internal methods
@@ -30,16 +32,12 @@ final class TodoListCoordinator: ICoordinator {
 	}
 
 	private func showTodoListScene() {
-		let repository = TaskRepositoryStub()
 		let orderedTaskManager = OrderedTaskManager(taskManager: taskManager)
 		orderedTaskManager.addTasks(tasks: repository.getTasks())
 
 		let assembler = TodoListAssembler(taskManager: orderedTaskManager)
-		let viewController = assembler.assembly {
-			self.showCreateTaskScene()
-		}
+		let viewController = assembler.assembly()
+
 		navigationController.pushViewController(viewController, animated: true)
 	}
-
-	private func showCreateTaskScene() {}
 }

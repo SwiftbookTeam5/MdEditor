@@ -2,7 +2,7 @@
 //  SectionForTaskManagerAdapter.swift
 //  MdEditor
 //
-//  Created by Татьяна Аникина on 12.01.2024.
+//  Created by Татьяна Исаева on 12.01.2024.
 //  Copyright © 2024 SwiftbookTeam5. All rights reserved.
 //
 
@@ -37,20 +37,21 @@ enum Section {
 	var title: String {
 		switch self {
 		case .completed:
-			return "Completed"
+			return L10n.Task.completed
 		case .uncompleted:
-			return "Uncompleted"
+			return L10n.Task.uncompleted
 		case .allTasks:
-			return "All"
+			return L10n.Task.all
 		case .important:
-			return "Important"
+			return L10n.Task.important
 		case .regular:
-			return "Regular"
+			return L10n.Task.regular
 		}
 	}
 }
 
 final class SectionForTaskManagerAdapter: ISectionForTaskManagerAdapter {
+
 	// MARK: - Dependencies
 
 	private let taskManager: ITaskManager

@@ -16,23 +16,15 @@ final class TodoListInteractorTests: XCTestCase {
 
 	private let presenter = TodoListPresenterSpy()
 	private let sectionManager = SectionForTaskManagerAdapterMock()
-	
+
 	// MARK: - Methods
 
 	func test_fetchData_shouldBeSuccess() {
 		let sut = makeSut()
-		
+
 		sut.fetchData()
-		
+
 		XCTAssertTrue(presenter.isCalledPresent, "Не вызван presenter.present(:)")
-	}
-	
-	func test_createTask_shouldBeSuccess() {
-		let sut = makeSut()
-		
-		sut.createTask()
-		
-		XCTAssertTrue(presenter.isCalledCreateTask, "Не вызван presenter.createTask()")
 	}
 }
 

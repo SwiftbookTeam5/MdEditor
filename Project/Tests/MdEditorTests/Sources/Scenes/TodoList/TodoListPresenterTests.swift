@@ -21,9 +21,9 @@ final class TodoListPresenterTests: XCTestCase {
 	func test_present_withValidRequest_shouldBeSuccess() {
 		let sut = makeSut()
 		let response = TodoListModel.Response(data: [])
-		
+
 		sut.present(response: response)
-		
+
 		XCTAssertTrue(viewController.isCalledRender, "Не вызван viewController.render(:)")
 	}
 }
@@ -33,7 +33,7 @@ final class TodoListPresenterTests: XCTestCase {
 private extension TodoListPresenterTests {
 
 	func makeSut() -> TodoListPresenter {
-		TodoListPresenter(viewController: viewController, createTaskClosure: nil)
+		TodoListPresenter(viewController: viewController)
 	}
 }
 

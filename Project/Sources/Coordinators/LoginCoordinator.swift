@@ -2,7 +2,7 @@
 //  LoginCoordinator.swift
 //  MdEditor
 //
-//  Created by Татьяна Аникина on 12.01.2024.
+//  Created by Татьяна Исаева on 12.01.2024.
 //  Copyright © 2024 SwiftbookTeam5. All rights reserved.
 //
 
@@ -49,8 +49,8 @@ final class LoginCoordinator: ILoginCoordinator {
 	}
 
 	func showError(message: String) {
-		let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-		let action = UIAlertAction(title: "Ок", style: .default)
+		let alert = UIAlertController(title: L10n.AlertAuth.title, message: message, preferredStyle: .alert)
+		let action = UIAlertAction(title: L10n.AlertAuth.okActionTitle, style: .default)
 		alert.addAction(action)
 		navigationController.present(alert, animated: true, completion: nil)
 	}

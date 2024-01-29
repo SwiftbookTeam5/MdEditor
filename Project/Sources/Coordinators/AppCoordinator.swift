@@ -2,7 +2,7 @@
 //  AppCoordinator.swift
 //  MdEditor
 //
-//  Created by Татьяна Аникина on 11.01.2024.
+//  Created by Татьяна Исаева on 11.01.2024.
 //  Copyright © 2024 SwiftbookTeam5. All rights reserved.
 //
 
@@ -15,12 +15,15 @@ final class AppCoordinator: BaseCoordinator {
 
 	private let navigationController: UINavigationController
 	private var window: UIWindow?
-	private let taskManager = TaskManager()
+	private let taskManager: ITaskManager
+	private let repository: ITaskRepository
 
 	// MARK: - Initialization
 
-	init(window: UIWindow?) {
+	init(window: UIWindow?, taskManager: ITaskManager, repository: ITaskRepository) {
 		self.window = window
+		self.taskManager = taskManager
+		self.repository = repository
 		self.navigationController = UINavigationController()
 	}
 
@@ -46,10 +49,13 @@ final class AppCoordinator: BaseCoordinator {
 	}
 
 	func runMainFlow() {
-		let coordinator = TodoListCoordinator(navigationController: navigationController, taskManager: taskManager)
+		let coordinator = TodoListCoordinator(
+			navigationController: navigationController,
+			taskManager: taskManager,
+			repository: repository
+		)
+
 		addDependency(coordinator)
 		coordinator.start()
-
-		navigationController.isNavigationBarHidden = true
 	}
 }
