@@ -11,11 +11,12 @@ import XCTest
 final class TodoListScreenObject: BaseScreenObject {
 	
 	// MARK: - Private properties
+
 	private lazy var loginButton = app.buttons[AccessibilityIdentifier.Login.buttonLogin.description]
 	private lazy var table = app.tables[AccessibilityIdentifier.TodoList.tableView.description]
-	
+
 	// MARK: - ScreenObject methods
-	
+
 	/// Проверяет является ли текущий экран TodoList
 	/// - Returns: сам объект self
 	@discardableResult
@@ -26,24 +27,23 @@ final class TodoListScreenObject: BaseScreenObject {
 		
 		return self
 	}
-	
+
 	/// Возвращает количество секций в таблице
 	/// - Returns: количество секций
 	@discardableResult
 	func numberOfSections() -> Int {
 		assert(table, [.exists])
 		let sections = table.otherElements.staticTexts
-	
-		
+
 		return sections.count
 	}
-	
+
 	/// Возвращает название секции
 	/// - Parameter section: идекс секции
 	/// - Returns: название секции
 	@discardableResult
 	func getTitleForHeaderIn(section: Int) -> Self{
-		
+
 		switch section {
 		case 0:
 			let header = table.otherElements.element(boundBy: 0)
@@ -57,10 +57,10 @@ final class TodoListScreenObject: BaseScreenObject {
 			let header = table.otherElements.element(boundBy: 3)
 			assert(header, [.exists])
 		}
-		
+
 		return self
 	}
-	
+
 	/// Возвращает название  задания
 	/// - Parameters:
 	///   - section: индекс секции
@@ -70,13 +70,13 @@ final class TodoListScreenObject: BaseScreenObject {
 	func getTitleForTaskIn(section: Int, row: Int) -> String {
 		let header = table.otherElements.element(boundBy: section)
 		let cell = app.cells[AccessibilityIdentifier.TodoList.cell(section: section, index: row).description]
-		
+
 		assert(header, [.exists])
 		assert(cell, [.exists])
-		
+
 		return cell.staticTexts.firstMatch.label
 	}
-	
+
 	/// Меняет статус задания
 	/// - Parameters:
 	///   - section: индекс секции
