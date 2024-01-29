@@ -12,16 +12,35 @@ final class TodoListScreenUITest: XCTestCase {
 
 	// MARK: - Private properties
 
-	let app = XCUIApplication()
+	private let app = XCUIApplication()
+
+	// MARK: - Lifecycle
 
 	override func setUp() {
+		let loginScreenObject = LoginScreenObject(app: app)
 		app.launch()
+
+		loginScreenObject
+			.isLoginScreen()
+			.set(login: "Admin")
+			.set(password: "pa$$32!")
+			.login()
+	}
+	
+	override func tearDown() {
+		let screenshot = XCUIScreen.main.screenshot()
+		let fullScreenshotAttachment = XCTAttachment(screenshot: screenshot)
+		fullScreenshotAttachment.name = "Fail TodoListScreenUITest"
+		fullScreenshotAttachment.lifetime = .deleteOnSuccess
+		add(fullScreenshotAttachment)
 	}
 
-	func test_valid_change_status_Task() {
-		let todoListScreen = TodoListScreenObject(app: app)
+	// MARK: - Internal methods
 
-		todoListScreen
+	func test_valid_change_status_Task_() {
+		let todoListScreenObject = TodoListScreenObject(app: app)
+
+		todoListScreenObject
 			.isTodoList()
 			.changeTaskStatusIn(section: 0, row: 1)
 			.changeTaskStatusIn(section: 0, row: 1)
@@ -30,17 +49,18 @@ final class TodoListScreenUITest: XCTestCase {
 	}
 
 	func test_valid_numberOfSections_and_nameSections() {
-		let todoListScreen = TodoListScreenObject(app: app)
+		let todoListScreenObject = TodoListScreenObject(app: app)
 
-		todoListScreen
+		todoListScreenObject
 			.isTodoList()
 			.getTitleForHeaderIn(section: 0)
 			.getTitleForHeaderIn(section: 1)
 	}
 
 	func test_valid_data_task_in_section() {
-		let todoListScreen = TodoListScreenObject(app: app)
-		todoListScreen
+		let todoListScreenObject = TodoListScreenObject(app: app)
+
+		todoListScreenObject
 			.isTodoList()
 	}
 }

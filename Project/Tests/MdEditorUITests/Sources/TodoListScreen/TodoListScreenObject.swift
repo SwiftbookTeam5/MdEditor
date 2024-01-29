@@ -12,8 +12,9 @@ final class TodoListScreenObject: BaseScreenObject {
 
 	// MARK: - Private properties
 
-	private lazy var loginButton = app.buttons[AccessibilityIdentifier.Login.buttonLogin.description]
 	private lazy var table = app.tables[AccessibilityIdentifier.TodoList.tableView.description]
+	private lazy var navigationBar = app.navigationBars.firstMatch
+	private lazy var alert = app.alerts[L10n.AlertAuth.title]
 
 	// MARK: - ScreenObject methods
 
@@ -21,9 +22,8 @@ final class TodoListScreenObject: BaseScreenObject {
 	/// - Returns: сам объект self
 	@discardableResult
 	func isTodoList() -> Self {
-		assert(loginButton, [.exists])
-		loginButton.tap()
-		assert(table, [.exists])
+		let navigationBarTitle = navigationBar.staticTexts[L10n.TodoList.title]
+		assert(navigationBarTitle, [.exists])
 
 		return self
 	}
