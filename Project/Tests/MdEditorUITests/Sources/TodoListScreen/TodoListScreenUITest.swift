@@ -10,13 +10,21 @@ import XCTest
 
 final class TodoListScreenUITest: XCTestCase {
 	
-	func test_valid_status() {
-		let app = XCUIApplication()
-		let todoListScreen = TodoListScreenObject(app: app)
+	let app = XCUIApplication()
+
+	override func setUp() {
 		app.launch()
-		
+	}
+	func test_valid_change_status_Task() {
+		let todoListScreen = TodoListScreenObject(app: app)
 		todoListScreen
 			.isTodoList()
+			.changeTaskStatusIn(section: 0, row: 1)
+			.changeTaskStatusIn(section: 0, row: 1)
+			.changeTaskStatusIn(section: 0, row: 1)
 			.changeTaskStatusIn(section: 1, row: 0)
+			.getTitleForHeaderIn(section: 0)
+		
 	}
+
 }
