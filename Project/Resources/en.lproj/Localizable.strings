@@ -28,6 +28,7 @@
 "Task.all" = "All";
 "Task.important" = "Important";
 "Task.regular" = "Regular";
+"Task.default" = "Задача";
 
 // MARK: - Error
 

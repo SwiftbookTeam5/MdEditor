@@ -18,6 +18,8 @@ final class TodoListScreenUITest: XCTestCase {
 
 	override func setUp() {
 		let loginScreenObject = LoginScreenObject(app: app)
+
+		app.launchArguments = [LaunchArguments.enableTesting.rawValue]
 		app.launch()
 
 		loginScreenObject
@@ -62,5 +64,6 @@ final class TodoListScreenUITest: XCTestCase {
 
 		todoListScreenObject
 			.isTodoList()
+			.getTitleForTaskIn(section: 0, row: 0)
 	}
 }

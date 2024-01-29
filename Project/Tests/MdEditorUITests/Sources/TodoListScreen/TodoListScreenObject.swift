@@ -23,7 +23,7 @@ final class TodoListScreenObject: BaseScreenObject {
 	@discardableResult
 	func isTodoList() -> Self {
 		let navigationBarTitle = navigationBar.staticTexts[L10n.TodoList.title]
-		assert(navigationBarTitle, [.exists])
+		assert(navigationBarTitle, [.exists], timeout: 10)
 
 		return self
 	}
@@ -73,6 +73,7 @@ final class TodoListScreenObject: BaseScreenObject {
 
 		assert(header, [.exists])
 		assert(cell, [.exists])
+		assert(cell.staticTexts.firstMatch, [.contains("!!! \(L10n.Task.default)")])
 
 		return cell.staticTexts.firstMatch.label
 	}

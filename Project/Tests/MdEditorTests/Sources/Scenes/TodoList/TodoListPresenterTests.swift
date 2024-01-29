@@ -33,7 +33,7 @@ final class TodoListPresenterTests: XCTestCase {
 private extension TodoListPresenterTests {
 
 	func makeSut() -> TodoListPresenter {
-		TodoListPresenter(viewController: viewController, createTaskClosure: nil)
+		TodoListPresenter(viewController: viewController)
 	}
 }
 
