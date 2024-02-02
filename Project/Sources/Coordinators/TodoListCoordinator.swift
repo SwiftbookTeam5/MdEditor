@@ -15,14 +15,12 @@ final class TodoListCoordinator: ICoordinator {
 
 	private let navigationController: UINavigationController
 	private let taskManager: ITaskManager
-	private let repository: ITaskRepository
 
 	// MARK: - Initialization
 
-	init(navigationController: UINavigationController, taskManager: ITaskManager, repository: ITaskRepository) {
+	init(navigationController: UINavigationController, taskManager: ITaskManager) {
 		self.navigationController = navigationController
 		self.taskManager = taskManager
-		self.repository = repository
 	}
 
 	// MARK: - Internal methods
@@ -32,10 +30,7 @@ final class TodoListCoordinator: ICoordinator {
 	}
 
 	private func showTodoListScene() {
-		let orderedTaskManager = OrderedTaskManager(taskManager: taskManager)
-		orderedTaskManager.addTasks(tasks: repository.getTasks())
-
-		let assembler = TodoListAssembler(taskManager: orderedTaskManager)
+		let assembler = TodoListAssembler(taskManager: taskManager)
 		let viewController = assembler.assembly()
 
 		navigationController.pushViewController(viewController, animated: true)
