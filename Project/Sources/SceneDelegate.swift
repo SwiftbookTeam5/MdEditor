@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import TaskManagerPackage
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -21,11 +20,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		guard let scene = (scene as? UIWindowScene) else { return }
 		let window = UIWindow(windowScene: scene)
 
-		var taskManager = buildTaskManager(repository: TaskRepositoryStub())
+		let taskBuilder = TaskManagerBuilder()
+		var taskManager = taskBuilder.build(repository: TaskRepositoryStub())
 
 #if DEBUG
 		if CommandLine.arguments.contains(LaunchArguments.enableTesting.rawValue) {
-			taskManager = buildTaskManager(repository: TaskRepositoryTestingStub())
+			taskManager = taskBuilder.build(repository: TaskRepositoryTestingStub())
 		}
 #endif
 
@@ -33,13 +33,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		appCoordinator.start()
 
 		self.window = window
-	}
-
-	func buildTaskManager(repository: ITaskRepository) -> ITaskManager {
-		let taskManager = TaskManager()
-		let orderedTaskManager = OrderedTaskManager(taskManager: taskManager)
-		orderedTaskManager.addTasks(tasks: repository.getTasks())
-
-		return orderedTaskManager
 	}
 }
