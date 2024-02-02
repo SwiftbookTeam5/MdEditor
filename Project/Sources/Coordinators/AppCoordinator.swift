@@ -16,12 +16,14 @@ final class AppCoordinator: BaseCoordinator {
 	private let navigationController: UINavigationController
 	private var window: UIWindow?
 	private let taskManager: ITaskManager
+	private let fileRepository: IFileRepository
 
 	// MARK: - Initialization
 
-	init(window: UIWindow?, taskManager: ITaskManager) {
+	init(window: UIWindow?, taskManager: ITaskManager, fileRepository: IFileRepository) {
 		self.window = window
 		self.taskManager = taskManager
+		self.fileRepository = fileRepository
 		self.navigationController = UINavigationController()
 	}
 
@@ -47,10 +49,7 @@ final class AppCoordinator: BaseCoordinator {
 	}
 
 	func runMainFlow() {
-		let coordinator = TodoListCoordinator(
-			navigationController: navigationController,
-			taskManager: taskManager
-		)
+		let coordinator = MainCoordinator(navigationController: navigationController, fileRepository: fileRepository)
 
 		addDependency(coordinator)
 		coordinator.start()

@@ -31,7 +31,7 @@ final class TodoListInteractor: ITodoListInteractor {
 		self.sectionManager = sectionManager
 	}
 
-	// MARK: - Public methods
+	// MARK: - Internal methods
 
 	/// Событие на предоставление информации для списка заданий.
 	func fetchData() {

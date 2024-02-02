@@ -22,6 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 		let taskBuilder = TaskManagerBuilder()
 		var taskManager = taskBuilder.build(repository: TaskRepositoryStub())
+		let fileRepository = FileRepositoryStub()
 
 #if DEBUG
 		if CommandLine.arguments.contains(LaunchArguments.enableTesting.rawValue) {
@@ -29,7 +30,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		}
 #endif
 
-		appCoordinator = AppCoordinator(window: window, taskManager: taskManager)
+		appCoordinator = AppCoordinator(window: window, taskManager: taskManager, fileRepository: fileRepository)
 		appCoordinator.start()
 
 		self.window = window
