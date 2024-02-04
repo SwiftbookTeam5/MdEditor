@@ -15,7 +15,7 @@ final class FileCollectionViewCell: UICollectionViewCell {
 	private lazy var statusView: UIView = {
 		let view = UIView()
 		view.translatesAutoresizingMaskIntoConstraints = false
-		view.layer.cornerRadius = 10.0
+		view.layer.cornerRadius = Sizes.Radius.medium
 		view.clipsToBounds = true
 
 		return view

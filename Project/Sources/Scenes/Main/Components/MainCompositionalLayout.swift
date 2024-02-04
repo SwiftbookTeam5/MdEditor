@@ -9,10 +9,7 @@
 import UIKit
 
 private enum Config {
-
-	enum Files {
-		static let fractionalWidth: CGFloat = 0.25
-	}
+	static let fractionalWidth: CGFloat = 0.25
 }
 
 final class MainCompositionalLayout {
@@ -56,7 +53,7 @@ final class MainCompositionalLayout {
 
 	private func createHorizontalSection() -> NSCollectionLayoutSection {
 		let layoutSize = NSCollectionLayoutSize(
-			widthDimension: .fractionalWidth(Config.Files.fractionalWidth),
+			widthDimension: .fractionalWidth(Config.fractionalWidth),
 			heightDimension: .estimated(1.0)
 		)
 

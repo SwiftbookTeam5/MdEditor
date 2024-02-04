@@ -37,7 +37,7 @@ enum MainModel {
 
 	struct ViewModel {
 
-		/// Ссписок секций для отображения
+		/// Список секций для отображения
 		let sections: [Section]
 
 		struct Section {
