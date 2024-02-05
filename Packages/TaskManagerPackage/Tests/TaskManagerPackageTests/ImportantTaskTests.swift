@@ -8,57 +8,83 @@
 import XCTest
 @testable import TaskManagerPackage
 
-final class ImportantTaskTest: XCTestCase {
+final class ImportantTaskTests: XCTestCase {
 	
 	func test_createImportantTask_dedlineShouldBeIn3Days() {
 		// arrange
-		let sut = ImportantTask(title: "TestImportantTask", taskPriority: .low)
+		let sut = ImportantTask(title: title, taskPriority: .low)
 		
 		// act
-		let dateDatedLine = Calendar.current.dateComponents([.day, .month, .year], from: sut.deadLine)
-		let testDateForTaskPriority = Calendar.current.date(byAdding: .day, value: 3, to: Date())
-		let dateDatedLineTest = Calendar.current.dateComponents([.day, .month, .year], from: testDateForTaskPriority!)
+		let dateToDeadLine = createDateTo(deadLine: sut.deadLine)
+		let testDateToDeadLine = createDateAccordingPriorityTask(priority: Priority.low.rawValue)
 		
 		// assert
 		XCTAssertEqual(sut.taskPriority.rawValue, 0, "Невероное значение параметра taskPriority, необходим Low")
-		XCTAssertEqual(dateDatedLine, dateDatedLineTest, "Невероное значение параметра deadLine")
+		XCTAssertEqual(dateToDeadLine, testDateToDeadLine, "Невероное значение параметра deadLine")
 	}
 	
 	func test_createImportantTask_dedlineShouldBeIn2Days() {
 		// arrange
-		let sut = ImportantTask(title: "TestImportantTask", taskPriority: .medium)
+		let sut = ImportantTask(title: title, taskPriority: .medium)
 		
 		// act
-		let dateDatedLine = Calendar.current.dateComponents([.day, .month, .year], from: sut.deadLine)
-		let testDateForTaskPriority = Calendar.current.date(byAdding: .day, value: 2, to: Date())
-		let dateDatedLineTest = Calendar.current.dateComponents([.day, .month, .year], from: testDateForTaskPriority!)
+		let dateToDeadLine = createDateTo(deadLine: sut.deadLine)
+		let testDateToDeadLine = createDateAccordingPriorityTask(priority: Priority.medium.rawValue)
 		
 		// assert
 		XCTAssertEqual(sut.taskPriority.rawValue, 1, "Невероное значение параметра taskPriority, необходим Medium")
-		XCTAssertEqual(dateDatedLine, dateDatedLineTest, "Невероное значение параметра deadLine")
+		XCTAssertEqual(dateToDeadLine, testDateToDeadLine, "Невероное значение параметра deadLine")
 	}
 	
 	func test_createImportantTask_dedlineShouldBeIn1Days() {
 		// arrange
-		let sut = ImportantTask(title: "TestImportantTask", taskPriority: .high)
+		let sut = ImportantTask(title: title, taskPriority: .high)
 		
 		// act
-		let dateDatedLine = Calendar.current.dateComponents([.day, .month, .year], from: sut.deadLine)
-		let testDateForTaskPriority = Calendar.current.date(byAdding: .day, value: 1, to: Date())
-		let dateDatedLineTest = Calendar.current.dateComponents([.day, .month, .year], from: testDateForTaskPriority!)
+		let dateToDeadLine = createDateTo(deadLine: sut.deadLine)
+		let testDateToDeadLine = createDateAccordingPriorityTask(priority: Priority.high.rawValue)
 		
 		// assert
 		XCTAssertEqual(sut.taskPriority.rawValue, 2, "Невероное значение параметра taskPriority, необходим High")
-		XCTAssertEqual(dateDatedLine, dateDatedLineTest, "Невероное значение параметра deadLine")
+		XCTAssertEqual(dateToDeadLine, testDateToDeadLine, "Невероное значение параметра deadLine")
 	}
-	func test_createImportantTask_initializationShouldBeValid() {
+	func test_init_withTitleAndLowPriority_taskShouldHaveCorrectTitleAndPriorityAndNotBeCompleted() {
 		// arrange
-		let sut = ImportantTask(title: "TestImportantTask", taskPriority: .low)
-		
+		let sut = ImportantTask(title: title, taskPriority: .low)
+		// act
+		let testTitle = sut.title
+		let testPriority = sut.taskPriority
+		let isCompleted = sut.completed
+
 		// assert
-		XCTAssertNotNil(sut.title, "Отсутствует Title")
-		XCTAssertNotNil(sut.completed, "Отсутствует Completed")
-		XCTAssertNotNil(sut.taskPriority, "Отсутствует taskPriority")
-		XCTAssertNotNil(sut.deadLine, "Отсутствует deadLine")
+		XCTAssertEqual(testTitle, title, "Имя новой задачи не корректно")
+		XCTAssertEqual(testPriority, .low ,"Приоритет новой задачи не корректен")
+		XCTAssertFalse(isCompleted, "Новая задача не должна быть выполненной")
 	}
+}
+
+// MARK: - TestData
+
+private extension ImportantTaskTests {
+	var title: String {
+		"TestImportantTask"
+	}
+	///Функция для создания даты, и последующего сравнения
+	func createDateTo(deadLine: Date) -> DateComponents {
+		Calendar.current.dateComponents([.day, .month, .year], from: deadLine)
+	}
+	/// Функция создания даты с учетом приритета в задании
+	func createDateAccordingPriorityTask(priority: Int) -> DateComponents {
+		let testDateForTaskPriority = Calendar.current.date(byAdding: .day, value: priority, to: Date())
+		let dateDatedLineTest = Calendar.current.dateComponents([.day, .month, .year], from: testDateForTaskPriority!)
+		
+		return dateDatedLineTest
+	}
+	
+	enum Priority: Int {
+		case low = 3
+		case medium = 2
+		case high = 1
+	}
+	
 }
