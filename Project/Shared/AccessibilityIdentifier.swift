@@ -48,7 +48,7 @@ enum AccessibilityIdentifier {
 		case collectionView
 		case cell(section: Int, index: Int)
 		case section(index: Int)
-
+		
 		var description: String {
 			switch self {
 			case .cell(let section, let index):
@@ -57,6 +57,17 @@ enum AccessibilityIdentifier {
 				return "cell.\(index)"
 			case .collectionView:
 				return "collectionView"
+			}
+		}
+	}
+
+	enum AboutApp {
+		case textFieldAboutApp
+
+		var description: String {
+			switch self {
+			case .textFieldAboutApp:
+				return "textFieldAboutApp"
 			}
 		}
 	}
