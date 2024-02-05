@@ -9,21 +9,57 @@
 import Foundation
 
 protocol IFileExplorer {
+
+	// MARK: - Properties
+
 	var files: [File] { get }
-	func scan(path: String)
+
+	// MARK: - Methods
+
+	/// Поиск файлов
+	/// - Parameter path: путь к файлам
+	func scan(path: String) throws
+
+	/// Получение файла.
+	/// - Parameters:
+	///   - name: Имя файла
+	///   - atPath: Путь до файла
+	/// - Returns: Файл.
 	func getFile(withNAme name: String, atPath: String) -> File?
-	func createFile(withName name: String) -> Bool
-	func createFolder(withName name: String)
+
+	/// Создание файла
+	/// - Parameter name: Имя файла.
+	func createFile(withName name: String) throws
+
+	/// Создание папки.
+	/// - Parameter name: Имя папки.
+	func createFolder(withName name: String) throws
 }
 
 class FileExplorer: IFileExplorer {
 
-	var files = [File]()
+	enum Error: Swift.Error {
+		case wrongWay
+		case fileGettingFailed
+	}
 
-	func scan(path: String) {
-		let fileManager = FileManager.default
-		let fullPath = Bundle.main.resourcePath! + "/\(path)"
+	// MARK: - Properties
+
+	private(set) var files = [File]()
+
+	// MARK: - Methods
+
+	/// Поиск файлов
+	/// - Parameter path: путь к файлам
+	func scan(path: String) throws {
 		files.removeAll()
+
+		guard let resourcePath = Bundle.main.resourcePath else {
+			throw Error.wrongWay
+		}
+
+		let fileManager = FileManager.default
+		let fullPath = resourcePath + "/\(path)"
 
 		var onlyFiles = [File]()
 		var onlyFolders = [File]()
@@ -40,16 +76,26 @@ class FileExplorer: IFileExplorer {
 				}
 			}
 		} catch {
-			// failed to read directory – bad permissions, perhaps?
+			throw Error.fileGettingFailed
 		}
 
 		files.append(contentsOf: onlyFolders)
 		files.append(contentsOf: onlyFiles)
 	}
 
+	/// Получение файла.
+	/// - Parameters:
+	///   - name: Имя файла
+	///   - atPath: Путь до файла
+	/// - Returns: Файл.
 	func getFile(withNAme name: String, atPath: String) -> File? {
+		guard let resourcePath = Bundle.main.resourcePath else {
+			return nil
+		}
+
 		let fileManager = FileManager.default
-		let fullPath = Bundle.main.resourcePath! + "/\(atPath)"
+		let fullPath = resourcePath + "/\(atPath)"
+
 		do {
 			let attr = try fileManager.attributesOfItem(atPath: fullPath + "/" + name)
 
@@ -61,49 +107,42 @@ class FileExplorer: IFileExplorer {
 			file.creationDate = (attr[FileAttributeKey.creationDate] as? Date) ?? Date()
 			file.modificationDate = (attr[FileAttributeKey.modificationDate] as? Date) ?? Date()
 
-			if file.isDirectory {
-				file.ext = ""
-			} else {
-				file.ext = String(describing: name.split(separator: ".").last!)
-			}
-
 			return file
 		} catch {
-			//
+			return nil
 		}
-
-		return nil
 	}
 
-	func createFile(withName name: String) -> Bool {
-		let fullName = Bundle.main.resourcePath! + "/\(name)"
+	/// Создание файла
+	/// - Parameter name: Имя файла.
+	func createFile(withName name: String) throws {
+		guard let resourcePath = Bundle.main.resourcePath else {
+			throw Error.wrongWay
+		}
+
+		let fullName = resourcePath + "/\(name)"
 		let empty = ""
 		do {
 			try empty.write(toFile: fullName, atomically: false, encoding: .utf8)
-			print("Filename created \(fullName)")
-			return true
-		} catch {
-			print("Error, can not create file \(fullName)")
-			return false
+		} catch let error as NSError {
+			throw error
 		}
-	}
-
-	static func createFile2(withName name: String) {
-		let fullPath = Bundle.main.resourcePath! + "/\(name)"
-		let data = "Created on \(Date())".data(using: String.Encoding.utf8)
-		let fileManager = FileManager.default
-		fileManager.createFile(atPath: fullPath, contents: data, attributes: [:])
 	}
 
 	/// Создание папки.
 	/// - Parameter name: Имя папки.
-	func createFolder(withName name: String) {
-		let fullPath = Bundle.main.resourcePath! + "/\(name)"
+	func createFolder(withName name: String) throws {
+		guard let resourcePath = Bundle.main.resourcePath else {
+			throw Error.wrongWay
+		}
+
+		let fullPath = resourcePath + "/\(name)"
 		let fileManager = FileManager.default
+
 		do {
 			try fileManager.createDirectory(atPath: fullPath, withIntermediateDirectories: false, attributes: nil)
 		} catch let error as NSError {
-			print(error.localizedDescription)
+			throw error
 		}
 	}
 }

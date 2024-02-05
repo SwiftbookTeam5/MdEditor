@@ -40,7 +40,7 @@ final class OpenFileInteractor: IOpenFileInteractor {
 
 	/// Событие на предоставление информации о файлах и действиях
 	func fetchData() {
-		fileExplorer.scan(path: path)
+		try? fileExplorer.scan(path: path)
 		files = mapFilesData(files: fileExplorer.files)
 
 		let responce = OpenFileModel.Response(files: files)

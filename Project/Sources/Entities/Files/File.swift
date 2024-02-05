@@ -11,15 +11,17 @@ import Foundation
 class File {
 	var name = ""
 	var path = ""
-	var ext = ""
 	var size: UInt64 = 0
 	var isDirectory = false
 	var creationDate = Date()
 	var modificationDate = Date()
+
+	var ext: String {
+		String(describing: name.split(separator: ".").last ?? "")
+	}
+
 	var fullname: String {
-		get {
-			return "\(path)/\(name)"
-		}
+		"\(path)/\(name)"
 	}
 }
 
@@ -36,20 +38,27 @@ extension File: CustomStringConvertible {
 
 extension File {
 
+	/// Получение строкового представления размера файла
+	/// - Returns: размер
 	func getFormattedSize() -> String {
 		return getFormattedSize(with: size)
 	}
 
-	func loadFileBody() -> String {
-		var text = ""
-		let fullPath = Bundle.main.resourcePath! + "/\(path)/\(name)"
-		do {
-			text = try String(contentsOfFile: fullPath, encoding: String.Encoding.utf8)
-		} catch {
-			print("Failed to read text from \(name)")
+	/// Загрузка текста файла
+	/// - Returns: текст файла
+	func loadFileBody() -> String? {
+		guard let resourcePath = Bundle.main.resourcePath else {
+			return nil
 		}
 
-		return text
+		do {
+			let fullPath = resourcePath + "/\(path)/\(name)"
+			let text = try String(contentsOfFile: fullPath, encoding: String.Encoding.utf8)
+
+			return text
+		} catch {
+			return nil
+		}
 	}
 }
 
