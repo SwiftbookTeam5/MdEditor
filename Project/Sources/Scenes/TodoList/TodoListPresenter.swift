@@ -29,8 +29,10 @@ final class TodoListPresenter: ITodoListPresenter {
 		self.viewController = viewController
 	}
 
-	// MARK: - Public methods
+	// MARK: - Internal methods
 
+	/// Отображение экрана со списком заданий.
+	/// - Parameter response: Подготовленные к отображению данные.
 	func present(response: TodoListModel.Response) {
 		var sections = [TodoListModel.ViewModel.Section]()
 		for sectionWithTask in response.data {

@@ -8,6 +8,7 @@
 import UIKit
 
 final class LoginAssembler {
+
 	/// Сборка модуля авторизации
 	/// - Parameter loginResultClosure: замыкание оповещающие о результате авторизации
 	/// - Returns: view
