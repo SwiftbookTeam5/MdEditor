@@ -36,3 +36,19 @@
 "Error.wrongLogin" = "Wrong login";
 "Error.emptyFields" = "Empty fields";
 "Error.errorAuth" = "Wrong password or wrong login";
+
+// MARK: - Main
+
+"Main.title" = "MdEditor";
+"Main.Actions.New" = "New";
+"Main.Actions.Open" = "Open";
+"Main.Actions.About" = "About";
+
+// MARK: - File
+
+"File.default" = "about.md";
+"File.title" = "Select file";
+
+// MARK: - About
+
+"About.title" = "About app";

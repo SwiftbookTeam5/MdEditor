@@ -15,6 +15,7 @@ final class TodoListAssembler {
 	private let taskManager: ITaskManager
 
 	// MARK: - Initialization
+
 	/// Инициализатор сборщика модуля списка заданий.
 	/// - Parameters:
 	///   - taskManager: Менеджер заданий.
@@ -22,7 +23,7 @@ final class TodoListAssembler {
 		self.taskManager = taskManager
 	}
 
-	// MARK: - Public methods
+	// MARK: - Internal methods
 
 	/// Сборка модуля списка заданий.
 	/// - Returns: TodoListViewController с проставленными зависимостями VIP цикла.

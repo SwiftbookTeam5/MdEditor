@@ -37,3 +37,19 @@
 "Error.wrongLogin" = "Неверный логин.";
 "Error.emptyFields" = "Пустые поля логин или пароль.";
 "Error.errorAuth" = "Неверный пароль и логин.";
+
+// MARK: - Main
+
+"Main.title" = "MdEditor";
+"Main.Actions.New" = "Новые";
+"Main.Actions.Open" = "Открыть";
+"Main.Actions.About" = "О нас";
+
+// MARK: - File
+
+"File.default" = "about.md";
+"File.title" = "Выбрать файл";
+
+// MARK: - About
+
+"About.title" = "О приложении";
