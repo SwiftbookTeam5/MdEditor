@@ -48,3 +48,4 @@
 // MARK: - File
 
 "File.default" = "about.md";
+"File.title" = "Выбрать файл";

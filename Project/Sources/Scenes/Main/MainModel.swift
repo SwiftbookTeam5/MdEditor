@@ -29,9 +29,32 @@ enum MainModel {
 			let color: UIColor
 		}
 
-		struct Action {
-			let title: String
-			let image: UIImage
+		enum Action {
+			case new
+			case open
+			case about
+
+			var title: String {
+				switch self {
+				case .new:
+					return L10n.Main.Actions.new
+				case .open:
+					return L10n.Main.Actions.open
+				case .about:
+					return L10n.Main.Actions.about
+				}
+			}
+
+			var image: UIImage {
+				switch self {
+				case .new:
+					return Asset.Icons.file.image
+				case .open:
+					return Asset.Icons.openFolder.image
+				case .about:
+					return Asset.Icons.about.image
+				}
+			}
 		}
 	}
 

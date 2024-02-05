@@ -30,7 +30,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		}
 #endif
 
-		appCoordinator = AppCoordinator(window: window, taskManager: taskManager, fileRepository: fileRepository)
+		appCoordinator = AppCoordinator(
+			window: window,
+			taskManager: taskManager,
+			fileRepository: fileRepository,
+			fileExplorer: FileExplorer()
+		)
+
 		appCoordinator.start()
 
 		self.window = window

@@ -57,7 +57,7 @@ private enum ActionStub {
 			MainModel.ViewModel.Action(title: L10n.Main.Actions.new, image: Asset.Icons.file.image)
 		),
 		MainModel.ViewModel.Item.action(
-			MainModel.ViewModel.Action(title: L10n.Main.Actions.open, image: Asset.Icons.folder.image)
+			MainModel.ViewModel.Action(title: L10n.Main.Actions.open, image: Asset.Icons.openFolder.image)
 		),
 		MainModel.ViewModel.Item.action(
 			MainModel.ViewModel.Action(title:  L10n.Main.Actions.about, image: Asset.Icons.about.image)

@@ -121,7 +121,7 @@ extension MainViewController: IMainViewController {
 
 private extension MainViewController {
 
-	private func setupUI() {
+	func setupUI() {
 		view.backgroundColor = Theme.backgroundColor
 
 		title = L10n.Main.title

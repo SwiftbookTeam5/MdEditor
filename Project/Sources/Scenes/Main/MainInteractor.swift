@@ -33,6 +33,8 @@ final class MainInteractor: IMainInteractor {
 	private var presenter: IMainPresenter
 	private let fileRepository: IFileRepository
 
+	private let actions: [MainModel.Response.Action] = [.new, .open, .about]
+
 	// MARK: - Initialization
 
 	init(presenter: IMainPresenter, fileRepository: IFileRepository) {
@@ -44,7 +46,6 @@ final class MainInteractor: IMainInteractor {
 
 	/// Событие на предоставление информации о файлах и действиях
 	func fetchData() {
-		let actions = MainModel.Response.Action.create()
 		let files = mapFilesData(files: fileRepository.getFiles())
 
 		let response = MainModel.Response(files: files, actions: actions)
@@ -54,7 +55,16 @@ final class MainInteractor: IMainInteractor {
 	/// Событие, что действие было выбрано.
 	/// - Parameter request: Запрос, содержащий информацию о выбранном действие.
 	func didActionSelected(request: MainModel.Request.ItemSelected) {
-		//
+		let action = actions[request.indexPath.row]
+
+		switch action {
+		case .new:
+			break
+		case .open:
+			presenter.presentFiles()
+		case .about:
+			break
+		}
 	}
 
 	/// Событие, что файл был выбран.
@@ -79,7 +89,7 @@ private extension MainInteractor {
 	/// - Parameter file: Файл для преобразования.
 	/// - Returns: Преобразованный результат.
 	func mapFileData(file: File) -> MainModel.Response.File {
-		let color = file.modifiationData > file.creationDate ? FlatColor.Green.Fern : FlatColor.Orange.NeonCarrot
+		let color = file.modificationDate > file.creationDate ? FlatColor.Green.Fern : FlatColor.Orange.NeonCarrot
 
 		let response = MainModel.Response.File(
 			title: file.name,
@@ -87,18 +97,5 @@ private extension MainInteractor {
 		)
 
 		return response
-	}
-}
-
-// MARK: - Action private methods
-
-fileprivate extension MainModel.Response.Action {
-
-	static func create() -> [MainModel.Response.Action] {
-		[
-			MainModel.Response.Action(title: L10n.Main.Actions.new, image: Asset.Icons.file.image),
-			MainModel.Response.Action(title: L10n.Main.Actions.open, image: Asset.Icons.folder.image),
-			MainModel.Response.Action(title: L10n.Main.Actions.about, image: Asset.Icons.about.image)
-		]
 	}
 }

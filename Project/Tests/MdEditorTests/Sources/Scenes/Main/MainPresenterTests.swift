@@ -33,6 +33,6 @@ final class MainPresenterTests: XCTestCase {
 private extension MainPresenterTests {
 
 	func makeSut() -> MainPresenter {
-		MainPresenter(viewController: viewController)
+		MainPresenter(viewController: viewController, openFileClosure: nil)
 	}
 }

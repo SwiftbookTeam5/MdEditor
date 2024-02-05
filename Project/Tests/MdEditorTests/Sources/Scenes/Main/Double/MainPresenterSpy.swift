@@ -14,6 +14,7 @@ final class MainPresenterSpy: IMainPresenter {
 	// MARK: - Private properties
 
 	private(set) var isCalledPresent = false
+	private(set) var isCalledOpen = false
 	private(set) var isResponse = false
 
 	// MARK: - Internal Methods
@@ -24,5 +25,9 @@ final class MainPresenterSpy: IMainPresenter {
 		if !response.files.isEmpty {
 			isResponse = true
 		}
+	}
+
+	func presentFiles() {
+		isCalledOpen = true
 	}
 }

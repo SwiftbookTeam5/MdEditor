@@ -22,11 +22,16 @@ final class FileRepositoryStub: IFileRepository {
 	/// Возвращает предустановленные данные для приложения.
 	/// - Returns: Массив заданий.
 	func getFiles() -> [File] {
-		[
-			File(name: L10n.File.default, creationDate: Date(), modifiationData: Date() + 1000),
-			File(name: L10n.File.default, creationDate: Date(), modifiationData: Date() + 1000),
-			File(name: L10n.File.default, creationDate: Date(), modifiationData: Date()),
-			File(name: L10n.File.default, creationDate: Date(), modifiationData: Date())
-		]
+		var files: [File] = []
+
+		(1...4).forEach { _ in
+			let file = File()
+			file.name = L10n.File.default
+			file.creationDate = Date()
+			file.modificationDate = Date() + 1000
+			files.append(file)
+		}
+
+		return files
 	}
 }
