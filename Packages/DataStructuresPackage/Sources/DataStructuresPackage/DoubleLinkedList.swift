@@ -216,3 +216,16 @@ extension DoubleLinkedList: CustomStringConvertible {
 		return values.joined(separator: " <--> ")
 	}
 }
+
+extension DoubleLinkedList {
+
+	///Значение начала списка.
+	var headValue: T? {
+		head?.value
+	}
+
+	///Значение конца списка.
+	var tailValue: T? {
+		tail?.value
+	}
+}
