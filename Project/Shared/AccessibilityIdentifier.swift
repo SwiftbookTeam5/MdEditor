@@ -40,4 +40,15 @@ enum AccessibilityIdentifier {
 			}
 		}
 	}
+
+	enum AboutApp {
+		case textFieldAboutApp
+
+		var description: String {
+			switch self {
+			case .textFieldAboutApp:
+				return "textFieldAboutApp"
+			}
+		}
+	}
 }
