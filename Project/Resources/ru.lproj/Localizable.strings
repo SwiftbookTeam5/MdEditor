@@ -49,3 +49,7 @@
 
 "File.default" = "about.md";
 "File.title" = "Выбрать файл";
+
+// MARK: - About
+
+"About.title" = "О приложении";

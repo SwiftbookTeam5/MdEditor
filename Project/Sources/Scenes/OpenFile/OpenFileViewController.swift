@@ -53,7 +53,7 @@ extension OpenFileViewController {
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 
-		cell.accessibilityIdentifier = AccessibilityIdentifier.TodoList.cell(
+		cell.accessibilityIdentifier = AccessibilityIdentifier.OpenFile.cell(
 			section: indexPath.section,
 			index: indexPath.row
 		).description

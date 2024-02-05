@@ -63,7 +63,7 @@ final class MainInteractor: IMainInteractor {
 		case .open:
 			presenter.presentFiles()
 		case .about:
-			break
+			presenter.presentAbout()
 		}
 	}
 

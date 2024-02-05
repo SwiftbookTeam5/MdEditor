@@ -15,6 +15,7 @@ final class MainPresenterSpy: IMainPresenter {
 
 	private(set) var isCalledPresent = false
 	private(set) var isCalledOpen = false
+	private(set) var isCalledAbout = false
 	private(set) var isResponse = false
 
 	// MARK: - Internal Methods
@@ -29,5 +30,9 @@ final class MainPresenterSpy: IMainPresenter {
 
 	func presentFiles() {
 		isCalledOpen = true
+	}
+
+	func presentAbout() {
+		isCalledAbout = true
 	}
 }

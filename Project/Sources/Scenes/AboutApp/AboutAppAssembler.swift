@@ -11,6 +11,8 @@ import UIKit
 final class AboutAppAssembler {
 
 	// MARK: - Public methods
+
+	/// Сборка модуля о приложении.
 	/// - Returns: view
 	func assembly() -> AboutAppViewController {
 		let viewController = AboutAppViewController()

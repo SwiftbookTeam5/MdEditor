@@ -61,9 +61,7 @@ extension MainViewController {
 		_ collectionView: UICollectionView,
 		cellForItemAt indexPath: IndexPath
 	) -> UICollectionViewCell {
-
-		let section = viewModel.sections[indexPath.section]
-		let item = section.items[indexPath.item]
+		let item = getItemForIndex(indexPath)
 
 		switch item {
 		case .file(let file):
@@ -90,8 +88,7 @@ extension MainViewController {
 	}
 
 	override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		let section = viewModel.sections[indexPath.section]
-		let item = section.items[indexPath.item]
+		let item = getItemForIndex(indexPath)
 		let request = MainModel.Request.ItemSelected(indexPath: indexPath)
 
 		switch item {
@@ -148,5 +145,12 @@ private extension MainViewController {
 		contentConfiguration.attributedText = attributedString
 
 		cell.contentConfiguration = contentConfiguration
+	}
+
+	func getItemForIndex(_ indexPath: IndexPath) -> MainModel.ViewModel.Item {
+		let section = viewModel.sections[indexPath.section]
+		let item = section.items[indexPath.item]
+
+		return item
 	}
 }

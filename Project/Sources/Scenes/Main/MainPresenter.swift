@@ -20,6 +20,9 @@ protocol IMainPresenter {
 
 	/// Отображение экрана со списком файлов директирии документов
 	func presentFiles()
+
+	/// Отображение экрана c информацией о преложении
+	func presentAbout()
 }
 
 final class MainPresenter: IMainPresenter {
@@ -28,12 +31,14 @@ final class MainPresenter: IMainPresenter {
 
 	private weak var viewController: IMainViewController! // swiftlint:disable:this implicitly_unwrapped_optional
 	private var openFileClosure: EmptyClosure?
+	private var openAboutClosure: EmptyClosure?
 
 	// MARK: - Initialization
 
-	init(viewController: IMainViewController, openFileClosure: EmptyClosure?) {
+	init(viewController: IMainViewController, openFileClosure: EmptyClosure?, openAboutClosure: EmptyClosure?) {
 		self.viewController = viewController
 		self.openFileClosure = openFileClosure
+		self.openAboutClosure = openAboutClosure
 	}
 
 	// MARK: - Internal methods
@@ -58,6 +63,11 @@ final class MainPresenter: IMainPresenter {
 	/// Открывает список файлов
 	func presentFiles() {
 		openFileClosure?()
+	}
+
+	/// Отображение экрана c информацией о преложении
+	func presentAbout() {
+		openAboutClosure?()
 	}
 }
 

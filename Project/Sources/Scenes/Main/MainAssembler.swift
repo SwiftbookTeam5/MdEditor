@@ -27,9 +27,14 @@ final class MainAssembler {
 
 	/// Сборка модуля стартового экрана.
 	/// - Returns: контроллер с проставленными зависимостями VIP цикла.
-	func assembly(openFileClosure: EmptyClosure?) -> MainViewController {
+	func assembly(openFileClosure: EmptyClosure?, openAboutClosure: EmptyClosure?) -> MainViewController {
 		let viewController = MainViewController(collectionViewLayout: UICollectionViewLayout())
-		let presenter = MainPresenter(viewController: viewController, openFileClosure: openFileClosure)
+		let presenter = MainPresenter(
+			viewController: viewController,
+			openFileClosure: openFileClosure,
+			openAboutClosure: openAboutClosure
+		)
+
 		let interactor = MainInteractor(presenter: presenter, fileRepository: fileRepository)
 		viewController.interactor = interactor
 

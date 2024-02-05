@@ -9,8 +9,9 @@
 import Foundation
 
 protocol IAboutAppInteractor {
+
 	/// Событие на предоставление информации 
-	func getAboutApp(request: AboutAppModel.Request)
+	func fetchData()
 }
 
 final class AboutAppInteractor: IAboutAppInteractor {
@@ -26,9 +27,22 @@ final class AboutAppInteractor: IAboutAppInteractor {
 	}
 
 	// MARK: - Public methods
-	func getAboutApp(request: AboutAppModel.Request) {
-	// FIXME: Как будет понимание по модели, надо скорректировать
-		let responce = AboutAppModel.Response(result: "")
+
+	func fetchData() {
+		let responce = AboutAppModel.Response(result: createAboutStub())
 		presenter?.present(responce: responce)
+	}
+}
+
+// MARK: - Private methods
+
+private extension AboutAppInteractor {
+
+	func createAboutStub() -> String {
+		"""
+		Данное приложение представляет собой функциональный Markdown
+		редактор с возможностью экспорта и сохранения данных.
+		Имеет возможность экспорта текста в форматы HTML и PDF.
+		"""
 	}
 }

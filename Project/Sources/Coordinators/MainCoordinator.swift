@@ -30,7 +30,7 @@ final class MainCoordinator: BaseCoordinator {
 		showMainScene()
 	}
 
-	func runOpenFileFlow() {
+	private func runOpenFileFlow() {
 		let coordinator = OpenFileCoordinator(
 			navigationController: navigationController,
 			fileExplorer: fileExplorer,
@@ -41,10 +41,19 @@ final class MainCoordinator: BaseCoordinator {
 		coordinator.start()
 	}
 
+	private func showAboutScene() {
+		let assembler = AboutAppAssembler()
+		let viewController = assembler.assembly()
+
+		navigationController.pushViewController(viewController, animated: true)
+	}
+
 	private func showMainScene() {
 		let assembler = MainAssembler(fileRepository: fileRepository)
 		let viewController = assembler.assembly {
 			self.runOpenFileFlow()
+		} openAboutClosure: {
+			self.showAboutScene()
 		}
 
 		navigationController.pushViewController(viewController, animated: true)

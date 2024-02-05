@@ -10,7 +10,7 @@ import Foundation
 
 protocol IAboutAppPresenter {
 
-	/// Отображение экрана со авторизации.
+	/// Отображение экрана "О Приложении".
 	/// - Parameter response: Подготовленные к отображению данные.
 	func present(responce: AboutAppModel.Response)
 }
@@ -32,11 +32,7 @@ final class AboutAppPresenter: IAboutAppPresenter {
 	/// Отображение экрана "О Приложении".
 	/// - Parameter response: Подготовленные к отображению данные.
 	func present(responce: AboutAppModel.Response) {
-		let section = AboutAppModel.ViewModel(
-	// FIXME: Заплатка т.к не известна модель данных. Поправить как будет известны данные
-			textAbout: "Team5"
-		)
-
+		let section = AboutAppModel.ViewModel(textAbout: responce.result)
 		viewController?.render(viewModel: section)
 	}
 }

@@ -22,32 +22,25 @@ final class AboutAppViewController: UIViewController {
 	var interactor: IAboutAppInteractor?
 
 	// MARK: - Private properties
-	// FIXME:  На данный момент только одно поле, т.к не понятно какие поля необходимы
+
 	private lazy var textViewAboutApp: UITextView = makeTextView(
 		accessibilityIdentifier: AccessibilityIdentifier.AboutApp.textFieldAboutApp.description
 	)
 
 	private var constraints = [NSLayoutConstraint]()
 
-	// MARK: - Initialization
-
-	init() {
-		super.init(nibName: nil, bundle: nil)
-	}
-
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
 	// MARK: - Lifecycle
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+
 		setupUI()
 	}
 
-	override func viewDidLayoutSubviews() {
-		super.viewDidLayoutSubviews()
-		layout()
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+
+		interactor?.fetchData()
 	}
 }
 
@@ -61,7 +54,7 @@ private extension AboutAppViewController {
 		textView.backgroundColor = Theme.backgroundColor
 		textView.textColor = Theme.mainColor
 		textView.layer.borderWidth = Sizes.borderWidth
-		textView.layer.cornerRadius = Sizes.cornerRadius
+		textView.layer.cornerRadius = Sizes.Radius.small
 		textView.layer.borderColor = Theme.borderPlaceholderColor.cgColor
 		textView.accessibilityIdentifier = accessibilityIdentifier
 
@@ -74,11 +67,16 @@ private extension AboutAppViewController {
 
 	func setupUI() {
 		view.backgroundColor = Theme.backgroundColor
-		title = L10n.Auth.title
+		navigationItem.largeTitleDisplayMode = .never
+
+		title = L10n.About.title
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationController?.navigationBar.titleTextAttributes = [
 			NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)
 		]
+
+		view.addSubview(textViewAboutApp)
+		layout()
 	}
 }
 
@@ -86,24 +84,28 @@ private extension AboutAppViewController {
 
 private extension AboutAppViewController {
 
-		func layout() {
-			NSLayoutConstraint.deactivate(constraints)
+	func layout() {
+		let newConstraints = [
+			textViewAboutApp.topAnchor.constraint(
+				equalTo: view.safeAreaLayoutGuide.topAnchor,
+				constant: Sizes.Padding.normal
+			),
+			textViewAboutApp.leadingAnchor.constraint(
+				equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+				constant: Sizes.Padding.normal
+			),
+			textViewAboutApp.trailingAnchor.constraint(
+				equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+				constant: -Sizes.Padding.normal
+			),
+			textViewAboutApp.bottomAnchor.constraint(
+				equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+				constant: -Sizes.Padding.normal
+			)
+		]
 
-			let newConstraints = [
-				textViewAboutApp.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-				textViewAboutApp.topAnchor.constraint(equalTo: view.topAnchor, constant: thirdOfTheScreen),
-				textViewAboutApp.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: Sizes.L.widthMultiplier),
-				textViewAboutApp.heightAnchor.constraint(equalToConstant: Sizes.L.height)
-			]
-
-			NSLayoutConstraint.activate(newConstraints)
-
-			constraints = newConstraints
-		}
-
-		var thirdOfTheScreen: Double {
-			return view.bounds.size.height / 3.0
-		}
+		NSLayoutConstraint.activate(newConstraints)
+	}
 }
 
 // MARK: - IAboutAppViewController
@@ -112,7 +114,6 @@ extension AboutAppViewController: IAboutAppViewController {
 
 	/// Метод отрисовки информации на экране.
 	/// - Parameter viewModel: данные для отрисовки на экране.
-
 	func render(viewModel: AboutAppModel.ViewModel) {
 		textViewAboutApp.text = viewModel.textAbout
 	}
