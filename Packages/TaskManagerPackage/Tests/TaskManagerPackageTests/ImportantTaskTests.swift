@@ -11,6 +11,7 @@ import XCTest
 final class ImportantTaskTests: XCTestCase {
 	
 	func test_createImportantTask_dedlineShouldBeIn3Days() {
+		
 		// arrange
 		let sut = ImportantTask(title: title, taskPriority: .low)
 		
@@ -24,6 +25,7 @@ final class ImportantTaskTests: XCTestCase {
 	}
 	
 	func test_createImportantTask_dedlineShouldBeIn2Days() {
+	
 		// arrange
 		let sut = ImportantTask(title: title, taskPriority: .medium)
 		
@@ -37,6 +39,7 @@ final class ImportantTaskTests: XCTestCase {
 	}
 	
 	func test_createImportantTask_dedlineShouldBeIn1Days() {
+		
 		// arrange
 		let sut = ImportantTask(title: title, taskPriority: .high)
 		
@@ -49,8 +52,10 @@ final class ImportantTaskTests: XCTestCase {
 		XCTAssertEqual(dateToDeadLine, testDateToDeadLine, "Невероное значение параметра deadLine")
 	}
 	func test_init_withTitleAndLowPriority_taskShouldHaveCorrectTitleAndPriorityAndNotBeCompleted() {
+		
 		// arrange
 		let sut = ImportantTask(title: title, taskPriority: .low)
+		
 		// act
 		let testTitle = sut.title
 		let testPriority = sut.taskPriority
@@ -62,7 +67,6 @@ final class ImportantTaskTests: XCTestCase {
 		XCTAssertFalse(isCompleted, "Новая задача не должна быть выполненной")
 	}
 }
-
 // MARK: - TestData
 
 private extension ImportantTaskTests {
