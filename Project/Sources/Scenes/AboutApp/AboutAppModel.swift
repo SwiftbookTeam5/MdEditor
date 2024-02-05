@@ -17,7 +17,7 @@ enum AboutAppModel {
 	struct Response {
 		let result: String
 	}
-	//TODO: Обновить модель, как будет известны данные в файле
+	// TODO: Обновить модель, как будет известны данные в файле
 	struct ViewModel {
 			let textAbout: String
 		}

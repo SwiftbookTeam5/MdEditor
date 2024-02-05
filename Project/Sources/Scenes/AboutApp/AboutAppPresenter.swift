@@ -33,7 +33,7 @@ final class AboutAppPresenter: IAboutAppPresenter {
 	/// - Parameter response: Подготовленные к отображению данные.
 	func present(responce: AboutAppModel.Response) {
 		let section = AboutAppModel.ViewModel(
-	//FIXME: Заплатка т.к не известна модель данных. Поправить как будет известны данные
+	// FIXME: Заплатка т.к не известна модель данных. Поправить как будет известны данные
 			textAbout: "Team5"
 		)
 

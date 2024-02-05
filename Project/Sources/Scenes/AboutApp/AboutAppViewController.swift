@@ -23,7 +23,7 @@ final class AboutAppViewController: UIViewController {
 
 	// MARK: - Private properties
 	// FIXME:  На данный момент только одно поле, т.к не понятно какие поля необходимы
-	private lazy var textFieldAboutApp: UITextField = makeTextField(
+	private lazy var textViewAboutApp: UITextView = makeTextView(
 		accessibilityIdentifier: AccessibilityIdentifier.AboutApp.textFieldAboutApp.description
 	)
 
@@ -38,7 +38,6 @@ final class AboutAppViewController: UIViewController {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-
 	// MARK: - Lifecycle
 
 	override func viewDidLoad() {
@@ -56,23 +55,21 @@ final class AboutAppViewController: UIViewController {
 
 private extension AboutAppViewController {
 
-	func makeTextField(accessibilityIdentifier: String) -> UITextField {
-		let textField = UITextField()
+	func makeTextView(accessibilityIdentifier: String) -> UITextView {
+		let textView = UITextView()
 
-		textField.backgroundColor = Theme.backgroundColor
-		textField.textColor = Theme.mainColor
-		textField.layer.borderWidth = Sizes.borderWidth
-		textField.layer.cornerRadius = Sizes.cornerRadius
-		textField.layer.borderColor = Theme.borderPlaceholderColor.cgColor
-		textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: Sizes.Padding.half, height: textField.frame.height))
-		textField.leftViewMode = .always
-		textField.accessibilityIdentifier = accessibilityIdentifier
+		textView.backgroundColor = Theme.backgroundColor
+		textView.textColor = Theme.mainColor
+		textView.layer.borderWidth = Sizes.borderWidth
+		textView.layer.cornerRadius = Sizes.cornerRadius
+		textView.layer.borderColor = Theme.borderPlaceholderColor.cgColor
+		textView.accessibilityIdentifier = accessibilityIdentifier
 
-		textField.translatesAutoresizingMaskIntoConstraints = false
-		textField.font = UIFont.preferredFont(forTextStyle: .body)
-		textField.adjustsFontForContentSizeCategory = true
+		textView.translatesAutoresizingMaskIntoConstraints = false
+		textView.font = UIFont.preferredFont(forTextStyle: .body)
+		textView.adjustsFontForContentSizeCategory = true
 
-		return textField
+		return textView
 	}
 
 	func setupUI() {
@@ -93,10 +90,10 @@ private extension AboutAppViewController {
 			NSLayoutConstraint.deactivate(constraints)
 
 			let newConstraints = [
-				textFieldAboutApp.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-				textFieldAboutApp.topAnchor.constraint(equalTo: view.topAnchor, constant: thirdOfTheScreen),
-				textFieldAboutApp.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: Sizes.L.widthMultiplier),
-				textFieldAboutApp.heightAnchor.constraint(equalToConstant: Sizes.L.height)
+				textViewAboutApp.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+				textViewAboutApp.topAnchor.constraint(equalTo: view.topAnchor, constant: thirdOfTheScreen),
+				textViewAboutApp.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: Sizes.L.widthMultiplier),
+				textViewAboutApp.heightAnchor.constraint(equalToConstant: Sizes.L.height)
 			]
 
 			NSLayoutConstraint.activate(newConstraints)
@@ -115,7 +112,8 @@ extension AboutAppViewController: IAboutAppViewController {
 
 	/// Метод отрисовки информации на экране.
 	/// - Parameter viewModel: данные для отрисовки на экране.
-	//FIXME: Как будет понимание по модели, необходимо реализовать функцию
+
 	func render(viewModel: AboutAppModel.ViewModel) {
+		textViewAboutApp.text = viewModel.textAbout
 	}
 }

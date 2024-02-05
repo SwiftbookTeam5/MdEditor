@@ -9,7 +9,7 @@
 import Foundation
 
 protocol IAboutAppInteractor {
-
+	/// Событие на предоставление информации 
 	func getAboutApp(request: AboutAppModel.Request)
 }
 
@@ -27,7 +27,7 @@ final class AboutAppInteractor: IAboutAppInteractor {
 
 	// MARK: - Public methods
 	func getAboutApp(request: AboutAppModel.Request) {
-	//FIXME: Как будет понимание по модели, надо скорректировать
+	// FIXME: Как будет понимание по модели, надо скорректировать
 		let responce = AboutAppModel.Response(result: "")
 		presenter?.present(responce: responce)
 	}
