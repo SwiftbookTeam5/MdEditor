@@ -17,6 +17,9 @@ protocol IMainPresenter {
 	/// Отображение экрана со списком файлов и действий.
 	/// - Parameter response: Подготовленные к отображению данные.
 	func present(response: MainModel.Response)
+
+	/// Отображение экрана со списком файлов директирии документов
+	func presentFiles()
 }
 
 final class MainPresenter: IMainPresenter {
@@ -24,11 +27,13 @@ final class MainPresenter: IMainPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: IMainViewController! // swiftlint:disable:this implicitly_unwrapped_optional
+	private var openFileClosure: EmptyClosure?
 
 	// MARK: - Initialization
 
-	init(viewController: IMainViewController) {
+	init(viewController: IMainViewController, openFileClosure: EmptyClosure?) {
 		self.viewController = viewController
+		self.openFileClosure = openFileClosure
 	}
 
 	// MARK: - Internal methods
@@ -48,6 +53,11 @@ final class MainPresenter: IMainPresenter {
 		]
 
 		viewController.render(viewModel: MainModel.ViewModel(sections: sections))
+	}
+
+	/// Открывает список файлов
+	func presentFiles() {
+		openFileClosure?()
 	}
 }
 

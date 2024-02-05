@@ -47,3 +47,4 @@
 // MARK: - File
 
 "File.default" = "about.md";
+"File.title" = "Select file";

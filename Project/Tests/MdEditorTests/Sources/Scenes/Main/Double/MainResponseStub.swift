@@ -13,7 +13,7 @@ enum MainResponseStub {
 
 	static var response = MainModel.Response(
 		files: FileStub.files,
-		actions: ActionStub.actions
+		actions: [.new, .open, .about]
 	)
 }
 
@@ -24,14 +24,5 @@ private enum FileStub {
 		MainModel.Response.File(title: L10n.File.default, color: FlatColor.Green.Fern),
 		MainModel.Response.File(title: L10n.File.default, color: FlatColor.Orange.NeonCarrot),
 		MainModel.Response.File(title: L10n.File.default, color: FlatColor.Orange.NeonCarrot)
-	]
-}
-
-private enum ActionStub {
-
-	static var actions: [MainModel.Response.Action] = [
-		MainModel.Response.Action(title: L10n.Main.Actions.new, image: Asset.Icons.file.image),
-		MainModel.Response.Action(title: L10n.Main.Actions.open, image: Asset.Icons.folder.image),
-		MainModel.Response.Action(title: L10n.Main.Actions.about, image: Asset.Icons.about.image)
 	]
 }
