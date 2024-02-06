@@ -39,27 +39,3 @@ extension Task {
 		return tasks
 	}
 }
-
-// MARK: - ImportantTaskStub
-
-extension ImportantTask {
-
-	static func getImportantTasksStub() -> [ImportantTask] {
-		let tasks = [
-			ImportantTask(
-				title: "01 Task",
-				taskPriority: .medium
-			),
-			ImportantTask(
-				title: "02 Task",
-				taskPriority: .low
-			),
-			ImportantTask(
-				title: "03 Task",
-				taskPriority: .high
-			)
-		]
-
-		return tasks
-	}
-}
