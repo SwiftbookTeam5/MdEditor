@@ -10,125 +10,106 @@ import XCTest
 
 final class TaskManagerTests: XCTestCase {
 
-	func test_initList_withTasks_shouldHaveCorrectCount() {
+	private let completedTask = Task(title: "completedTask", completed: true)
+	private let uncompletedTask = Task(title: "uncompletedTask", completed: false)
 
-		// arrange
-		let tasks = Task.getTasksStub()
-		let sut = makeSUT(taskList: tasks)
+	func test_init_withoutTasks_shouldBeZeroTask() {
+		let sut = TaskManager()
 
-		// act
-		let allTasks = sut.allTasks()
-
-		// assert
-		XCTAssertEqual(
-			allTasks.count,
-			tasks.count,
-			"Неверное количество заданий при инициализации"
-		)
+		XCTAssertEqual(sut.countTasks, 0, "Количество задач в менеджере заданий должно быть равно 0.")
 	}
 
-	func test_addTask_withTask_shouldBeSuccess() {
-
-		// arrange
-		let title = "05 Task"
-		let newTask = Task(title: title)
+	func test_allTasks_fromTaskManagerWithTwoTasks_shouldBeContainsTasksAndCorrentCount() {
 		let sut = makeSUT()
 
-		// act
-		sut.addTask(task: newTask)
 		let allTasks = sut.allTasks()
+		let isFirsTask = allTasks.contains(completedTask)
+		let isSecondTask = allTasks.contains(uncompletedTask)
+
+		XCTAssertEqual(allTasks.count, 2, "Менеджер заданий возвращает неверное количество задач.")
+		XCTAssertTrue(isFirsTask, "Менеджер заданий не вернул первую задачу.")
+		XCTAssertTrue(isSecondTask, "Менеджер заданий не вернул вторую задачу.")
+	}
+
+	func test_addTask_inEmptyTaskManager_shouldBeOneTask() {
+		let sut = TaskManager()
+
+		sut.addTask(task: completedTask)
+		let allTasks = sut.allTasks()
+		let isNewTask = allTasks.contains(completedTask)
 		
-		// assert
-		XCTAssertEqual(
-			allTasks.count,
-			1,
-			"Неверное количество заданий при добавлении задания"
-		)
-
-		XCTAssertEqual(
-			allTasks.last?.title,
-			title,
-			"Неверное название задания при добавлении одного задания"
-		)
+		XCTAssertEqual(allTasks.count, 1, "В списке всех заданий должна быть одна добавленная задача.")
+		XCTAssertTrue(isNewTask, "В списке всех заданий должна быть добавленная задача.")
 	}
 
-	func test_addTasks_withTasks_shouldHaveCorrectCount() {
+	func test_addTasks_inEmptyTaskManager_shouldBeTwoTasks() {
+		let sut = TaskManager()
 
-		// arrange
-		let tasks = Task.getTasksStub()
-		let sut = makeSUT()
-
-		// act
-		sut.addTasks(tasks: tasks)
+		sut.addTasks(tasks: [completedTask, uncompletedTask])
 		let allTasks = sut.allTasks()
+		let isCompletedTask = allTasks.contains(completedTask)
+		let isUncompletedTask = allTasks.contains(uncompletedTask)
 
-		// assert
-		XCTAssertEqual(
-			allTasks.count,
-			tasks.count,
-			"Неверное количество заданий при добавлении"
+		XCTAssertEqual(allTasks.count, 2, "В списке всех заданий должнo быть две добавленные задачи.")
+		XCTAssertTrue(
+			isCompletedTask,
+			"После добавления двух задач, в списке всех заданий должна быть завершенная задача."
+		)
+		XCTAssertTrue(
+			isUncompletedTask,
+			"После добавления двух задач, в списке всех заданий должна быть незавершенная задача."
 		)
 	}
 	
-	func test_removeTask_withOneTask_shouldHaveCorrectCount() {
-
-		// arrange
-		let newTask = Task(title: "01 Task")
+	func test_removeTask_fromTaskManagerWithTwoTask_shouldBeOneTask() {
 		let sut = makeSUT()
-		sut.addTask(task: newTask)
 
-		// act
-		sut.removeTask(task: newTask)
+		sut.removeTask(task: completedTask)
 		let allTasks = sut.allTasks()
+		let isCompletedTask = allTasks.contains(completedTask)
+		let isUncompletedTask = allTasks.contains(uncompletedTask)
 
-		// assert
-		XCTAssertEqual(
-			allTasks.count,
-			0,
-			"Неверное количество заданий при удалении "
+		XCTAssertEqual(allTasks.count, 1, "После удаления, в списке всех заданий должна остаться одна задача.")
+		XCTAssertTrue(
+			isUncompletedTask,
+			"После удаления задачи, в списке всех заданий должна остаться незавершенная задача."
+		)
+		XCTAssertFalse(
+			isCompletedTask,
+			"После удаления задачи, в списке всех заданий не должна оставаться завершенная задача."
 		)
 	}
 
-	func test_completedTasks_withTasks_shouldHaveCorrectCount() {
+	func test_completedTasks_fromTaskManagerWithOneCompletedAndOneUncompletedTasks_shouldBeOneCompletedTask() {
+		let sut = makeSUT()
 
-		// arrange
-		let tasks = Task.getTasksStub()
-		let sut = makeSUT(taskList: tasks)
-
-		// act
 		let completedTasks = sut.completedTasks()
+		let isCompletedTask = completedTasks.contains(completedTask)
+		let isUncompletedTask = completedTasks.contains(uncompletedTask)
 
-		// assert
-		XCTAssertEqual(
-			completedTasks.count,
-			tasks.filter({ $0.completed }).count,
-			"Неверное количество завершенных заданий"
-		)
+		XCTAssertEqual(completedTasks.count, 1, "В списке завершенных заданий должна быть одна задача.")
+		XCTAssertTrue(isCompletedTask, "В списке завершенных заданий должна быть завершенная задача.")
+		XCTAssertFalse(isUncompletedTask, "В списке завершенных заданий не должна быть незавершенная задача.")
 	}
 
-	func test_uncompletedTasks_withTasks_shouldHaveCorrectCount() {
-
-		// arrange
-		let tasks = Task.getTasksStub()
-		let sut = makeSUT(taskList: tasks)
-
-		// act
+	func test_uncompletedTasks_fromTaskManagerWithOneCompletedAndOneUncompletedTasks_shouldBeOneUnompletedTask() {
+		let sut = makeSUT()
+		
 		let uncompletedTasks = sut.uncompletedTasks()
-
-		// assert
-		XCTAssertEqual(
-			uncompletedTasks.count,
-			tasks.filter({ !$0.completed }).count,
-			"Неверное количество не завершенных заданий"
-		)
+		let isCompletedTask = uncompletedTasks.contains(completedTask)
+		let isUncompletedTask = uncompletedTasks.contains(uncompletedTask)
+		
+		XCTAssertEqual(uncompletedTasks.count, 1, "В списке завершенных заданий должна быть одна задача.")
+		XCTAssertTrue(isUncompletedTask, "В списке незавершенных заданий должна быть незавершенная задача.")
+		XCTAssertFalse(isCompletedTask, "В списке незавершенных заданий не должна быть завершенная задача.")
 	}
 }
 
-// MARK: - Private methods
+// MARK: - TestData
 
 private extension TaskManagerTests {
 
-	func makeSUT(taskList: [Task] = [Task]()) -> ITaskManager {
-		return TaskManager(taskList: taskList)
+	func makeSUT() -> TaskManager {
+		TaskManager(taskList: [completedTask, uncompletedTask])
 	}
 }
