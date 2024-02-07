@@ -23,27 +23,3 @@ final class TaskTests: XCTestCase {
 		XCTAssertFalse(sut.completed, "По умолчанию задание должно быть не выполнено")
 	}
 }
-
-// MARK: - ImportantTaskStub
-
-extension ImportantTask {
-
-	static func getImportantTasksStub() -> [ImportantTask] {
-		let tasks = [
-			ImportantTask(
-				title: "01 Task",
-				taskPriority: .medium
-			),
-			ImportantTask(
-				title: "02 Task",
-				taskPriority: .low
-			),
-			ImportantTask(
-				title: "03 Task",
-				taskPriority: .high
-			)
-		]
-
-		return tasks
-	}
-}
