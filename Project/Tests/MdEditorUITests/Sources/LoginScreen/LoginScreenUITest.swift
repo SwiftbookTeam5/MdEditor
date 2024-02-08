@@ -10,54 +10,42 @@ import XCTest
 
 final class LoginSceneUITest: XCTestCase {
 
-	// MARK: - Private properties
-
-	// swiftlint:disable implicitly_unwrapped_optional
-	private var app: XCUIApplication!
-	private var loginScreenObject: LoginScreenObject!
-	// swiftlint:enable implicitly_unwrapped_optional
-
-	// MARK: - Lifecycle
-
-	override func setUp() {
-		app = XCUIApplication()
-		loginScreenObject = LoginScreenObject(app: app)
-		super.setUp()
-	}
-
-	override func tearDown() {
-		let screenshot = XCUIScreen.main.screenshot()
-		let fullScreenshotAttachment = XCTAttachment(screenshot: screenshot)
-		fullScreenshotAttachment.name = "Fail LoginSceneUITest"
-		fullScreenshotAttachment.lifetime = .deleteOnSuccess
-		add(fullScreenshotAttachment)
-	}
-
 	// MARK: - Internal methods
 
-	func test_login_withValidCredentials_mustBeSuccess() {
+	func test_login_withValidCredentials_shouldBeNextScreenAppeared() {
+		let sut = makeSut()
 
-		app.launch()
-
-		loginScreenObject
+		sut
 			.isLoginScreen()
-			.set(login: "Admin")
-			.set(password: "pa$$32!")
+			.set(login: ConfigureTestEnvironment.ValidCredentials.login)
+			.set(password: ConfigureTestEnvironment.ValidCredentials.password)
 			.login()
-			.isTodoListScreen()
+			.checkScreen(contains: L10n.Main.title)
 	}
 
-	func test_login_withInvalidCredentials_mustBeFailure() {
+	func test_login_withInvalidCredentials_shouldBeAlertAppeared() {
+		let sut = makeSut()
+
+		sut
+			.isLoginScreen()
+			.set(login: ConfigureTestEnvironment.InvalidCredentials.login)
+			.set(password: ConfigureTestEnvironment.InvalidCredentials.password)
+			.login()
+			.closeAlert()
+			.isLoginScreen()
+	}
+}
+
+// MARK: - TestData
+
+private extension LoginSceneUITest {
+
+	func makeSut() -> LoginScreenObject {
+		let app = XCUIApplication()
+		let screen = LoginScreenObject(app: app)
 
 		app.launch()
 
-		loginScreenObject
-			.isLoginScreen()
-			.set(login: "dmin")
-			.set(password: "a$$")
-			.login()
-			.isAlert()
-			.closeAlert()
-			.isLoginScreen()
+		return screen
 	}
 }
