@@ -54,7 +54,10 @@ let target = Target(
 	deploymentTarget: .iOS(targetVersion: ProjectSettings.targetVersion, devices: .iphone),
 	infoPlist: "Sources/Info.plist",
 	sources: ["Sources/**", "Shared**"],
-	resources: ["Resources/**"],
+	resources: [
+		"Resources/**",
+		.folderReference(path: "Docs")
+	],
 	scripts: scripts,
 	dependencies: [
 		.package(product: "TaskManagerPackage"),
