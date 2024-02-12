@@ -43,7 +43,7 @@ final class MainCoordinator: BaseCoordinator {
 	}
 
 	private func showAboutScene() {
-		let assembler = AboutAppAssembler()
+		let assembler = AboutAppAssembler(fileExplorer: fileExplorer)
 		let viewController = assembler.assembly()
 
 		navigationController.pushViewController(viewController, animated: true)

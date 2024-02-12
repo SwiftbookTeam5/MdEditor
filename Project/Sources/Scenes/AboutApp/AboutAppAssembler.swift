@@ -7,8 +7,22 @@
 //
 
 import UIKit
+import FileManagerPackage
 
 final class AboutAppAssembler {
+
+	// MARK: - Dependencies
+
+	private let fileExplorer: IFileExplorer
+
+	// MARK: - Initialization
+
+	/// Инициализатор сборщика основного модуля.
+	/// - Parameters:
+	///   - taskManager: репозиторий файлов .
+	init(fileExplorer: IFileExplorer) {
+		self.fileExplorer = fileExplorer
+	}
 
 	// MARK: - Public methods
 
@@ -17,7 +31,7 @@ final class AboutAppAssembler {
 	func assembly() -> AboutAppViewController {
 		let viewController = AboutAppViewController()
 		let presenter = AboutAppPresenter(viewController: viewController)
-		let interactor = AboutAppInteractor(presenter: presenter)
+		let interactor = AboutAppInteractor(presenter: presenter, fileExplorer: fileExplorer)
 		viewController.interactor = interactor
 
 		return viewController

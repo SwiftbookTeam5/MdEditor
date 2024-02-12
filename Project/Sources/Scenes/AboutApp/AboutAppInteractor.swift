@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import FileManagerPackage
 
 protocol IAboutAppInteractor {
 
@@ -18,31 +19,24 @@ final class AboutAppInteractor: IAboutAppInteractor {
 
 	// MARK: - Dependencies
 
-	private var presenter: IAboutAppPresenter?
+	private var presenter: IAboutAppPresenter
+	private var fileExplorer: IFileExplorer
 
 	// MARK: - Initialization
 
-	init(presenter: IAboutAppPresenter) {
+	init(presenter: IAboutAppPresenter, fileExplorer: IFileExplorer) {
 		self.presenter = presenter
+		self.fileExplorer = fileExplorer
 	}
 
 	// MARK: - Public methods
 
 	func fetchData() {
-		let responce = AboutAppModel.Response(result: createAboutStub())
-		presenter?.present(responce: responce)
-	}
-}
-
-// MARK: - Private methods
-
-private extension AboutAppInteractor {
-
-	func createAboutStub() -> String {
-		"""
-		Данное приложение представляет собой функциональный Markdown
-		редактор с возможностью экспорта и сохранения данных.
-		Имеет возможность экспорта текста в форматы HTML и PDF.
-		"""
+		fileExplorer.scan(sources: [.bundle("about.md")])
+		if let file = fileExplorer.files.first {
+			let aboutText = try? fileExplorer.loadFileBody(url: file.url)
+			let responce = AboutAppModel.Response(result: aboutText ?? "")
+			presenter.present(responce: responce)
+		}
 	}
 }
