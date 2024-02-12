@@ -8,20 +8,33 @@
 
 import Foundation
 
-class File {
-	var name = ""
-	var path = ""
-	var size: UInt64 = 0
-	var isDirectory = false
-	var creationDate = Date()
-	var modificationDate = Date()
+public class File {
+	public let url: URL
+	public let size: UInt64
+	public let isDirectory: Bool
+	public let creationDate: Date
+	public var modificationDate: Date
 
-	var ext: String {
+	public var name: String {
+		String(describing: url.lastPathComponent)
+	}
+
+	public var ext: String {
 		String(describing: name.split(separator: ".").last ?? "")
 	}
 
-	var fullname: String {
-		"\(path)/\(name)"
+	public init(
+		url: URL,
+		size: UInt64 = 0,
+		isDirectory: Bool = false,
+		creationDate: Date = Date(),
+		modificationDate: Date = Date()
+	) {
+		self.url = url
+		self.size = size
+		self.isDirectory = isDirectory
+		self.creationDate = creationDate
+		self.modificationDate = modificationDate
 	}
 }
 
@@ -29,7 +42,7 @@ class File {
 
 extension File: CustomStringConvertible {
 
-	var description: String {
+	public var description: String {
 		getFormattedAttributes()
 	}
 }
@@ -42,23 +55,6 @@ extension File {
 	/// - Returns: размер
 	func getFormattedSize() -> String {
 		return getFormattedSize(with: size)
-	}
-
-	/// Загрузка текста файла
-	/// - Returns: текст файла
-	func loadFileBody() -> String? {
-		guard let resourcePath = Bundle.main.resourcePath else {
-			return nil
-		}
-
-		do {
-			let fullPath = resourcePath + "/\(path)/\(name)"
-			let text = try String(contentsOfFile: fullPath, encoding: String.Encoding.utf8)
-
-			return text
-		} catch {
-			return nil
-		}
 	}
 }
 

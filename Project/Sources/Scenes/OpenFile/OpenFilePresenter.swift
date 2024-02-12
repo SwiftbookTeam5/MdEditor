@@ -19,7 +19,7 @@ protocol IOpenFilePresenter {
 	func presentFolder(response: OpenFileModel.Response)
 }
 
-typealias OpenFileResultClosure = (Result<String, Error>) -> Void
+typealias OpenFileResultClosure = (Result<URL, Error>) -> Void
 
 final class OpenFilePresenter: IOpenFilePresenter {
 
@@ -48,7 +48,7 @@ final class OpenFilePresenter: IOpenFilePresenter {
 	/// - Parameter response: Данные папки
 	func presentFolder(response: OpenFileModel.Response) {
 		guard let file = response.files.first else { return }
-		openFileResultClosure?(.success(file.path))
+		openFileResultClosure?(.success(file.url))
 	}
 }
 
