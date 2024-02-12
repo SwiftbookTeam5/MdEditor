@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FileManagerPackage
 
 final class MainCoordinator: BaseCoordinator {
 
@@ -34,7 +35,7 @@ final class MainCoordinator: BaseCoordinator {
 		let coordinator = OpenFileCoordinator(
 			navigationController: navigationController,
 			fileExplorer: fileExplorer,
-			path: ""
+			url: nil
 		)
 
 		addDependency(coordinator)

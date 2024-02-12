@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FileManagerPackage
 
 protocol IOpenFileInteractor {
 
@@ -24,23 +25,28 @@ final class OpenFileInteractor: IOpenFileInteractor {
 
 	private var presenter: IOpenFilePresenter
 	private let fileExplorer: IFileExplorer
-	private let path: String
+	private let url: URL?
 
 	private var files: [OpenFileModel.Response.File] = []
 
 	// MARK: - Initialization
 
-	init(presenter: IOpenFilePresenter, fileExplorer: IFileExplorer, path: String) {
+	init(presenter: IOpenFilePresenter, fileExplorer: IFileExplorer, url: URL?) {
 		self.presenter = presenter
 		self.fileExplorer = fileExplorer
-		self.path = path
+		self.url = url
 	}
 
 	// MARK: - Internal methods
 
 	/// Событие на предоставление информации о файлах и действиях
 	func fetchData() {
-		try? fileExplorer.scan(path: path)
+		if let url {
+			try? fileExplorer.scan(url: url)
+		} else {
+			fileExplorer.scan(sources: [.documentDirectory, .bundle("Docs")])
+		}
+
 		files = mapFilesData(files: fileExplorer.files)
 
 		let responce = OpenFileModel.Response(files: files)
@@ -77,8 +83,8 @@ private extension OpenFileInteractor {
 		let response = OpenFileModel.Response.File(
 			title: file.name,
 			subTitle: file.description,
-			path: file.fullname,
-			isFolder: file.isDirectory
+			isFolder: file.isDirectory,
+			url: file.url
 		)
 
 		return response

@@ -22,8 +22,8 @@ enum OpenFileModel {
 		struct File {
 			let title: String
 			let subTitle: String
-			let path: String
 			let isFolder: Bool
+			let url: URL
 		}
 	}
 

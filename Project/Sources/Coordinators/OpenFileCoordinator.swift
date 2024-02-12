@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FileManagerPackage
 
 final class OpenFileCoordinator: ICoordinator {
 
@@ -14,14 +15,14 @@ final class OpenFileCoordinator: ICoordinator {
 
 	private let navigationController: UINavigationController
 	private let fileExplorer: IFileExplorer
-	private var path: String
+	private var url: URL?
 
 	// MARK: - Initialization
 
-	init(navigationController: UINavigationController, fileExplorer: IFileExplorer, path: String) {
+	init(navigationController: UINavigationController, fileExplorer: IFileExplorer, url: URL?) {
 		self.navigationController = navigationController
 		self.fileExplorer = fileExplorer
-		self.path = path
+		self.url = url
 	}
 
 	// MARK: - Internal methods
@@ -32,9 +33,9 @@ final class OpenFileCoordinator: ICoordinator {
 
 	private func showOpenFileScene() {
 		let assembler = OpenFileAssembler(fileExplorer: fileExplorer)
-		let viewController = assembler.assembly(path: path) { result in
-			if case .success(let path) = result {
-				self.path = path
+		let viewController = assembler.assembly(url: url) { result in
+			if case .success(let url) = result {
+				self.url = url
 				self.showOpenFileScene()
 			}
 		}
