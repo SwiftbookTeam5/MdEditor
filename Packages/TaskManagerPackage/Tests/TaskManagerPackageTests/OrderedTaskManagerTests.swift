@@ -10,36 +10,63 @@ import XCTest
 
 final class OrderedTaskManagerTests: XCTestCase {
 
-	func test_allTasks_withTasks_shouldBeSorted() {
+	func test_allTasks_withFiveTasks_shouldBeFiveTasksOrderedByPriority() {
+		let sut = makeSut()
+		let validResultTasks = TasksStub.allOrderedTasks
 
-		// arrange
-		let tasks = ImportantTask.getImportantTasksStub()
-		let sut = makeSUT(taskList: tasks)
+		let resultTasks = sut.allTasks()
 
-		// act
-		let allTasks = sut.allTasks()
+		XCTAssertEqual(resultTasks.count, 5, "В списке всех заданий должно быть пять задач.")
+		XCTAssertEqual(resultTasks, validResultTasks, "Cписок всех заданий должен быть отсортирован по приоритету.")
+	}
 
-		// assert
-		if allTasks.count >= 2,
-		   let firstTask = allTasks[0] as? ImportantTask,
-		   let secondTask = allTasks[1] as? ImportantTask {
+	func test_completedTasks_withTwoCompletedTasks_shouldBeTwoCompletedTasksOrderedByPriority() {
+		let sut = makeSut()
+		let validResultTask = TasksStub.completedOrderedTasks
 
-			XCTAssertTrue(
-				firstTask.taskPriority.rawValue >= secondTask.taskPriority.rawValue,
-				"Неверная сортировка при получении всех заданий"
-			)
-		}
+		let resultTasks = sut.completedTasks()
+
+		XCTAssertEqual(resultTasks.count, 2, "В списке завершенных заданий должно быть две задачи.")
+		XCTAssertEqual(resultTasks, validResultTask, "Cписок заданий должен быть отсортирован по приоритету.")
+	}
+
+	func test_uncompletedTasks_withTreeUncompletedTasks_shouldBeThreeUncompletedTasksOrderedByPriority() {
+		let sut = makeSut()
+		let validResultTask = TasksStub.uncompletedOrderedTasks
+
+		let resultTasks = sut.uncompletedTasks()
+
+		XCTAssertEqual(resultTasks.count, 3, "В списке незавершенных заданий должно быть три задачи.")
+		XCTAssertEqual(resultTasks, validResultTask, "Cписок заданий должен быть отсортирован по приоритету.")
 	}
 }
 
-// MARK: - Private methods
+// MARK: - TestData
 
 private extension OrderedTaskManagerTests {
 
-	func makeSUT(taskList: [Task] = [Task]()) -> ITaskManager {
-		let manager = OrderedTaskManager(taskManager: TaskManager())
-		manager.addTasks(tasks: taskList)
+	enum TasksStub {
+		static let allOrderedTasks = [
+			TaskManagerMock.importantTaskHigh,
+			TaskManagerMock.importantTaskMedium,
+			TaskManagerMock.importantTaskLow,
+			TaskManagerMock.regularTaskUncompleted,
+			TaskManagerMock.regularTaskCompleted
+		]
 
-		return manager
+		static let completedOrderedTasks = [
+			TaskManagerMock.importantTaskMedium,
+			TaskManagerMock.regularTaskCompleted
+		]
+
+		static let uncompletedOrderedTasks = [
+			TaskManagerMock.importantTaskHigh,
+			TaskManagerMock.importantTaskLow,
+			TaskManagerMock.regularTaskUncompleted
+		]
+	}
+
+	func makeSut() -> OrderedTaskManager {
+		OrderedTaskManager(taskManager: TaskManagerMock())
 	}
 }

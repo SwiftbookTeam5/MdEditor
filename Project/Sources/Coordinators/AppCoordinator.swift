@@ -8,6 +8,7 @@
 
 import UIKit
 import TaskManagerPackage
+import FileManagerPackage
 
 final class AppCoordinator: BaseCoordinator {
 

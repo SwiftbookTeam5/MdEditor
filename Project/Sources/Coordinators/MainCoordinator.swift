@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FileManagerPackage
 
 final class MainCoordinator: BaseCoordinator {
 
@@ -34,7 +35,7 @@ final class MainCoordinator: BaseCoordinator {
 		let coordinator = OpenFileCoordinator(
 			navigationController: navigationController,
 			fileExplorer: fileExplorer,
-			path: ""
+			url: nil
 		)
 
 		addDependency(coordinator)
@@ -42,7 +43,7 @@ final class MainCoordinator: BaseCoordinator {
 	}
 
 	private func showAboutScene() {
-		let assembler = AboutAppAssembler()
+		let assembler = AboutAppAssembler(fileExplorer: fileExplorer)
 		let viewController = assembler.assembly()
 
 		navigationController.pushViewController(viewController, animated: true)

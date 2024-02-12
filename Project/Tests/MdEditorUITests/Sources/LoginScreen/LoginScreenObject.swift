@@ -23,33 +23,10 @@ final class LoginScreenObject: BaseScreenObject {
 	/// - Returns: сам объект self
 	@discardableResult
 	func isLoginScreen() -> Self {
-		let navigationBarTitle = navigationBar.staticTexts[L10n.Auth.title]
-
-		assert(navigationBarTitle, [.exists])
+		checkScreen(contains: L10n.Auth.title)
 		assert(textFieldPass, [.exists])
 		assert(textFieldLogin, [.exists])
 		assert(loginButton, [.exists])
-
-		return self
-	}
-
-	// MARK: - ScreenObject methods
-
-	/// Проверяет является ли текущий экран TodoList
-	/// - Returns: сам объект self
-	@discardableResult
-	func isTodoListScreen() -> Self {
-		let navigationBarTitle = navigationBar.staticTexts[L10n.TodoList.title]
-		assert(navigationBarTitle, [.exists])
-
-		return self
-	}
-
-	/// Проверяет появляется ли alert в ответ на ввод невалидных данных
-	/// - Returns: сам объект self
-	@discardableResult
-	func isAlert() -> Self {
-		assert(alert, [.exists])
 
 		return self
 	}
@@ -98,6 +75,17 @@ final class LoginScreenObject: BaseScreenObject {
 	func login() -> Self {
 		assert(loginButton, [.exists])
 		loginButton.tap()
+
+		return self
+	}
+
+	/// Проверяет заголовок экрана
+	/// - Parameter title: заголовок проверяемого экрана
+	/// - Returns: сам объект self
+	@discardableResult
+	func checkScreen(contains title: String) -> Self {
+		let screenTitle = navigationBar.staticTexts[title]
+		assert(screenTitle, [.exists])
 
 		return self
 	}

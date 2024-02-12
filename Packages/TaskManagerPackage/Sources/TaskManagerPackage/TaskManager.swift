@@ -57,3 +57,11 @@ public final class TaskManager {
 		taskList.removeAll { $0 === task }
 	}
 }
+
+extension TaskManager {
+	
+	/// Возвращает количество задач, содержащихся в TaskManager
+	var countTasks: Int {
+		taskList.count
+	}
+}

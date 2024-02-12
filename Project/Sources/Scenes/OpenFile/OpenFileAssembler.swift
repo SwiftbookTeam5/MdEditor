@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FileManagerPackage
 
 final class OpenFileAssembler {
 
@@ -27,10 +28,10 @@ final class OpenFileAssembler {
 
 	/// Сборка модуля стартового экрана.
 	/// - Returns: контроллер с проставленными зависимостями VIP цикла.
-	func assembly(path: String, openFileResultClosure: OpenFileResultClosure?) -> OpenFileViewController {
+	func assembly(url: URL?, openFileResultClosure: OpenFileResultClosure?) -> OpenFileViewController {
 		let viewController = OpenFileViewController()
 		let presenter = OpenFilePresenter(viewController: viewController, openFileResultClosure: openFileResultClosure)
-		let interactor = OpenFileInteractor(presenter: presenter, fileExplorer: fileExplorer, path: path)
+		let interactor = OpenFileInteractor(presenter: presenter, fileExplorer: fileExplorer, url: url)
 		viewController.interactor = interactor
 
 		return viewController

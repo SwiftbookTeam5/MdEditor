@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FileManagerPackage
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -34,7 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			window: window,
 			taskManager: taskManager,
 			fileRepository: fileRepository,
-			fileExplorer: FileExplorer()
+			fileExplorer: FileExplorer(fileManager: FileManager.default)
 		)
 
 		appCoordinator.start()

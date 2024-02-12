@@ -54,10 +54,14 @@ let target = Target(
 	deploymentTarget: .iOS(targetVersion: ProjectSettings.targetVersion, devices: .iphone),
 	infoPlist: "Sources/Info.plist",
 	sources: ["Sources/**", "Shared**"],
-	resources: ["Resources/**"],
+	resources: [
+		"Resources/**",
+		.folderReference(path: "Docs")
+	],
 	scripts: scripts,
 	dependencies: [
 		.package(product: "TaskManagerPackage"),
+		.package(product: "FileManagerPackage"),
 		.package(product: "DataStructuresPackage")
 	]
 )
@@ -96,6 +100,7 @@ let project = Project(
 	organizationName: ProjectSettings.organizationName,
 	packages: [
 		.local(path: .relativeToManifest("../Packages/TaskManagerPackage")),
+		.local(path: .relativeToManifest("../Packages/FileManagerPackage")),
 		.local(path: .relativeToManifest("../Packages/DataStructuresPackage"))
 	],
 	settings: .settings(
