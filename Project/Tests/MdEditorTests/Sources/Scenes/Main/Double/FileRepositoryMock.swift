@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import FileManagerPackage
 @testable import MdEditor
 
 final class FileRepositoryMock: IFileRepository {
@@ -23,11 +24,10 @@ final class FileRepositoryMock: IFileRepository {
 		var files: [File] = []
 
 		(1...4).forEach { _ in
-			let file = File()
-			file.name = L10n.File.default
-			file.creationDate = Date()
-			file.modificationDate = Date() + 1000
-			files.append(file)
+			if let url = URL(string: "about.md") {
+				let file = File(url: url, creationDate: Date(), modificationDate: Date() + 1000)
+				files.append(file)
+			}
 		}
 
 		return files
