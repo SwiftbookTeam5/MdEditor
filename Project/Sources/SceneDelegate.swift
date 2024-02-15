@@ -7,11 +7,13 @@
 
 import UIKit
 import FileManagerPackage
+import TaskManagerPackage
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 	var window: UIWindow?
 	private var appCoordinator: ICoordinator! // swiftlint:disable:this implicitly_unwrapped_optional
+	private var testCoordinator: ITestCoordinator! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	func scene(
 		_ scene: UIScene,
@@ -21,15 +23,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		guard let scene = (scene as? UIWindowScene) else { return }
 		let window = UIWindow(windowScene: scene)
 
-		let taskBuilder = TaskManagerBuilder()
-		var taskManager = taskBuilder.build(repository: TaskRepositoryStub())
+#if DEBUG
+		let parameters = LaunchArguments.getParameters()
+		let taskManager = TaskManagerBuilder().build(repository: TaskRepositoryStub())
 		let fileRepository = FileRepositoryStub()
 
-#if DEBUG
-		if CommandLine.arguments.contains(LaunchArguments.enableTesting.rawValue) {
-			taskManager = taskBuilder.build(repository: TaskRepositoryTestingStub())
+		testCoordinator = AppCoordinator(
+			window: window,
+			taskManager: taskManager,
+			fileRepository: fileRepository,
+			fileExplorer: FileExplorer(fileManager: FileManager.default)
+		)
+
+		if let enableTesting = parameters[LaunchArguments.enableTesting], enableTesting {
+			UIView.setAnimationsEnabled(false)
 		}
-#endif
+
+		testCoordinator.testStart(parameters: parameters)
+#else
+		let taskManager = TaskManagerBuilder().build(repository: TaskRepositoryStub())
+		let fileRepository = FileRepositoryStub()
 
 		appCoordinator = AppCoordinator(
 			window: window,
@@ -39,6 +52,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		)
 
 		appCoordinator.start()
+#endif
 
 		self.window = window
 	}

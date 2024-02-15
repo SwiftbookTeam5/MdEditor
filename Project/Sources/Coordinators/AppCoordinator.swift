@@ -33,6 +33,9 @@ final class AppCoordinator: BaseCoordinator {
 	// MARK: - Internal methods
 
 	override func start() {
+		window?.rootViewController = navigationController
+		window?.makeKeyAndVisible()
+
 		runLoginFlow()
 	}
 
@@ -46,9 +49,6 @@ final class AppCoordinator: BaseCoordinator {
 		}
 
 		coordinator.start()
-
-		window?.rootViewController = navigationController
-		window?.makeKeyAndVisible()
 	}
 
 	func runMainFlow() {
@@ -60,5 +60,29 @@ final class AppCoordinator: BaseCoordinator {
 
 		addDependency(coordinator)
 		coordinator.start()
+	}
+
+	func runTodoListFlow() {
+		let coordinator = TodoListCoordinator(navigationController: navigationController, taskManager: taskManager)
+		addDependency(coordinator)
+		coordinator.start()
+	}
+}
+
+// MARK: - ITestCoordinator
+
+extension AppCoordinator: ITestCoordinator {
+
+	/// Запускает флоу в зависимости от переданных параметров
+	/// - Parameter parameters: параметры запуска приложения
+	func testStart(parameters: [LaunchArguments: Bool]) {
+		window?.rootViewController = navigationController
+		window?.makeKeyAndVisible()
+
+		if let startTodoList = parameters[LaunchArguments.startTodoList], startTodoList {
+			runTodoListFlow()
+		} else {
+			runLoginFlow()
+		}
 	}
 }
