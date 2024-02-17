@@ -20,15 +20,19 @@
 
 "TodoList.title" = "TodoList";
 "TodoList.deadline" = "Deadline";
+"TodoList.Section.completed" = "Completed";
+"TodoList.Section.uncompleted" = "Uncompleted";
+"TodoList.Section.all" = "All";
+"TodoList.Section.important" = "Important";
+"TodoList.Section.regular" = "Regular";
 
 // MARK: - Task
 
-"Task.completed" = "Completed";
-"Task.uncompleted" = "Uncompleted";
-"Task.all" = "All";
-"Task.important" = "Important";
-"Task.regular" = "Regular";
-"Task.default" = "Задача";
+"Task.doHomework" = "Do homework";
+"Task.doWorkout" = "Do Workout";
+"Task.writeNewTasks" = "Write new tasks";
+"Task.solve3Algorithms" = "Solve 3 algorithms";
+"Task.goShopping" = "Go shopping";
 
 // MARK: - Error
 

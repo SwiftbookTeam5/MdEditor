@@ -121,7 +121,7 @@ let project = Project(
 			testAction: .targets(
 				[
 					"\(ProjectSettings.UnitTests.name)",
-					"\(ProjectSettings.UITests.name)"
+					TestableTarget(target: "\(ProjectSettings.UITests.name)", skipped: true)
 				]
 			),
 			runAction: .runAction(executable: "\(ProjectSettings.projectName)")

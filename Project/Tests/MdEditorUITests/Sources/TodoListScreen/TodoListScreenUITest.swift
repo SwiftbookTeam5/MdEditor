@@ -13,57 +13,72 @@ final class TodoListScreenUITest: XCTestCase {
 	// MARK: - Private properties
 
 	private let app = XCUIApplication()
+	private lazy var todoListScreenObject = TodoListScreenObject(app: app)
 
 	// MARK: - Lifecycle
 
 	override func setUp() {
-		let loginScreenObject = LoginScreenObject(app: app)
-
-		app.launchArguments = [LaunchArguments.enableTesting.rawValue]
+		super.setUp()
+		app.launchArguments = [LaunchArguments.enableTesting.rawValue, LaunchArguments.startTodoList.rawValue]
 		app.launch()
-
-		loginScreenObject
-			.isLoginScreen()
-			.set(login: "Admin")
-			.set(password: "pa$$32!")
-			.login()
-	}
-	
-	override func tearDown() {
-		let screenshot = XCUIScreen.main.screenshot()
-		let fullScreenshotAttachment = XCTAttachment(screenshot: screenshot)
-		fullScreenshotAttachment.name = "Fail TodoListScreenUITest"
-		fullScreenshotAttachment.lifetime = .deleteOnSuccess
-		add(fullScreenshotAttachment)
 	}
 
 	// MARK: - Internal methods
 
-	func test_valid_change_status_Task_() {
-		let todoListScreenObject = TodoListScreenObject(app: app)
-
+	func test_sections_shouldBeCorrectCountOfSectionsAndCorrectTitles() {
 		todoListScreenObject
 			.isTodoList()
-			.changeTaskStatusIn(section: 0, row: 1)
-			.changeTaskStatusIn(section: 0, row: 1)
-			.changeTaskStatusIn(section: 0, row: 1)
+			.checkNumberOfSections(2)
+			.checkSectionTitle(index: 0, title: L10n.TodoList.Section.uncompleted)
+			.checkSectionTitle(index: 1, title: L10n.TodoList.Section.completed)
+	}
+
+	func test_cells_shouldBeFourNotSelectedCellsAndOneSelectedAsWellCorrectTitles() {
+		todoListScreenObject
+			.isTodoList()
+			.checkCountOfNotSelectedCells(4)
+			.checkCountOfSelectedCells(1)
+			.checkCellTitle(section: 0, row: 0, title: CellTitleStub.doHomework)
+			.checkCellTitle(section: 0, row: 1, title: CellTitleStub.goShopping)
+			.checkCellTitle(section: 0, row: 2, title: CellTitleStub.writeNewTasks)
+			.checkCellTitle(section: 0, row: 3, title: CellTitleStub.solve3Algorithms)
+			.checkCellTitle(section: 1, row: 0, title: CellTitleStub.doWorkout)
+	}
+
+	func test_doTask_shouldBeThreeNotSelectedCellsAndTwoSelectedCellsAsWellCorrectTitles() {
+		todoListScreenObject
+			.isTodoList()
+			.changeTaskStatusIn(section: 0, row: 0)
+			.checkCountOfNotSelectedCells(3)
+			.checkCountOfSelectedCells(2)
+			.checkCellTitle(section: 0, row: 0, title: CellTitleStub.goShopping)
+			.checkCellTitle(section: 0, row: 1, title: CellTitleStub.writeNewTasks)
+			.checkCellTitle(section: 0, row: 2, title: CellTitleStub.solve3Algorithms)
+			.checkCellTitle(section: 1, row: 0, title: CellTitleStub.doHomework)
+			.checkCellTitle(section: 1, row: 1, title: CellTitleStub.doWorkout)
+	}
+
+	func test_undoTask_shouldBeFiveNotSelectedCellsAndZeroSelectedCellsAsWellCorrectTitles() {
+		todoListScreenObject
+			.isTodoList()
 			.changeTaskStatusIn(section: 1, row: 0)
+			.checkCountOfNotSelectedCells(5)
+			.checkCountOfSelectedCells(0)
+			.checkCellTitle(section: 0, row: 0, title: CellTitleStub.doHomework)
+			.checkCellTitle(section: 0, row: 1, title: CellTitleStub.goShopping)
+			.checkCellTitle(section: 0, row: 2, title: CellTitleStub.writeNewTasks)
+			.checkCellTitle(section: 0, row: 3, title: CellTitleStub.doWorkout)
+			.checkCellTitle(section: 0, row: 4, title: CellTitleStub.solve3Algorithms)
 	}
+}
 
-	func test_valid_numberOfSections_and_nameSections() {
-		let todoListScreenObject = TodoListScreenObject(app: app)
+private extension TodoListScreenUITest {
 
-		todoListScreenObject
-			.isTodoList()
-			.getTitleForHeaderIn(section: 0)
-			.getTitleForHeaderIn(section: 1)
-	}
-
-	func test_valid_data_task_in_section() {
-		let todoListScreenObject = TodoListScreenObject(app: app)
-
-		todoListScreenObject
-			.isTodoList()
-			.getTitleForTaskIn(section: 0, row: 0)
+	enum CellTitleStub {
+		static var doHomework = "!!! \(L10n.Task.doHomework)"
+		static var doWorkout = L10n.Task.doWorkout
+		static var writeNewTasks = "! \(L10n.Task.writeNewTasks)"
+		static var solve3Algorithms = L10n.Task.solve3Algorithms
+		static var goShopping = "!! \(L10n.Task.goShopping)"
 	}
 }

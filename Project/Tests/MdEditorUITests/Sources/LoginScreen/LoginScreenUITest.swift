@@ -44,6 +44,7 @@ private extension LoginSceneUITest {
 		let app = XCUIApplication()
 		let screen = LoginScreenObject(app: app)
 
+		app.launchArguments = [LaunchArguments.enableTesting.rawValue]
 		app.launch()
 
 		return screen

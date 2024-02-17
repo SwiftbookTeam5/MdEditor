@@ -20,16 +20,19 @@
 
 "TodoList.title" = "TodoList";
 "TodoList.deadline" = "Срок";
+"TodoList.Section.completed" = "Выполненные";
+"TodoList.Section.uncompleted" = "Невыполненные";
+"TodoList.Section.all" = "Все";
+"TodoList.Section.important" = "Важные";
+"TodoList.Section.regular" = "Обычные";
 
 // MARK: - Task
 
-"Task.completed" = "Completed";
-"Task.uncompleted" = "Uncompleted";
-"Task.all" = "All";
-"Task.important" = "Important";
-"Task.regular" = "Regular";
-"Task.default" = "Task";
-
+"Task.doHomework" = "Выполнить домашнее задание";
+"Task.doWorkout" = "Выполнить тренировку";
+"Task.writeNewTasks" = "Написать новые задачи";
+"Task.solve3Algorithms" = "Решить 3 алгоритма";
+"Task.goShopping" = "Пойти за покупками";
 
 // MARK: - Error
 
