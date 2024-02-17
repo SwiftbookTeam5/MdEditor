@@ -12,8 +12,7 @@ import TaskManagerPackage
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 	var window: UIWindow?
-	private var appCoordinator: ICoordinator! // swiftlint:disable:this implicitly_unwrapped_optional
-	private var testCoordinator: ITestCoordinator! // swiftlint:disable:this implicitly_unwrapped_optional
+	private var appCoordinator: (ICoordinator & ITestCoordinator)! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	func scene(
 		_ scene: UIScene,
@@ -28,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		let taskManager = TaskManagerBuilder().build(repository: TaskRepositoryStub())
 		let fileRepository = FileRepositoryStub()
 
-		testCoordinator = AppCoordinator(
+		appCoordinator = AppCoordinator(
 			window: window,
 			taskManager: taskManager,
 			fileRepository: fileRepository,
@@ -39,7 +38,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			UIView.setAnimationsEnabled(false)
 		}
 
-		testCoordinator.testStart(parameters: parameters)
+		appCoordinator.testStart(parameters: parameters)
 #else
 		let taskManager = TaskManagerBuilder().build(repository: TaskRepositoryStub())
 		let fileRepository = FileRepositoryStub()
