@@ -23,13 +23,11 @@ public class FileExplorer: IFileExplorer {
 	// MARK: - Properties
 
 	public private(set) var files: [File] = []
-	private var fileManager: FileManager
+	private let fileManager = FileManager.default
 
 	// MARK: - Init
 
-	public init(fileManager: FileManager) {
-		self.fileManager = fileManager
-	}
+	public init() {}
 
 	// MARK: - Methods
 

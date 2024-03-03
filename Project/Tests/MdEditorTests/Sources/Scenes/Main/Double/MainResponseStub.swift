@@ -12,17 +12,7 @@ import XCTest
 enum MainResponseStub {
 
 	static var response = MainModel.Response(
-		files: FileStub.files,
-		actions: [.new, .open, .about]
+		recentFiles: RecentFileManagerSpy().getRecentFiles(),
+		menu: [.newFile, .openFile, .showAbout]
 	)
-}
-
-private enum FileStub {
-
-	static var files: [MainModel.Response.File] = [
-		MainModel.Response.File(title: L10n.File.default, color: FlatColor.Green.Fern),
-		MainModel.Response.File(title: L10n.File.default, color: FlatColor.Green.Fern),
-		MainModel.Response.File(title: L10n.File.default, color: FlatColor.Orange.NeonCarrot),
-		MainModel.Response.File(title: L10n.File.default, color: FlatColor.Orange.NeonCarrot)
-	]
 }
