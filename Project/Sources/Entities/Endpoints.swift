@@ -22,6 +22,17 @@ enum Endpoints {
 		)
 	}()
 
+	static var docs: URL = {
+		Bundle.main.url(forResource: "Docs", withExtension: nil)!
+	}()
+
+	static var documentAbout: URL = {
+		Bundle.main.url(
+			forResource: "about",
+			withExtension: "md"
+		)!
+	}()
+
 	static var documentExample: URL = {
 		Bundle.main.url(
 			forResource: "Docs/Example",

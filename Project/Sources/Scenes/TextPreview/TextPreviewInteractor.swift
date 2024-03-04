@@ -36,8 +36,7 @@ final class TextPreviewInteractor: ITextPreviewInteractor {
 
 	/// Событие на предоставление информации
 	func fetchData() {
-		let data = (try? Data(contentsOf: file.url)) ?? Data()
-		let fileContent = String(data: data, encoding: .utf8) ?? ""
+		let fileContent = String(data: file.contentOfFile() ?? Data(), encoding: .utf8) ?? ""
 		let response = TextPreviewModel.Response(fileUrl: file.url, fileContent: fileContent)
 		presenter.present(response: response)
 	}

@@ -81,7 +81,12 @@ private extension MainCoordinator {
 extension MainCoordinator: IMainDelegate {
 
 	func showAbout() {
-		//
+		switch File.parse(url: Endpoints.documentAbout) {
+		case .success(let aboutFile):
+			showTextPreviewScene(file: aboutFile)
+		case .failure:
+			break
+		}
 	}
 
 	func openFileExplorer() {

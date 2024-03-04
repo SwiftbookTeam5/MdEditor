@@ -51,6 +51,11 @@ private extension FileManagerCoordinator {
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
+
+	func showTextPreviewScene(file: File) {
+		let viewController = TextPreviewAssembler().assembly(file: file)
+		navigationController.pushViewController(viewController, animated: true)
+	}
 }
 
 // MARK: - UINavigationControllerDelegate
@@ -77,6 +82,6 @@ extension FileManagerCoordinator: IFileManagerDelegate {
 	}
 
 	func openFile(file: File) {
-		//
+		showTextPreviewScene(file: file)
 	}
 }

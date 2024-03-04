@@ -62,13 +62,26 @@ final class FileManagerInteractor: IFileManagerInteractor {
 
 	/// Событие на предоставление информации о файлах и действиях
 	func fetchData() {
+		files = [File]()
+
 		if let currentFile = currentFile {
-			try? fileExplorer.scan(url: currentFile.url)
+			switch fileExplorer.contentsOfFolder(at: currentFile.url) {
+			case .success(let files):
+				self.files = files
+			case .failure:
+				break
+			}
 		} else {
-			fileExplorer.scan(sources: [.documentDirectory, .bundle("Docs")])
+			if case .success(let file) = File.parse(url: Endpoints.docs) {
+				files.append(file)
+			}
+
+			if case .success(let file) = File.parse(url: Endpoints.documents) {
+				files.append(file)
+			}
 		}
 
-		files = fileExplorer.files
+		files.sort { $0.isFolder && !$1.isFolder }
 
 		let responce = FileManagerModel.Response(currentFile: currentFile, files: files)
 		presenter.present(response: responce)
@@ -80,7 +93,7 @@ final class FileManagerInteractor: IFileManagerInteractor {
 		switch request {
 		case .fileSelected(let indexPath):
 			let selectedFile = files[min(indexPath.row, files.count - 1)]
-			if selectedFile.isDirectory {
+			if selectedFile.isFolder {
 				delegate?.openFolder(file: selectedFile)
 			} else {
 				delegate?.openFile(file: selectedFile)
