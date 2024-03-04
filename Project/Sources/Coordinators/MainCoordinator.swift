@@ -8,12 +8,14 @@
 
 import UIKit
 import FileManagerPackage
+import MarkdownParserPackage
 
 final class MainCoordinator: BaseCoordinator {
 
 	// MARK: - Dependencies
 
 	private let navigationController: UINavigationController
+	private let converter = MarkdownToAttributedTextConverter()
 
 	// MARK: - Initialization
 
@@ -49,7 +51,7 @@ private extension MainCoordinator {
 	}
 
 	func showTextPreviewScene(file: File) {
-		let viewController = TextPreviewAssembler().assembly(file: file)
+		let viewController = TextPreviewAssembler().assembly(file: file, converter: converter)
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
@@ -58,7 +60,8 @@ private extension MainCoordinator {
 		let topViewController = navigationController.topViewController
 		let coordinator = FileManagerCoordinator(
 			navigationController: navigationController,
-			topViewController: topViewController
+			topViewController: topViewController,
+			converter: converter
 		)
 
 		coordinator.finishFlow = { [weak self, weak coordinator] in

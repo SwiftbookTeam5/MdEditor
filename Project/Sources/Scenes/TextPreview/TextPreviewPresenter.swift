@@ -21,11 +21,13 @@ final class TextPreviewPresenter: ITextPreviewPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: ITextPreviewViewController?
+	private let converter: IMarkdownToAttributedTextConverter
 
 	// MARK: - Initialization
 
-	init(viewController: ITextPreviewViewController?) {
+	init(viewController: ITextPreviewViewController?, converter: IMarkdownToAttributedTextConverter) {
 		self.viewController = viewController
+		self.converter = converter
 	}
 
 	// MARK: - Public methods
@@ -33,9 +35,11 @@ final class TextPreviewPresenter: ITextPreviewPresenter {
 	/// Отображение экрана с текстом файла.
 	/// - Parameter response: Подготовленные к отображению данные.
 	func present(response: TextPreviewModel.Response) {
+		let text = converter.convert(markdownText: response.fileContent)
+
 		let viewModel = TextPreviewModel.ViewModel(
 			currentTitle: response.fileUrl.lastPathComponent,
-			text: NSAttributedString(string: response.fileContent)
+			text: NSAttributedString(attributedString: text)
 		)
 		viewController?.render(viewModel: viewModel)
 	}

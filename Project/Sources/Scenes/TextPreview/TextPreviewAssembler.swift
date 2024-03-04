@@ -8,15 +8,16 @@
 
 import Foundation
 import FileManagerPackage
+import MarkdownParserPackage
 
 final class TextPreviewAssembler {
 
 	/// Сборка модуля просмотра файла
 	/// - Parameter file: файл
 	/// - Returns: контроллер с проставленными зависимостями VIP цикла.
-	func assembly(file: File) -> TextPreviewViewController {
+	func assembly(file: File, converter: IMarkdownToAttributedTextConverter) -> TextPreviewViewController {
 		let viewController = TextPreviewViewController()
-		let presenter = TextPreviewPresenter(viewController: viewController)
+		let presenter = TextPreviewPresenter(viewController: viewController, converter: converter)
 		let interactor = TextPreviewInteractor(presenter: presenter, file: file)
 		viewController.interactor = interactor
 
