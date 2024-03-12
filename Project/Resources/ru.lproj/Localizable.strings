@@ -6,6 +6,15 @@
   Copyright © 2024 SwiftbookTeam5. All rights reserved.
 */
 
+// MARK: - Common strings
+
+"Yes.text" = "Да";
+"No.text" = "Нет";
+"Return.text" = "Вернуться";
+"Ok.text" = "Ок";
+"Error.text" = "Ошибка";
+"Message.text" = "Сообщение";
+
 // MARK: - Auth
 
 "Auth.title" = "Авторизация";
@@ -13,23 +22,23 @@
 "Auth.password" = "Пароль";
 "Auth.login" = "Логин";
 
-"AlertAuth.title" = "Ошибка";
-"AlertAuth.okActionTitle" = "Ок";
-
 // MARK: - TodoList screen
 
 "TodoList.title" = "TodoList";
 "TodoList.deadline" = "Срок";
+"TodoList.Section.completed" = "Выполненные";
+"TodoList.Section.uncompleted" = "Невыполненные";
+"TodoList.Section.all" = "Все";
+"TodoList.Section.important" = "Важные";
+"TodoList.Section.regular" = "Обычные";
 
 // MARK: - Task
 
-"Task.completed" = "Completed";
-"Task.uncompleted" = "Uncompleted";
-"Task.all" = "All";
-"Task.important" = "Important";
-"Task.regular" = "Regular";
-"Task.default" = "Task";
-
+"Task.doHomework" = "Выполнить домашнее задание";
+"Task.doWorkout" = "Выполнить тренировку";
+"Task.writeNewTasks" = "Написать новые задачи";
+"Task.solve3Algorithms" = "Решить 3 алгоритма";
+"Task.goShopping" = "Пойти за покупками";
 
 // MARK: - Error
 
@@ -41,9 +50,9 @@
 // MARK: - Main
 
 "Main.title" = "MdEditor";
-"Main.Actions.New" = "Новые";
-"Main.Actions.Open" = "Открыть";
-"Main.Actions.About" = "О нас";
+"Main.Menu.newFile" = "Новые";
+"Main.Menu.openFile" = "Открыть";
+"Main.Menu.about" = "О нас";
 
 // MARK: - File
 
@@ -53,3 +62,7 @@
 // MARK: - About
 
 "About.title" = "О приложении";
+
+// MARK: - New feature
+
+"Feature.newFile" = "Мы работаем над этим разделом и скоро можно будет создавать файлы";

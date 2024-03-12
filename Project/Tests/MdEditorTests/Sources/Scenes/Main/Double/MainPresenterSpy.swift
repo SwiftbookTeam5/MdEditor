@@ -23,7 +23,7 @@ final class MainPresenterSpy: IMainPresenter {
 	func present(response: MainModel.Response) {
 		isCalledPresent = true
 
-		if !response.files.isEmpty {
+		if !response.recentFiles.isEmpty {
 			isResponse = true
 		}
 	}

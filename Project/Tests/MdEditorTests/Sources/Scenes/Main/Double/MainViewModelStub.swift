@@ -28,7 +28,7 @@ private enum SectionsStub {
 
 	static var vertical = MainModel.ViewModel.Section(
 		type: .vertical,
-		items: ActionStub.actios
+		items: MenuStub.menu
 	)
 }
 
@@ -36,31 +36,31 @@ private enum FileStub {
 
 	static var files: [MainModel.ViewModel.Item] = [
 		MainModel.ViewModel.Item.file(
-			MainModel.ViewModel.File(title: L10n.File.default, color: FlatColor.Green.Fern)
+			MainModel.ViewModel.RecentFile(previewText: L10n.File.default, fileName: L10n.File.default)
 		),
 		MainModel.ViewModel.Item.file(
-			MainModel.ViewModel.File(title: L10n.File.default, color: FlatColor.Green.Fern)
+			MainModel.ViewModel.RecentFile(previewText: L10n.File.default, fileName: L10n.File.default)
 		),
 		MainModel.ViewModel.Item.file(
-			MainModel.ViewModel.File(title: L10n.File.default, color: FlatColor.Orange.NeonCarrot)
+			MainModel.ViewModel.RecentFile(previewText: L10n.File.default, fileName: L10n.File.default)
 		),
 		MainModel.ViewModel.Item.file(
-			MainModel.ViewModel.File(title: L10n.File.default, color: FlatColor.Orange.NeonCarrot)
+			MainModel.ViewModel.RecentFile(previewText: L10n.File.default, fileName: L10n.File.default)
 		)
 	]
 }
 
-private enum ActionStub {
+private enum MenuStub {
 
-	static var actios: [MainModel.ViewModel.Item] = [
-		MainModel.ViewModel.Item.action(
-			MainModel.ViewModel.Action(title: L10n.Main.Actions.new, image: Asset.Icons.file.image)
+	static var menu: [MainModel.ViewModel.Item] = [
+		MainModel.ViewModel.Item.menu(
+			MainModel.ViewModel.MenuItem(title: L10n.Main.Menu.newFile,  item: .newFile)
 		),
-		MainModel.ViewModel.Item.action(
-			MainModel.ViewModel.Action(title: L10n.Main.Actions.open, image: Asset.Icons.openFolder.image)
+		MainModel.ViewModel.Item.menu(
+			MainModel.ViewModel.MenuItem(title: L10n.Main.Menu.openFile,  item: .openFile)
 		),
-		MainModel.ViewModel.Item.action(
-			MainModel.ViewModel.Action(title:  L10n.Main.Actions.about, image: Asset.Icons.about.image)
-		),
+		MainModel.ViewModel.Item.menu(
+			MainModel.ViewModel.MenuItem(title: L10n.Main.Menu.about,  item: .showAbout)
+		)
 	]
 }

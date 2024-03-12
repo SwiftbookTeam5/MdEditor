@@ -10,52 +10,35 @@
 //  see http://clean-swift.com
 //
 
-import UIKit
+import Foundation
 
 enum MainModel {
 
-	enum Request {
-		struct ItemSelected {
-			let indexPath: IndexPath
+	enum MenuIdentifier {
+		case openFile
+		case newFile
+		case showAbout
+
+		var title: String {
+			switch self {
+			case .newFile:
+				return L10n.Main.Menu.newFile
+			case .openFile:
+				return L10n.Main.Menu.openFile
+			case .showAbout:
+				return L10n.Main.Menu.about
+			}
 		}
 	}
 
+	enum Request {
+		case menuItemSelected(indexPath: IndexPath)
+		case recentFileSelected(indexPath: IndexPath)
+	}
+
 	struct Response {
-		let files: [File]
-		let actions: [Action]
-
-		struct File {
-			let title: String
-			let color: UIColor
-		}
-
-		enum Action {
-			case new
-			case open
-			case about
-
-			var title: String {
-				switch self {
-				case .new:
-					return L10n.Main.Actions.new
-				case .open:
-					return L10n.Main.Actions.open
-				case .about:
-					return L10n.Main.Actions.about
-				}
-			}
-
-			var image: UIImage {
-				switch self {
-				case .new:
-					return Asset.Icons.file.image
-				case .open:
-					return Asset.Icons.openFolder.image
-				case .about:
-					return Asset.Icons.about.image
-				}
-			}
-		}
+		let recentFiles: [RecentFile]
+		let menu: [MenuIdentifier]
 	}
 
 	struct ViewModel {
@@ -76,18 +59,18 @@ enum MainModel {
 
 		/// Перечисление представляющее файлы и действия на экране
 		enum Item {
-			case file(File)
-			case action(Action)
+			case menu(MenuItem)
+			case file(RecentFile)
 		}
 
-		struct File {
+		struct MenuItem {
 			let title: String
-			let color: UIColor
+			let item: MenuIdentifier
 		}
 
-		struct Action {
-			let title: String
-			let image: UIImage
+		struct RecentFile {
+			let previewText: String
+			let fileName: String
 		}
 	}
 }

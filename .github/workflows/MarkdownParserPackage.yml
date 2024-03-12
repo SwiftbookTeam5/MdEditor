@@ -1,0 +1,21 @@
+name: MarkdownParserPackage
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    name: Test MarkdownParserPackage
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        run: |
+          cd Packages/MarkdownParserPackage
+          swift build -v
+      - name: Run tests
+        run: | 
+          cd Packages/MarkdownParserPackage
+          swift test -v

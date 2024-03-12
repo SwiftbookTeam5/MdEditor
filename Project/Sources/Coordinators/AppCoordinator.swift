@@ -17,22 +17,21 @@ final class AppCoordinator: BaseCoordinator {
 	private let navigationController: UINavigationController
 	private var window: UIWindow?
 	private let taskManager: ITaskManager
-	private let fileRepository: IFileRepository
-	private let fileExplorer: IFileExplorer
 
 	// MARK: - Initialization
 
-	init(window: UIWindow?, taskManager: ITaskManager, fileRepository: IFileRepository, fileExplorer: IFileExplorer) {
+	init(window: UIWindow?, taskManager: ITaskManager) {
 		self.window = window
 		self.taskManager = taskManager
-		self.fileRepository = fileRepository
-		self.fileExplorer = fileExplorer
 		self.navigationController = UINavigationController()
 	}
 
 	// MARK: - Internal methods
 
 	override func start() {
+		window?.rootViewController = navigationController
+		window?.makeKeyAndVisible()
+
 		runLoginFlow()
 	}
 
@@ -46,19 +45,35 @@ final class AppCoordinator: BaseCoordinator {
 		}
 
 		coordinator.start()
-
-		window?.rootViewController = navigationController
-		window?.makeKeyAndVisible()
 	}
 
 	func runMainFlow() {
-		let coordinator = MainCoordinator(
-			navigationController: navigationController,
-			fileRepository: fileRepository,
-			fileExplorer: fileExplorer
-		)
-
+		let coordinator = MainCoordinator(navigationController: navigationController)
 		addDependency(coordinator)
 		coordinator.start()
+	}
+
+	func runTodoListFlow() {
+		let coordinator = TodoListCoordinator(navigationController: navigationController, taskManager: taskManager)
+		addDependency(coordinator)
+		coordinator.start()
+	}
+}
+
+// MARK: - ITestCoordinator
+
+extension AppCoordinator: ITestCoordinator {
+
+	/// Запускает флоу в зависимости от переданных параметров
+	/// - Parameter parameters: параметры запуска приложения
+	func testStart(parameters: [LaunchArguments: Bool]) {
+		window?.rootViewController = navigationController
+		window?.makeKeyAndVisible()
+
+		if let startTodoList = parameters[LaunchArguments.startTodoList], startTodoList {
+			runTodoListFlow()
+		} else {
+			runLoginFlow()
+		}
 	}
 }

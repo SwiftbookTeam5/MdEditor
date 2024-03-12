@@ -13,8 +13,7 @@ final class TodoListScreenObject: BaseScreenObject {
 	// MARK: - Private properties
 
 	private lazy var navigationBar = app.navigationBars.firstMatch
-	private lazy var table = app.tables[AccessibilityIdentifier.TodoList.tableView.description]
-	private lazy var alert = app.alerts[L10n.AlertAuth.title]
+	private lazy var tableView = app.tables[AccessibilityIdentifier.TodoList.tableView.description]
 
 	// MARK: - ScreenObject methods
 
@@ -24,58 +23,77 @@ final class TodoListScreenObject: BaseScreenObject {
 	func isTodoList() -> Self {
 		let navigationBarTitle = navigationBar.staticTexts[L10n.TodoList.title]
 		assert(navigationBarTitle, [.exists], timeout: 10)
+		assert(tableView, [.exists])
 
 		return self
 	}
 
-	/// Возвращает количество секций в таблице
-	/// - Returns: количество секций
+	/// Проверяет соответствует ли количество секций переданному значению
+	/// - Parameter count: ожидаемое количество секций
+	/// - Returns: сам объект self
 	@discardableResult
-	func numberOfSections() -> Int {
-		assert(table, [.exists])
-		let sections = table.otherElements.staticTexts
+	func checkNumberOfSections(_ count: Int) -> Self {
+		let numberOfSections = tableView.otherElements.staticTexts.count
 
-		return sections.count
-	}
-
-	/// Возвращает название секции
-	/// - Parameter section: идекс секции
-	/// - Returns: название секции
-	@discardableResult
-	func getTitleForHeaderIn(section: Int) -> Self {
-
-		switch section {
-		case 0:
-			let header = table.otherElements.element(boundBy: 0)
-			assert(header, [.exists])
-			assert(header.staticTexts.firstMatch, [.contains(L10n.Task.uncompleted)])
-		case 1:
-			let header = table.otherElements.element(boundBy: 1)
-			assert(header, [.exists])
-			assert(header.staticTexts.firstMatch, [.contains(L10n.Task.completed)])
-		default:
-			let header = table.otherElements.element(boundBy: 3)
-			assert(header, [.exists])
-		}
+		XCTAssertEqual(numberOfSections, count, "Количество секций должно быть равно \(count).")
 
 		return self
 	}
 
-	/// Возвращает название  задания
+	/// Проверяет соответствует ли название заголовка секции
+	/// - Parameters:
+	///   - index: индекс секции
+	///   - title: название заголовка секции
+	/// - Returns: сам объект self
+	@discardableResult
+	func checkSectionTitle(index: Int, title: String) -> Self {
+		let section = tableView.otherElements[AccessibilityIdentifier.TodoList.section(index: index).description]
+
+		assert(section, [.exists])
+		XCTAssertEqual(section.label, title, "Заголовок секции [\(index)] должно быть - \(title).")
+
+		return self
+	}
+
+	/// Проверяет соответствует ли название задания в ячейке
 	/// - Parameters:
 	///   - section: индекс секции
 	///   - row: индекс строки
-	/// - Returns: название задания
+	///   - title: название задания
+	/// - Returns: сам объект self
 	@discardableResult
-	func getTitleForTaskIn(section: Int, row: Int) -> String {
-		let header = table.otherElements.element(boundBy: section)
+	func checkCellTitle(section: Int, row: Int, title: String) -> Self {
 		let cell = app.cells[AccessibilityIdentifier.TodoList.cell(section: section, index: row).description]
+		let cellTitle = cell.staticTexts.element(boundBy: 0).label
 
-		assert(header, [.exists])
 		assert(cell, [.exists])
-		assert(cell.staticTexts.firstMatch, [.contains("!!! \(L10n.Task.default)")])
+		XCTAssertEqual(cellTitle, title, "Заголовок ячейки [\(section):\(row)] должно быть - \(title).")
 
-		return cell.staticTexts.firstMatch.label
+		return self
+	}
+
+	/// Проверяет соответствует ли количество не выбранных строк переданному значению
+	/// - Parameter count: ожидаемое количество не выбранных строк
+	/// - Returns: сам объект self
+	@discardableResult
+	func checkCountOfNotSelectedCells(_ count: Int) -> Self {
+		let cells = app.cells.allElementsBoundByIndex.filter { !$0.isSelected }
+
+		XCTAssertEqual(cells.count, count, "Количество не выбранных ячеек должно быть равно \(count)")
+
+		return self
+	}
+
+	/// Проверяет соответствует ли количество выбранных строк переданному значению
+	/// - Parameter count: ожидаемое количество выбранных строк
+	/// - Returns: сам объект self
+	@discardableResult
+	func checkCountOfSelectedCells(_ count: Int) -> Self {
+		let cells = app.cells.allElementsBoundByIndex.filter { $0.isSelected }
+
+		XCTAssertEqual(cells.count, count, "Количество выбранных ячеек должно быть равно \(count).")
+
+		return self
 	}
 
 	/// Меняет статус задания
@@ -85,10 +103,7 @@ final class TodoListScreenObject: BaseScreenObject {
 	/// - Returns: сам объект self
 	@discardableResult
 	func changeTaskStatusIn(section: Int, row: Int) -> Self {
-		let header = table.otherElements.element(boundBy: section)
 		let cell = app.cells[AccessibilityIdentifier.TodoList.cell(section: section, index: row).description]
-
-		assert(header, [.exists])
 		assert(cell, [.exists])
 
 		cell.tap()

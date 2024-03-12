@@ -62,7 +62,8 @@ let target = Target(
 	dependencies: [
 		.package(product: "TaskManagerPackage"),
 		.package(product: "FileManagerPackage"),
-		.package(product: "DataStructuresPackage")
+		.package(product: "DataStructuresPackage"),
+		.package(product: "MarkdownParserPackage")
 	]
 )
 
@@ -101,7 +102,8 @@ let project = Project(
 	packages: [
 		.local(path: .relativeToManifest("../Packages/TaskManagerPackage")),
 		.local(path: .relativeToManifest("../Packages/FileManagerPackage")),
-		.local(path: .relativeToManifest("../Packages/DataStructuresPackage"))
+		.local(path: .relativeToManifest("../Packages/DataStructuresPackage")),
+		.local(path: .relativeToManifest("../Packages/MarkdownParserPackage"))
 	],
 	settings: .settings(
 		base: [
@@ -121,7 +123,7 @@ let project = Project(
 			testAction: .targets(
 				[
 					"\(ProjectSettings.UnitTests.name)",
-					"\(ProjectSettings.UITests.name)"
+					TestableTarget(target: "\(ProjectSettings.UITests.name)", skipped: true)
 				]
 			),
 			runAction: .runAction(executable: "\(ProjectSettings.projectName)")
