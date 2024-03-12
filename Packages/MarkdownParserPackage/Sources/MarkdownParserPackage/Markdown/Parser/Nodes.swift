@@ -26,6 +26,12 @@ public class BaseNode: INode {
 /// Корневой узел дерева
 public final class Document: BaseNode {}
 
+extension Document {
+	func accept<T: IVisitor>(visitor: T) -> [T.Result] {
+		visitor.visit(node: self)
+	}
+}
+
 /// Заголовок
 public final class HeaderNode: BaseNode {
 	public let level: Int
@@ -145,7 +151,7 @@ public final class EscapedCharNode: BaseNode {
 
 /// Перевод строки
 public final class LineBreakNode: BaseNode {
-	public init() { }
+	public init() {}
 }
 
 /// Ссылка
@@ -159,7 +165,6 @@ public final class LinkNode: BaseNode {
 	}
 }
 
-
 /// Картинка
 public final class ImageNode: BaseNode {
 	public let url: String
@@ -168,5 +173,14 @@ public final class ImageNode: BaseNode {
 	public init(url: String, size: String) {
 		self.url = url
 		self.size = size
+	}
+}
+
+public final class TaskNode: BaseNode {
+	public let isDone: Bool
+	
+	public init(isDone: Bool, children: [INode] = []) {
+		self.isDone = isDone
+		super.init(children)
 	}
 }
