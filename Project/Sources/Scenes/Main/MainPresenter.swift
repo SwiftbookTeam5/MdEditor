@@ -10,19 +10,13 @@
 //  see http://clean-swift.com
 //
 
-import UIKit
+import Foundation
 
 protocol IMainPresenter {
 
 	/// Отображение экрана со списком файлов и действий.
 	/// - Parameter response: Подготовленные к отображению данные.
 	func present(response: MainModel.Response)
-
-	/// Отображение экрана со списком файлов директирии документов
-	func presentFiles()
-
-	/// Отображение экрана c информацией о преложении
-	func presentAbout()
 }
 
 final class MainPresenter: IMainPresenter {
@@ -30,15 +24,11 @@ final class MainPresenter: IMainPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: IMainViewController! // swiftlint:disable:this implicitly_unwrapped_optional
-	private var openFileClosure: EmptyClosure?
-	private var openAboutClosure: EmptyClosure?
 
 	// MARK: - Initialization
 
-	init(viewController: IMainViewController, openFileClosure: EmptyClosure?, openAboutClosure: EmptyClosure?) {
+	init(viewController: IMainViewController) {
 		self.viewController = viewController
-		self.openFileClosure = openFileClosure
-		self.openAboutClosure = openAboutClosure
 	}
 
 	// MARK: - Internal methods
@@ -49,25 +39,15 @@ final class MainPresenter: IMainPresenter {
 		let sections = [
 			MainModel.ViewModel.Section(
 				type: .horizontal,
-				items: mapFilesData(files: response.files)
+				items: mapFilesData(files: response.recentFiles)
 			),
 			MainModel.ViewModel.Section(
 				type: .vertical,
-				items: mapActionsData(actions: response.actions)
+				items: mapActionsData(menu: response.menu)
 			)
 		]
 
 		viewController.render(viewModel: MainModel.ViewModel(sections: sections))
-	}
-
-	/// Открывает список файлов
-	func presentFiles() {
-		openFileClosure?()
-	}
-
-	/// Отображение экрана c информацией о преложении
-	func presentAbout() {
-		openAboutClosure?()
 	}
 }
 
@@ -78,28 +58,36 @@ private extension MainPresenter {
 	/// Мапинг файлов из бизнес-модели в файлы для отображения
 	/// - Parameter files: Файлы для преобразования.
 	/// - Returns: Преобразованный результат.
-	func mapFilesData(files: [MainModel.Response.File]) -> [MainModel.ViewModel.Item] {
+	func mapFilesData(files: [RecentFile]) -> [MainModel.ViewModel.Item] {
 		files.map { mapFileData(file: $0) }
 	}
 
 	/// Мапинг одного файла из бизнес-модели в файл для отображения
 	/// - Parameter file: Файл для преобразования.
 	/// - Returns: Преобразованный результат.
-	func mapFileData(file: MainModel.Response.File) -> MainModel.ViewModel.Item {
-		MainModel.ViewModel.Item.file(MainModel.ViewModel.File(title: file.title, color: file.color))
+	func mapFileData(file: RecentFile) -> MainModel.ViewModel.Item {
+		let recentFile = MainModel.ViewModel.RecentFile(
+			previewText: file.previewText,
+			fileName: file.url.lastPathComponent
+		)
+		return MainModel.ViewModel.Item.file(recentFile)
 	}
 
 	/// Мапинг действий из бизнес-модели в действия для отображения
 	/// - Parameter actions: Действия для преобразования.
 	/// - Returns: Преобразованный результат.
-	func mapActionsData(actions: [MainModel.Response.Action]) -> [MainModel.ViewModel.Item] {
-		actions.map { mapActionData(action: $0) }
+	func mapActionsData(menu: [MainModel.MenuIdentifier]) -> [MainModel.ViewModel.Item] {
+		menu.map { mapActionData(menu: $0) }
 	}
 
 	/// Мапинг одного действия из бизнес-модели в действие для отображения
 	/// - Parameter task: Действие для преобразования.
 	/// - Returns: Преобразованный результат.
-	func mapActionData(action: MainModel.Response.Action) -> MainModel.ViewModel.Item {
-		MainModel.ViewModel.Item.action(MainModel.ViewModel.Action(title: action.title, image: action.image))
+	func mapActionData(menu: MainModel.MenuIdentifier) -> MainModel.ViewModel.Item {
+		let menuItem = MainModel.ViewModel.MenuItem(
+			title: menu.title,
+			item: menu
+		)
+		return MainModel.ViewModel.Item.menu(menuItem)
 	}
 }

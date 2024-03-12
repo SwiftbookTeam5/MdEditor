@@ -13,63 +13,48 @@ import XCTest
 final class FileExplorerTests: XCTestCase {
 	
 	// MARK: - Private properties
-
+	
 	private var fileManager = FileManager.default
 
 	// MARK: - Internal Methods
-
-	func test_init_withoutFiles_shouldBeZeroFile() {
-		let sut = makeSUT()
-		
-		XCTAssertEqual(sut.files.count, 0, "Количество файлов в менеджере должно быть равно 0.")
-	}
 	
 	func test_createFile_shouldBeCreateOneFile() {
-		let sut = makeSUT()
+		let sut = FileExplorer()
 		let url = makeDocumentURL()
-		let bodyFile = "Тело файла"
-		let nameFile = "CreateFile_\(UUID().uuidString).txt"
+		let fileBody = "Тело файла"
+		let fileName = "CreateFile_\(UUID().uuidString).txt"
 
-		if let url, let data = bodyFile.data(using: .utf8) {
-			XCTAssertNoThrow(
-				try sut.createFile(with: nameFile, data: data, url: url),
-				"Не создался файл"
-			)
+		if let url {
+			let result = sut.createNewFile(at: url, fileName: fileName, fileBody: fileBody)
+			if case .failure = result {
+				XCTAssert(false, "Не создался файл")
+			}
 		}
 	}
 
 	func test_createFolder_shouldBeCreateOneFolder() {
-		let sut = makeSUT()
+		let sut = FileExplorer()
 		let url = makeDocumentURL()
 		let nameFolder = "CreateFolder_" + UUID().uuidString
-		
+
 		if let url {
-			XCTAssertNoThrow(
-				try sut.createFolder(with: nameFolder, url: url),
-				"Не создалась папка"
-			)
-		}
-	}
-	
-	func test_getFile_shouldBeСorrectFile() {
-		let sut = makeSUT()
-		let nameFile = "TestContent.md"
-		let url = makeBundleURL(with: nameFile)
-		
-		if let url {
-			let file = sut.getFile(url: url)
-			XCTAssertNotNil(file, "Не получен файл")
-			XCTAssertEqual(file?.name ?? "", nameFile, "Не верное имя файла")
+			let result = sut.createFolder(at: url, withName: nameFolder)
+			if case .failure = result {
+				XCTAssert(false, "Не создалась папка")
+			}
 		}
 	}
 
-	func test_loadFileBody_shouldBeСorrectBodyFile() {
-		let sut = makeSUT()
-		let nameFile = "TestContent.md"
-		let url = makeBundleURL(with: nameFile)
-		
+	func test_contentsOfFolder_shouldBeСorrectFile() {
+		let sut = FileExplorer()
+		let url = makeBundleURL()
+
 		if let url {
-			XCTAssertNoThrow(try sut.loadFileBody(url: url), "Не загрузилосьтело файла")
+			let result = sut.contentsOfFolder(at: url)
+
+			if case .failure = result {
+				XCTAssert(false, "Не получено содержиме папки")
+			}
 		}
 	}
 }
@@ -77,11 +62,7 @@ final class FileExplorerTests: XCTestCase {
 // MARK: - TestData
 
 private extension FileExplorerTests {
-	
-	func makeSUT() -> FileExplorer {
-		FileExplorer(fileManager: fileManager)
-	}
-	
+
 	func makeDocumentURL() -> URL? {
 		try? fileManager.url(
 			for: .documentDirectory,
@@ -91,13 +72,12 @@ private extension FileExplorerTests {
 		)
 	}
 	
-	func makeBundleURL(with name: String) -> URL? {
+	func makeBundleURL() -> URL? {
 		let bundlePath = Bundle(for: Self.self).path(
 			forResource: "FileManagerPackage_FileManagerPackageTests",
 			ofType: "bundle"
 		)
-		
-		let bundle = Bundle(path: bundlePath ?? "")
-		return bundle?.bundleURL.appendingPathComponent(name)
+
+		return Bundle(path: bundlePath ?? "")?.bundleURL
 	}
 }

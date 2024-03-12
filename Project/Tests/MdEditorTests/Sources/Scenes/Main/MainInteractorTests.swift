@@ -14,16 +14,17 @@ final class MainInteractorTests: XCTestCase {
 	// MARK: - Private properties
 
 	private let presenter = MainPresenterSpy()
-	private let fileRepository = FileRepositoryMock()
+	private let recentFileManager = RecentFileManagerSpy()
+	private let mainDelegate = MainDelegateSpy()
 
 	// MARK: - Internal Methods
 
-	func test_fetchData_witchFiles_shouldBePresentSuccess() {
+	func test_fetchData_witchRecentFiles_shouldBePresentSuccess() {
 		let sut = makeSut()
 
 		sut.fetchData()
 
-		XCTAssertTrue(fileRepository.isCalledGetFiles, "Не вызван presenter.present(:)")
+		XCTAssertTrue(recentFileManager.isCalledGetRecentFiles, "Не вызван presenter.present(:)")
 		XCTAssertTrue(presenter.isCalledPresent, "Не вызван fileRepository.getFiles()")
 		XCTAssertTrue(presenter.isResponse, "Нет данных MainModel.Response")
 	}
@@ -34,6 +35,6 @@ final class MainInteractorTests: XCTestCase {
 private extension MainInteractorTests {
 
 	func makeSut() -> MainInteractor {
-		MainInteractor(presenter: presenter, fileRepository: fileRepository)
+		MainInteractor(presenter: presenter, recentFileManager: recentFileManager, delegate: mainDelegate)
 	}
 }

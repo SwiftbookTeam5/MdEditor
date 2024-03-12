@@ -25,13 +25,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 #if DEBUG
 		let parameters = LaunchArguments.getParameters()
 		let taskManager = TaskManagerBuilder().build(repository: TaskRepositoryStub())
-		let fileRepository = FileRepositoryStub()
 
 		appCoordinator = AppCoordinator(
 			window: window,
-			taskManager: taskManager,
-			fileRepository: fileRepository,
-			fileExplorer: FileExplorer(fileManager: FileManager.default)
+			taskManager: taskManager
 		)
 
 		if let enableTesting = parameters[LaunchArguments.enableTesting], enableTesting {
@@ -41,13 +38,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		appCoordinator.testStart(parameters: parameters)
 #else
 		let taskManager = TaskManagerBuilder().build(repository: TaskRepositoryStub())
-		let fileRepository = FileRepositoryStub()
 
 		appCoordinator = AppCoordinator(
 			window: window,
-			taskManager: taskManager,
-			fileRepository: fileRepository,
-			fileExplorer: FileExplorer(fileManager: FileManager.default)
+			taskManager: taskManager
 		)
 
 		appCoordinator.start()

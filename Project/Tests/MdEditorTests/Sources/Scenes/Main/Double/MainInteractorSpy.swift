@@ -20,12 +20,8 @@ final class MainInteractorSpy: IMainInteractor {
 	func fetchData() {
 		isCalledFetchData = true
 	}
-
-	func didActionSelected(request: MainModel.Request.ItemSelected) {
-		fatalError("Not implimented!")
-	}
-
-	func didFileSelected(request: MainModel.Request.ItemSelected) {
+	
+	func performAction(request: MdEditor.MainModel.Request) {
 		fatalError("Not implimented!")
 	}
 }

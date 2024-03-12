@@ -44,7 +44,7 @@ enum AccessibilityIdentifier {
 		}
 	}
 
-	enum OpenFile {
+	enum FileManager {
 		case tableView
 		case cell(section: Int, index: Int)
 		case section(index: Int)
@@ -86,6 +86,14 @@ enum AccessibilityIdentifier {
 			case .textFieldAboutApp:
 				return "textFieldAboutApp"
 			}
+		}
+	}
+
+	enum TextPreviewScene: CustomStringConvertible {
+		case textView
+
+		var description: String {
+			"TextPreviewScene.textView"
 		}
 	}
 }

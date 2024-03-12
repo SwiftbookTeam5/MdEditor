@@ -6,15 +6,21 @@
   Copyright © 2024 SwiftbookTeam5. All rights reserved.
 */
 
+// MARK: - Common strings
+
+"Yes.text" = "Yes";
+"No.text" = "No";
+"Return.text" = "Return";
+"Ok.text" = "Ok";
+"Error.text" = "Error";
+"Message.text" = "Message";
+
 // MARK: - Auth
 
 "Auth.title" = "Authorization";
 "Auth.authorization" = "Login";
 "Auth.password" = "Password";
 "Auth.login" = "Login";
-
-"AlertAuth.title" = "Error";
-"AlertAuth.okActionTitle" = "Ok";
 
 // MARK: - TodoList screen
 
@@ -44,9 +50,9 @@
 // MARK: - Main
 
 "Main.title" = "MdEditor";
-"Main.Actions.New" = "New";
-"Main.Actions.Open" = "Open";
-"Main.Actions.About" = "About";
+"Main.Menu.newFile" = "New";
+"Main.Menu.openFile" = "Open";
+"Main.Menu.about" = "About";
 
 // MARK: - File
 
@@ -56,3 +62,7 @@
 // MARK: - About
 
 "About.title" = "About app";
+
+// MARK: - New feature
+
+"Feature.newFile" = "We are working on this section and it will be possible to create files soon";

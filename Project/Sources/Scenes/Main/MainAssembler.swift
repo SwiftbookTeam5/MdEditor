@@ -10,32 +10,17 @@ import UIKit
 
 final class MainAssembler {
 
-	// MARK: - Dependencies
-
-	private let fileRepository: IFileRepository
-
-	// MARK: - Initialization
-
-	/// Инициализатор сборщика основного модуля.
-	/// - Parameters:
-	///   - taskManager: репозиторий файлов .
-	init(fileRepository: IFileRepository) {
-		self.fileRepository = fileRepository
-	}
-
-	// MARK: - Internal methods
-
 	/// Сборка модуля стартового экрана.
 	/// - Returns: контроллер с проставленными зависимостями VIP цикла.
-	func assembly(openFileClosure: EmptyClosure?, openAboutClosure: EmptyClosure?) -> MainViewController {
+	func assembly(recentFileManager: IRecentFileManager, delegate: IMainDelegate) -> MainViewController {
 		let viewController = MainViewController(collectionViewLayout: UICollectionViewLayout())
-		let presenter = MainPresenter(
-			viewController: viewController,
-			openFileClosure: openFileClosure,
-			openAboutClosure: openAboutClosure
-		)
+		let presenter = MainPresenter(viewController: viewController)
 
-		let interactor = MainInteractor(presenter: presenter, fileRepository: fileRepository)
+		let interactor = MainInteractor(
+			presenter: presenter,
+			recentFileManager: recentFileManager,
+			delegate: delegate
+		)
 		viewController.interactor = interactor
 
 		return viewController

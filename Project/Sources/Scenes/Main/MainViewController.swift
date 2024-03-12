@@ -30,6 +30,10 @@ final class MainViewController: UICollectionViewController {
 	private let layout = MainCompositionalLayout()
 	private var viewModel = MainModel.ViewModel(sections: [])
 
+	private lazy var folderImage = makeFolderImage()
+	private lazy var fileImage = makeFileImage()
+	private lazy var aboutImage = makeAboutImage()
+
 	// MARK: - Lifecycle
 
 	override func viewDidLoad() {
@@ -66,7 +70,7 @@ extension MainViewController {
 		switch item {
 		case .file(let file):
 			let cell: FileCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
-			cell.configure(title: file.title, color: file.color)
+			cell.configure(title: file.fileName, color: FlatColor.Green.Fern)
 
 			cell.accessibilityIdentifier = AccessibilityIdentifier.Main.cell(
 				section: indexPath.section,
@@ -74,9 +78,17 @@ extension MainViewController {
 			).description
 
 			return cell
-		case .action(let action):
+		case .menu(let menuItem):
 			let cell: UICollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
-			configureCell(cell, with: action)
+
+			switch menuItem.item {
+			case .openFile:
+				configureCell(cell, title: menuItem.title, icon: folderImage)
+			case .newFile:
+				configureCell(cell, title: menuItem.title, icon: fileImage)
+			case .showAbout:
+				configureCell(cell, title: menuItem.title, icon: aboutImage)
+			}
 
 			cell.accessibilityIdentifier = AccessibilityIdentifier.Main.cell(
 				section: indexPath.section,
@@ -89,13 +101,12 @@ extension MainViewController {
 
 	override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		let item = getItemForIndex(indexPath)
-		let request = MainModel.Request.ItemSelected(indexPath: indexPath)
 
 		switch item {
 		case .file:
-			interactor?.didFileSelected(request: request)
-		case .action:
-			interactor?.didActionSelected(request: request)
+			interactor?.performAction(request: .recentFileSelected(indexPath: indexPath))
+		case .menu:
+			interactor?.performAction(request: .menuItemSelected(indexPath: indexPath))
 		}
 	}
 }
@@ -134,14 +145,14 @@ private extension MainViewController {
 		collectionView.setCollectionViewLayout(layout.layout, animated: true)
 	}
 
-	func configureCell(_ cell: UICollectionViewCell, with action: MainModel.ViewModel.Action) {
+	func configureCell(_ cell: UICollectionViewCell, title: String, icon: UIImage) {
 		var contentConfiguration = UIListContentConfiguration.valueCell()
 		contentConfiguration.textProperties.font = UIFont.preferredFont(forTextStyle: .headline)
 		contentConfiguration.secondaryTextProperties.adjustsFontForContentSizeCategory = true
-		contentConfiguration.image = action.image
+		contentConfiguration.image = icon
 
 		let attributes = [NSAttributedString.Key.foregroundColor: FlatColor.Gray.IronGray]
-		let attributedString = NSMutableAttributedString(string: action.title, attributes: attributes)
+		let attributedString = NSMutableAttributedString(string: title, attributes: attributes)
 		contentConfiguration.attributedText = attributedString
 
 		cell.contentConfiguration = contentConfiguration
@@ -152,5 +163,26 @@ private extension MainViewController {
 		let item = section.items[indexPath.item]
 
 		return item
+	}
+
+	func makeFolderImage() -> UIImage {
+		Asset.Icons.openFolder.image.withTintColor(
+			Theme.mainColor,
+			renderingMode: .alwaysOriginal
+		)
+	}
+
+	func makeFileImage() -> UIImage {
+		Asset.Icons.file.image.withTintColor(
+			Theme.mainColor,
+			renderingMode: .alwaysOriginal
+		)
+	}
+
+	func makeAboutImage() -> UIImage {
+		Asset.Icons.about.image.withTintColor(
+			Theme.mainColor,
+			renderingMode: .alwaysOriginal
+		)
 	}
 }

@@ -15,7 +15,7 @@ final class LoginScreenObject: BaseScreenObject {
 	private lazy var textFieldPass = app.secureTextFields[AccessibilityIdentifier.Login.textFieldPass.description]
 	private lazy var loginButton = app.buttons[AccessibilityIdentifier.Login.buttonLogin.description]
 	private lazy var navigationBar = app.navigationBars.firstMatch
-	private lazy var alert = app.alerts[L10n.AlertAuth.title]
+	private lazy var alert = app.alerts[L10n.Error.text]
 
 	// MARK: - ScreenObject Methods
 
@@ -35,7 +35,7 @@ final class LoginScreenObject: BaseScreenObject {
 	/// - Returns: сам объект self
 	@discardableResult
 	func closeAlert() -> Self {
-		let okAction = alert.buttons[L10n.AlertAuth.okActionTitle]
+		let okAction = alert.buttons[L10n.Ok.text]
 
 		assert(alert, [.exists])
 		assert(okAction, [.exists])

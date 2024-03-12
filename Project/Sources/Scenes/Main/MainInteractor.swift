@@ -10,8 +10,15 @@
 //  see http://clean-swift.com
 //
 
-import UIKit
+import Foundation
 import FileManagerPackage
+
+protocol IMainDelegate: AnyObject {
+	func showAbout()
+	func openFileExplorer()
+	func newFile()
+	func openFile(file: File)
+}
 
 protocol IMainInteractor {
 
@@ -20,11 +27,7 @@ protocol IMainInteractor {
 
 	/// Событие, что действие было выбрано.
 	/// - Parameter request: Запрос, содержащий информацию о выбранном действие.
-	func didActionSelected(request: MainModel.Request.ItemSelected)
-
-	/// Событие, что файл был выбран.
-	/// - Parameter request: Запрос, содержащий информацию о выбранном файле.
-	func didFileSelected(request: MainModel.Request.ItemSelected)
+	func performAction(request: MainModel.Request)
 }
 
 final class MainInteractor: IMainInteractor {
@@ -32,71 +35,46 @@ final class MainInteractor: IMainInteractor {
 	// MARK: - Dependencies
 
 	private var presenter: IMainPresenter
-	private let fileRepository: IFileRepository
+	private let recentFileManager: IRecentFileManager
+	private weak var delegate: IMainDelegate?
 
-	private let actions: [MainModel.Response.Action] = [.new, .open, .about]
+	// MARK: - Private properties
+
+	private let menu: [MainModel.MenuIdentifier] = [.newFile, .openFile, .showAbout]
 
 	// MARK: - Initialization
 
-	init(presenter: IMainPresenter, fileRepository: IFileRepository) {
+	init(presenter: IMainPresenter, recentFileManager: IRecentFileManager, delegate: IMainDelegate) {
 		self.presenter = presenter
-		self.fileRepository = fileRepository
+		self.recentFileManager = recentFileManager
+		self.delegate = delegate
 	}
 
 	// MARK: - Internal methods
 
 	/// Событие на предоставление информации о файлах и действиях
 	func fetchData() {
-		let files = mapFilesData(files: fileRepository.getFiles())
-
-		let response = MainModel.Response(files: files, actions: actions)
+		let recentFiles = recentFileManager.getRecentFiles()
+		let response = MainModel.Response(recentFiles: recentFiles, menu: menu)
 		presenter.present(response: response)
 	}
 
 	/// Событие, что действие было выбрано.
 	/// - Parameter request: Запрос, содержащий информацию о выбранном действие.
-	func didActionSelected(request: MainModel.Request.ItemSelected) {
-		let action = actions[request.indexPath.row]
-
-		switch action {
-		case .new:
+	func performAction(request: MainModel.Request) {
+		switch request {
+		case .menuItemSelected(let indexPath):
+			let selectedMenuItem = menu[min(indexPath.row, menu.count - 1)]
+			switch selectedMenuItem {
+			case .openFile:
+				delegate?.openFileExplorer()
+			case .newFile:
+				delegate?.newFile()
+			case .showAbout:
+				delegate?.showAbout()
+			}
+		case .recentFileSelected:
 			break
-		case .open:
-			presenter.presentFiles()
-		case .about:
-			presenter.presentAbout()
 		}
-	}
-
-	/// Событие, что файл был выбран.
-	/// - Parameter request: Запрос, содержащий информацию о выбранном файле.
-	func didFileSelected(request: MainModel.Request.ItemSelected) {
-		//
-	}
-}
-
-// MARK: - Private methods
-
-private extension MainInteractor {
-
-	/// Мапинг файлов для бизнес-модели
-	/// - Parameter files: Файлы для преобразования.
-	/// - Returns: Преобразованный результат.
-	func mapFilesData(files: [File]) -> [MainModel.Response.File] {
-		files.map { mapFileData(file: $0) }
-	}
-
-	/// Мапинг файлов для бизнес-модели
-	/// - Parameter file: Файл для преобразования.
-	/// - Returns: Преобразованный результат.
-	func mapFileData(file: File) -> MainModel.Response.File {
-		let color = file.modificationDate > file.creationDate ? FlatColor.Green.Fern : FlatColor.Orange.NeonCarrot
-
-		let response = MainModel.Response.File(
-			title: file.name,
-			color: color
-		)
-
-		return response
 	}
 }

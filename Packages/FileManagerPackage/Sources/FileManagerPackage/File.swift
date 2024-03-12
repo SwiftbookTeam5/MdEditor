@@ -11,79 +11,71 @@ import Foundation
 public class File {
 	public let url: URL
 	public let size: UInt64
-	public let isDirectory: Bool
+	public let isFolder: Bool
 	public let creationDate: Date
 	public var modificationDate: Date
-
-	public var name: String {
-		String(describing: url.lastPathComponent)
-	}
-
-	public var ext: String {
-		String(describing: name.split(separator: ".").last ?? "")
-	}
 
 	public init(
 		url: URL,
 		size: UInt64 = 0,
-		isDirectory: Bool = false,
+		isFolder: Bool = false,
 		creationDate: Date = Date(),
 		modificationDate: Date = Date()
 	) {
 		self.url = url
 		self.size = size
-		self.isDirectory = isDirectory
+		self.isFolder = isFolder
 		self.creationDate = creationDate
 		self.modificationDate = modificationDate
 	}
-}
 
-// MARK: - CustomStringConvertible
-
-extension File: CustomStringConvertible {
-
-	public var description: String {
-		getFormattedAttributes()
+	enum ParseError: Error {
+		case wrongAttribute
 	}
-}
 
-// MARK: - Internal methods
-
-extension File {
-
-	/// Получение строкового представления размера файла
-	/// - Returns: размер
-	func getFormattedSize() -> String {
-		return getFormattedSize(with: size)
-	}
-}
-
-// MARK: - Private methods
-
-private extension File {
-
-	func getFormattedSize(with size: UInt64) -> String {
-		var convertedValue = Double(size)
-		var multiplyFactor = 0
-		let tokens = ["bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
-
-		while convertedValue > 1024 {
-			convertedValue /= 1024
-			multiplyFactor += 1
+	public static func parse(url: URL) -> Result<File, Error> {
+		let fileManager = FileManager.default
+		do {
+			let attributes = try fileManager.attributesOfItem(atPath: url.relativePath)
+			if
+				let type = attributes[.type] as? FileAttributeType,
+				let size = attributes[.size] as? UInt64,
+				let creationDate = attributes[.creationDate] as? Date,
+				let modificationDate = attributes[.modificationDate] as? Date
+			{
+				let file = File(
+					url: url,
+					size: size,
+					isFolder: type == .typeDirectory,
+					creationDate: creationDate,
+					modificationDate: modificationDate
+				)
+				return .success(file)
+			} else {
+				return .failure(ParseError.wrongAttribute)
+			}
+		} catch {
+			return .failure(error)
 		}
-
-		return String(format: "%4.2f %@", convertedValue, tokens[multiplyFactor])
+	}
+	
+	public var fullname: String {
+		url.absoluteString
+	}
+	
+	public var path: String {
+		return url.deletingLastPathComponent().absoluteString
+	}
+	
+	public var name: String {
+		url.lastPathComponent
+	}
+	
+	public var ext: String {
+		url.pathExtension
 	}
 
-	func getFormattedAttributes() -> String {
-		let formattedSize = getFormattedSize()
-		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = "yyyy.MM.dd HH:mm:ss"
-
-		if isDirectory {
-			return "\(dateFormatter.string(from: modificationDate)) | <dir>"
-		} else {
-			return "\"\(ext)\" – \(dateFormatter.string(from: modificationDate)) | \(formattedSize)"
-		}
+	public func contentOfFile() -> Data? {
+		try? Data(contentsOf: url)
 	}
 }
