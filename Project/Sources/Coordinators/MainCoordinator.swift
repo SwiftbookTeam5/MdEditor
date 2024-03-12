@@ -16,6 +16,7 @@ final class MainCoordinator: BaseCoordinator {
 
 	private let navigationController: UINavigationController
 	private let converter = MarkdownToAttributedTextConverter()
+	private let converterToExport = MarkdownConverterAdapter()
 
 	// MARK: - Initialization
 
@@ -51,8 +52,12 @@ private extension MainCoordinator {
 	}
 
 	func showTextPreviewScene(file: File) {
-		let viewController = TextPreviewAssembler().assembly(file: file, converter: converter)
-
+		let viewController = TextPreviewAssembler().assembly(
+			file: file,
+			converter: converter,
+			converterToExport: converterToExport,
+			delegate: self
+		)
 		navigationController.pushViewController(viewController, animated: true)
 	}
 
@@ -61,7 +66,8 @@ private extension MainCoordinator {
 		let coordinator = FileManagerCoordinator(
 			navigationController: navigationController,
 			topViewController: topViewController,
-			converter: converter
+			converter: converter,
+			converterToExport: converterToExport
 		)
 
 		coordinator.finishFlow = { [weak self, weak coordinator] in
@@ -102,5 +108,23 @@ extension MainCoordinator: IMainDelegate {
 
 	func openFile(file: File) {
 		showTextPreviewScene(file: file)
+	}
+}
+
+// MARK: - ITextPreviewDelegate
+
+extension MainCoordinator: ITextPreviewDelegate {
+
+	/// Открытие окна выбора пути для экспорта файла.
+	/// - Parameter url: url файла источника.
+	func saveFile(sourceURL: URL) {
+		let documentPicker = UIDocumentPickerViewController(forExporting: [sourceURL], asCopy: true)
+		navigationController.present(documentPicker, animated: true)
+	}
+
+	/// Отображение ошибки
+	/// - Parameter message: сообщение
+	func showError(message: String) {
+		showMessage(message: message)
 	}
 }

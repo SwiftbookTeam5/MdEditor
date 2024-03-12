@@ -51,6 +51,13 @@ final class TextPreviewViewController: UIViewController {
 
 		layout()
 	}
+
+	// MARK: - Actions
+
+	@objc
+	private func didTapExportPDF() {
+		interactor?.exportToPDF()
+	}
 }
 
 // MARK: - Setup UI
@@ -59,7 +66,14 @@ private extension TextPreviewViewController {
 
 	func setupUI() {
 		view.backgroundColor = Theme.backgroundColor
+
 		navigationController?.navigationBar.prefersLargeTitles = false
+		navigationItem.rightBarButtonItem = UIBarButtonItem(
+			image: UIImage(systemName: "square.and.arrow.up")?.withTintColor(Theme.mainColor, renderingMode: .alwaysOriginal),
+			style: .plain,
+			target: self,
+			action: #selector(didTapExportPDF)
+		)
 
 		view.addSubview(textView)
 	}

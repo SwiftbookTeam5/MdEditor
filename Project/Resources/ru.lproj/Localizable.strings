@@ -46,6 +46,7 @@
 "Error.wrongLogin" = "Неверный логин.";
 "Error.emptyFields" = "Пустые поля логин или пароль.";
 "Error.errorAuth" = "Неверный пароль и логин.";
+"Error.exportPDF" = "Не удалось выполнить экспорт";
 
 // MARK: - Main
 

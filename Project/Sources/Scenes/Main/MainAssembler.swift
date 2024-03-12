@@ -11,6 +11,9 @@ import UIKit
 final class MainAssembler {
 
 	/// Сборка модуля стартового экрана.
+	/// - Parameters:
+	///   - recentFileManager: мнеджер работы с последними файлами
+	///   - delegate: делегат навигации
 	/// - Returns: контроллер с проставленными зависимостями VIP цикла.
 	func assembly(recentFileManager: IRecentFileManager, delegate: IMainDelegate) -> MainViewController {
 		let viewController = MainViewController(collectionViewLayout: UICollectionViewLayout())

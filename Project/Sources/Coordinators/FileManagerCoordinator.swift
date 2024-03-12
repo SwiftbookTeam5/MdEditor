@@ -17,6 +17,7 @@ final class FileManagerCoordinator: NSObject, ICoordinator {
 	private let navigationController: UINavigationController
 	private var topViewController: UIViewController?
 	private let converter: IMarkdownToAttributedTextConverter
+	private let converterToExport: IMarkdownConverterAdapter
 
 	// MARK: - Internal properties
 
@@ -27,11 +28,13 @@ final class FileManagerCoordinator: NSObject, ICoordinator {
 	init(
 		navigationController: UINavigationController,
 		topViewController: UIViewController?,
-		converter: IMarkdownToAttributedTextConverter
+		converter: IMarkdownToAttributedTextConverter,
+		converterToExport: IMarkdownConverterAdapter
 	) {
 		self.navigationController = navigationController
 		self.topViewController = topViewController
 		self.converter = converter
+		self.converterToExport = converterToExport
 
 		super.init()
 
@@ -49,6 +52,14 @@ final class FileManagerCoordinator: NSObject, ICoordinator {
 
 private extension FileManagerCoordinator {
 
+	func showMessage(message: String) {
+		let alert = UIAlertController(title: L10n.Message.text, message: message, preferredStyle: .alert)
+		let action = UIAlertAction(title: L10n.Ok.text, style: .default)
+		alert.addAction(action)
+
+		navigationController.present(alert, animated: true, completion: nil)
+	}
+
 	func showFileManagerScene(file: File?) {
 		let viewController = FileManagerAssembler().assembly(
 			fileExplorer: FileExplorer(),
@@ -60,7 +71,12 @@ private extension FileManagerCoordinator {
 	}
 
 	func showTextPreviewScene(file: File) {
-		let viewController = TextPreviewAssembler().assembly(file: file, converter: converter)
+		let viewController = TextPreviewAssembler().assembly(
+			file: file,
+			converter: converter,
+			converterToExport: converterToExport,
+			delegate: self
+		)
 		navigationController.pushViewController(viewController, animated: true)
 	}
 }
@@ -90,5 +106,23 @@ extension FileManagerCoordinator: IFileManagerDelegate {
 
 	func openFile(file: File) {
 		showTextPreviewScene(file: file)
+	}
+}
+
+// MARK: - ITextPreviewDelegate
+
+extension FileManagerCoordinator: ITextPreviewDelegate {
+
+	/// Открытие окна выбора пути для экспорта файла.
+	/// - Parameter url: url файла источника.
+	func saveFile(sourceURL: URL) {
+		let documentPicker = UIDocumentPickerViewController(forExporting: [sourceURL], asCopy: true)
+		navigationController.present(documentPicker, animated: true)
+	}
+
+	/// Отображение ошибки
+	/// - Parameter message: сообщение
+	func showError(message: String) {
+		showMessage(message: message)
 	}
 }

@@ -12,6 +12,10 @@ import FileManagerPackage
 final class FileManagerAssembler {
 
 	/// Сборка модуля стартового экрана.
+	/// - Parameters:
+	///   - fileExplorer: загрузчик файлов
+	///   - delegate: делегат нафигации
+	///   - file: Текущий файл
 	/// - Returns: контроллер с проставленными зависимостями VIP цикла.
 	func assembly(fileExplorer: IFileExplorer, delegate: IFileManagerDelegate, file: File?) -> FileManagerViewController {
 		let viewController = FileManagerViewController()
