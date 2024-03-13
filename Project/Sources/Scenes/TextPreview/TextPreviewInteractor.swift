@@ -68,18 +68,22 @@ final class TextPreviewInteractor: ITextPreviewInteractor {
 
 	/// Событие выбора экспорта в PDF
 	func exportToPDF() {
-		guard let data = converterToExport.convertToPDF(file: file) else {
-			delegate.showError(message: L10n.Error.exportPDF)
-			return
-		}
+		converterToExport.convertToPDF(file: file) { [weak self] data in
+			guard let self else { return }
 
-		let fileURL = fileManager.temporaryDirectory.appendingPathComponent(file.name)
+			guard let data else {
+				self.delegate.showError(message: L10n.Error.exportPDF)
+				return
+			}
 
-		do {
-			try data.write(to: fileURL)
-			delegate.saveFile(sourceURL: fileURL)
-		} catch {
-			delegate.showError(message: L10n.Error.exportPDF)
+			let fileURL = self.fileManager.temporaryDirectory.appendingPathComponent(self.file.name)
+
+			do {
+				try data.write(to: fileURL)
+				self.delegate.saveFile(sourceURL: fileURL)
+			} catch {
+				self.delegate.showError(message: L10n.Error.exportPDF)
+			}
 		}
 	}
 }

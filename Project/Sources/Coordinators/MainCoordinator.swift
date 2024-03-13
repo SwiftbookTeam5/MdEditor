@@ -16,7 +16,7 @@ final class MainCoordinator: BaseCoordinator {
 
 	private let navigationController: UINavigationController
 	private let converter = MarkdownToAttributedTextConverter()
-	private let converterToExport = MarkdownConverterAdapter()
+	private let converterToExport = MainQueueDispatchDecorator(MarkdownConverterAdapter())
 
 	// MARK: - Initialization
 

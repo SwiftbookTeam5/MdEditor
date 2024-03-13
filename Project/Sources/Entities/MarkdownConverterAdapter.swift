@@ -13,9 +13,10 @@ import FileManagerPackage
 protocol IMarkdownConverterAdapter {
 
 	/// Конвертация в PDF
-	/// - Parameter file: файл
-	/// - Returns: данные
-	func convertToPDF(file: File) -> Data?
+	/// - Parameters:
+	///   - file: файл
+	///   - completion: данные
+	func convertToPDF(file: File, completion: @escaping (Data?) -> Void)
 }
 
 final class MarkdownConverterAdapter: IMarkdownConverterAdapter {
@@ -28,14 +29,20 @@ final class MarkdownConverterAdapter: IMarkdownConverterAdapter {
 	// MARK: - Internal methods
 
 	/// Конвертация в PDF
-	/// - Parameter file: файл
-	/// - Returns: данные
-	func convertToPDF(file: File) -> Data? {
-		guard let data = file.contentOfFile(), let fileContent = String(data: data, encoding: .utf8) else { return nil }
+	/// - Parameters:
+	///   - file: файл
+	///   - completion: данные
+	func convertToPDF(file: File, completion: @escaping (Data?) -> Void) {
+		DispatchQueue.global(qos: .userInitiated).async {
+			guard let data = file.contentOfFile(), let fileContent = String(data: data, encoding: .utf8) else {
+				completion(nil)
+				return
+			}
 
-		let text = converterToAttributedText.convert(markdownText: fileContent)
-		let dataPDF = converterToPDF.convert(markdownText: text.string, pdfAuthor: "", pdfTitle: file.name)
+			let text = self.converterToAttributedText.convert(markdownText: fileContent)
+			let dataPDF = self.converterToPDF.convert(markdownText: text.string, pdfAuthor: "", pdfTitle: file.name)
 
-		return dataPDF
+			completion(dataPDF)
+		}
 	}
 }
