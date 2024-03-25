@@ -46,6 +46,7 @@
 "Error.wrongLogin" = "Wrong login";
 "Error.emptyFields" = "Empty fields";
 "Error.errorAuth" = "Wrong password or wrong login";
+"Error.exportPDF" = "The export failed";
 
 // MARK: - Main
 

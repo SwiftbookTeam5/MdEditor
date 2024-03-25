@@ -9,10 +9,25 @@
 import Foundation
 import FileManagerPackage
 
+/// Делегат по управлению открытием папки и файла. Реализован должен быть в координаторе.
+protocol ITextPreviewDelegate: AnyObject {
+
+	/// Открытие окна выбора пути для экспорта файла.
+	/// - Parameter url: url файла источника.
+	func saveFile(sourceURL: URL)
+
+	/// Отображение ошибки
+	/// - Parameter message: сообщение
+	func showError(message: String)
+}
+
 protocol ITextPreviewInteractor {
 
 	/// Событие на предоставление информации
 	func fetchData()
+
+	/// Событие выбора экспорта в PDF
+	func exportToPDF()
 }
 
 final class TextPreviewInteractor: ITextPreviewInteractor {
@@ -20,16 +35,26 @@ final class TextPreviewInteractor: ITextPreviewInteractor {
 	// MARK: - Dependencies
 
 	private var presenter: ITextPreviewPresenter
+	private var delegate: ITextPreviewDelegate
+	private let converterToExport: IMarkdownConverterAdapter
 
 	// MARK: - Private properties
 
+	private let fileManager = FileManager.default
 	private let file: File
 
 	// MARK: - Initialization
 
-	init(presenter: ITextPreviewPresenter, file: File) {
+	init(
+		presenter: ITextPreviewPresenter,
+		file: File,
+		delegate: ITextPreviewDelegate,
+		converterToExport: IMarkdownConverterAdapter
+	) {
 		self.presenter = presenter
 		self.file = file
+		self.delegate = delegate
+		self.converterToExport = converterToExport
 	}
 
 	// MARK: - Public methods
@@ -39,5 +64,26 @@ final class TextPreviewInteractor: ITextPreviewInteractor {
 		let fileContent = String(data: file.contentOfFile() ?? Data(), encoding: .utf8) ?? ""
 		let response = TextPreviewModel.Response(fileUrl: file.url, fileContent: fileContent)
 		presenter.present(response: response)
+	}
+
+	/// Событие выбора экспорта в PDF
+	func exportToPDF() {
+		converterToExport.convertToPDF(file: file) { [weak self] data in
+			guard let self else { return }
+
+			guard let data else {
+				self.delegate.showError(message: L10n.Error.exportPDF)
+				return
+			}
+
+			let fileURL = self.fileManager.temporaryDirectory.appendingPathComponent(self.file.name)
+
+			do {
+				try data.write(to: fileURL)
+				self.delegate.saveFile(sourceURL: fileURL)
+			} catch {
+				self.delegate.showError(message: L10n.Error.exportPDF)
+			}
+		}
 	}
 }
