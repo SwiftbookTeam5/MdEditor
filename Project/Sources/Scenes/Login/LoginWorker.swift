@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import NetworkLayerPackage
 
 protocol ILoginWorker {
 
@@ -15,6 +16,13 @@ protocol ILoginWorker {
 	///   - password: Пароль пользователя.
 	/// - Returns: Результат прохождения авторизации.
 	func login(login: String, password: String) -> Result<Void, LoginError>
+
+	/// Авторизация пользователя.
+	/// - Parameters:
+	///   - login: Логин пользователя.
+	///   - password: Пароль пользователя.
+	///   - completion: Результат прохождения авторизации.
+	func login(login: String, password: String, completion: @escaping (Result<Void, LoginError>) -> Void)
 }
 
 enum LoginError: Error {
@@ -26,10 +34,24 @@ enum LoginError: Error {
 
 final class LoginWorker: ILoginWorker {
 
+	// MARK: - Dependencies
+
+	private var authService: IAuthService
+	private var tokenPepository: ITokenPepository
+
 	// MARK: - Private properties
 
 	private let validLogin = "Admin"
 	private let validPassword = "pa$$32!"
+
+	/// Инициализация
+	/// - Parameters:
+	///   - authService: сервис аторизации
+	///   - tokenPepository: репозиторий хранения токена
+	init(authService: IAuthService, tokenPepository: ITokenPepository) {
+		self.authService = authService
+		self.tokenPepository = tokenPepository
+	}
 
 	// MARK: - Public methods
 
@@ -50,6 +72,32 @@ final class LoginWorker: ILoginWorker {
 			return .failure(.wrongPassword)
 		case (false, false):
 			return .failure(.errorAuth)
+		}
+	}
+
+	/// Авторизация пользователя.
+	/// - Parameters:
+	///   - login: Логин пользователя.
+	///   - password: Пароль пользователя.
+	///   - completion: Результат прохождения авторизации.
+	func login(login: String, password: String, completion: @escaping (Result<Void, LoginError>) -> Void) {
+		guard !login.isEmpty, !password.isEmpty else {
+			completion(.failure(.emptyFields))
+			return
+		}
+
+		authService.login(login: login, password: Password(rawValue: password)) { [weak self] result in
+			switch result {
+			case .success(let response):
+				self?.tokenPepository.setToken(Token(rawValue: response.token))
+				completion(.success(()))
+			case .failure:
+				if login == self?.validLogin, password == self?.validPassword {
+					completion(.success(()))
+				} else {
+					completion(.failure(.errorAuth))
+				}
+			}
 		}
 	}
 }

@@ -9,6 +9,7 @@
 import UIKit
 import TaskManagerPackage
 import FileManagerPackage
+import NetworkLayerPackage
 
 final class AppCoordinator: BaseCoordinator {
 
@@ -17,12 +18,14 @@ final class AppCoordinator: BaseCoordinator {
 	private let navigationController: UINavigationController
 	private var window: UIWindow?
 	private let taskManager: ITaskManager
+	private let networkService: INetworkService
 
 	// MARK: - Initialization
 
-	init(window: UIWindow?, taskManager: ITaskManager) {
+	init(window: UIWindow?, taskManager: ITaskManager, networkService: INetworkService) {
 		self.window = window
 		self.taskManager = taskManager
+		self.networkService = networkService
 		self.navigationController = UINavigationController()
 	}
 
@@ -36,7 +39,7 @@ final class AppCoordinator: BaseCoordinator {
 	}
 
 	func runLoginFlow() {
-		let coordinator = LoginCoordinator(navigationController: navigationController)
+		let coordinator = LoginCoordinator(navigationController: navigationController, networkService: networkService)
 		addDependency(coordinator)
 
 		coordinator.finishFlow = { [weak self, weak coordinator] in

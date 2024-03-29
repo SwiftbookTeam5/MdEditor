@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NetworkLayerPackage
 
 protocol ILoginCoordinator: ICoordinator {
 
@@ -18,7 +19,10 @@ final class LoginCoordinator: ILoginCoordinator {
 
 	// MARK: - Dependencies
 
-	var navigationController: UINavigationController
+	private var navigationController: UINavigationController
+	private var tokenPepository: ITokenPepository = TokenPepository()
+	private var networkService: INetworkService
+	private var authService: IAuthService
 
 	// MARK: - Internal properties
 
@@ -26,8 +30,10 @@ final class LoginCoordinator: ILoginCoordinator {
 
 	// MARK: - Initialization
 
-	init(navigationController: UINavigationController) {
+	init(navigationController: UINavigationController, networkService: INetworkService) {
 		self.navigationController = navigationController
+		self.networkService = networkService
+		authService = AuthService(networkService: networkService, tokenPepository: tokenPepository)
 	}
 
 	// MARK: - Internal methods
@@ -37,7 +43,10 @@ final class LoginCoordinator: ILoginCoordinator {
 	}
 
 	func showLoginScene() {
-		let viewController = LoginAssembler().assembly { [weak self] result in
+		let viewController = LoginAssembler().assembly(
+			authService: authService,
+			tokenPepository: tokenPepository
+		) { [weak self] result in
 			switch result {
 			case .success:
 				self?.finishFlow?()

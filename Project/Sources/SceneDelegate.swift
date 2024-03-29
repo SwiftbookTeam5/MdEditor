@@ -8,6 +8,7 @@
 import UIKit
 import FileManagerPackage
 import TaskManagerPackage
+import NetworkLayerPackage
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -25,10 +26,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 #if DEBUG
 		let parameters = LaunchArguments.getParameters()
 		let taskManager = TaskManagerBuilder().build(repository: TaskRepositoryStub())
+		let networkService = NetworkService(
+			session: URLSession(configuration: .default),
+			baseUrl: URL(string: Constants.baseURL)! // swiftlint:disable:this force_unwrapping
+		)
 
 		appCoordinator = AppCoordinator(
 			window: window,
-			taskManager: taskManager
+			taskManager: taskManager,
+			networkService: MainQueueDispatchNetworkServiceDecorator(networkService)
 		)
 
 		if let enableTesting = parameters[LaunchArguments.enableTesting], enableTesting {
@@ -38,10 +44,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		appCoordinator.testStart(parameters: parameters)
 #else
 		let taskManager = TaskManagerBuilder().build(repository: TaskRepositoryStub())
+		let networkService = NetworkService(
+			session: URLSession(configuration: .default),
+			baseUrl: URL(string: Constants.baseURL)! // swiftlint:disable:this force_unwrapping
+		)
 
 		appCoordinator = AppCoordinator(
 			window: window,
-			taskManager: taskManager
+			taskManager: taskManager,
+			networkService: MainQueueDispatchNetworkServiceDecorator(networkService)
 		)
 
 		appCoordinator.start()
