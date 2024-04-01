@@ -63,7 +63,8 @@ let target = Target(
 		.package(product: "TaskManagerPackage"),
 		.package(product: "FileManagerPackage"),
 		.package(product: "DataStructuresPackage"),
-		.package(product: "MarkdownParserPackage")
+		.package(product: "MarkdownParserPackage"),
+		.package(product: "NetworkLayerPackage")
 	]
 )
 
@@ -103,7 +104,8 @@ let project = Project(
 		.local(path: .relativeToManifest("../Packages/TaskManagerPackage")),
 		.local(path: .relativeToManifest("../Packages/FileManagerPackage")),
 		.local(path: .relativeToManifest("../Packages/DataStructuresPackage")),
-		.local(path: .relativeToManifest("../Packages/MarkdownParserPackage"))
+		.local(path: .relativeToManifest("../Packages/MarkdownParserPackage")),
+		.local(path: .relativeToManifest("../Packages/NetworkLayerPackage"))
 	],
 	settings: .settings(
 		base: [
